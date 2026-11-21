@@ -1,0 +1,18 @@
+<!-- GHL Custom Code element: paste this (and only this) into the element's code box.
+     Replace ROOTID (unique per page: e.g. xx-root, xxc-root, xxu-root, xxty-root) and the fragment URL.
+     The fragment itself (on GitHub Pages) must start with the wrapper fix using the same ROOTID: see knowledge/loader.md. -->
+<div id="ROOTID"></div>
+<script>(function(){
+  var u='https://OWNER.github.io/REPO/FOLDER/FRAGMENT.html';
+  fetch(u,{cache:'no-cache'})
+    .then(function(r){ if(!r.ok){ throw 0; } return r.text(); })
+    .then(function(h){
+      var root=document.getElementById('ROOTID');
+      root.innerHTML=h;
+      root.querySelectorAll('script').forEach(function(s){
+        var n=document.createElement('script');
+        if(s.src){ n.src=s.src; } else { n.textContent=s.textContent; }
+        s.parentNode.replaceChild(n,s);
+      });
+    }).catch(function(){});
+})();</script>
