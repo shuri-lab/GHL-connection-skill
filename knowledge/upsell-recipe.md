@@ -19,7 +19,7 @@ Thank-you step
 
 ## 1. Study the reference page (repeatable method)
 
-David gave a reference upsell from another funnel in the same account (`https://www.davidhsai.com/upsell-1-product--model-videos-page`, the AI Avatars Upsell #1). Read it with JS on the live page; never open its builder to change anything.
+David gave a reference upsell from another funnel in the same account (`https://www.davidhsai.com/upsell-1-product--model-videos-page`, the AI Avatars Upsell #1). **Study a reference only on its live page, with JS. Never open another client's page builder,** not even read-only: one stray Save publishes changes to their live page, and leaving a builder can break the session (`pitfalls.md` 3). You don't need it: the YES button settings are documented below.
 ```js
 // sections: id, visibility, first 300 chars
 [...document.querySelectorAll('.c-section')].map(s=>({id:s.id,display:getComputedStyle(s).display,text:s.innerText.trim().replace(/\s+/g,' ').slice(0,300)}))
@@ -29,7 +29,7 @@ David gave a reference upsell from another funnel in the same account (`https://
 - Its offer row was hidden until a video timer ended (`display:none`). To see the styling, reveal it temporarily on the live page: `document.getElementById('row-XXXX').style.display='block'` (nothing is saved).
 - What it showed: YES = native GHL button `div.c-button#button-XXXX > button#button-XXXX_btn.cbutton-XXXX.pulse-button` (no href: a one-click action). NO = also a GHL button, but rendered as `<a href="https://www.davidhsai.com/thank-you">` (link-to-URL action).
 - Reference copy: "Your order is on the way & will be available to download in the next 5 minutes. Please watch this important video below for access details and an exclusive opportunity...", "⚡ You Just Unlocked The System. Now Get Results 10x Faster...", a countdown ("Next Step Will Unlock when the timer reaches Zero"), "ONLY $67 $47 NOW", "➡️ This is exclusive one-time offer. Only available right here, right now", "YES! Add The AI Avatars Bonus to My Order For Only $47", "No thanks, I'll spend a lot of time coming up with average AI avatars every time and spend x10 more time".
-- To see the button's settings, open that funnel's Upsell step → **Edit** (read-only!), select the YES button: **Button Actions → link to = "One click up/down sell product"**, **Products = "AI Avatars System Upsell"**. Never Save or Publish someone else's page.
+- The YES button's settings (seen on Nov 20, when Claude did open that builder; that is no longer allowed): **Button Actions → link to = "One click up/down sell product"**, **Products = "AI Avatars System Upsell"**. Those labels are all you need; don't go back to check them.
 
 ## 2. Page structure and copy patterns
 
@@ -68,9 +68,9 @@ Rule: the builder has **no autosave**, and leaving the page discards unsaved wor
 
 1. Upsell step → **Overview** → **Create from blank**. Wait about 12 s. Close **Ask AI**.
 2. Toolbar **+** → **Sections** → **Full Width**. Section **+** (twice if needed) → Quick Add → clear the search (End, Backspace ×10) → `custom` → **Code**.
-3. Select the code element → **Open Code Editor** → type the loader → `zoom` → modal **Save** → **page Save** (floppy). Close the "SEO & AI search optimization" panel if it opens.
+3. Select the code element → **Open Code Editor** → type the one-line loader from `templates/loader.html` (root id `gtu-root` or yours, URL of the hosted `ghl-upsell.html`) → `zoom` → modal **Save** → **page Save** (floppy). Close the "SEO & AI search optimization" panel if it opens.
    ```html
-   <div id="gtu-root"></div><script>(function(){var u='https://OWNER.github.io/REPO/FOLDER/upsell.html';fetch(u,{cache:'no-cache'}).then(function(r){if(!r.ok){throw 0;}return r.text();}).then(function(h){var root=document.getElementById('gtu-root');root.innerHTML=h;root.querySelectorAll('script').forEach(function(s){var n=document.createElement('script');n.textContent=s.textContent;s.parentNode.replaceChild(n,s);});}).catch(function(){});})();</script>
+   <div id="gtu-root"></div><script>(function(){var u='https://OWNER.github.io/REPO/FOLDER/ghl-upsell.html';fetch(u,{cache:'no-cache'}).then(function(r){if(!r.ok){throw 0;}return r.text();}).then(function(h){var root=document.getElementById('gtu-root');root.innerHTML=h;root.querySelectorAll('script').forEach(function(s){var n=document.createElement('script');if(s.src){n.src=s.src;}else{n.textContent=s.textContent;}s.parentNode.replaceChild(n,s);});}).catch(function(){});})();</script>
    ```
 4. Select the row, click the **blue +** on the "1 Column Row"'s bottom edge (add a row below) → Quick Add → clear → `button` → **Button**.
 5. Select the button → General tab:

@@ -1,9 +1,9 @@
 {
   "name": "[Client] · [Offer]",
   "steps": [
-    { "type": "sales",    "url": "https://YOUR-DOMAIN.com/OFFER-page",      "next": "/OFFER-checkout" },
-    { "type": "checkout", "url": "https://YOUR-DOMAIN.com/OFFER-checkout",  "bump": true, "price": "$PRICE" },
-    { "type": "upsell",   "url": "https://YOUR-DOMAIN.com/OFFER-upsell",    "yes": "YES", "no": "/OFFER-thank-you" },
-    { "type": "thankyou", "url": "https://YOUR-DOMAIN.com/OFFER-thank-you" }
+    { "type": "sales",    "url": "https://REPLACE-ME.invalid/OFFER-page",      "root": "xx-root",   "next": "/OFFER-checkout" },
+    { "type": "checkout", "url": "https://REPLACE-ME.invalid/OFFER-checkout",  "root": "xxc-root",  "bump": true, "price": "$PRICE" },
+    { "type": "upsell",   "url": "https://REPLACE-ME.invalid/OFFER-upsell",    "root": "xxu-root",  "yes": "YES", "no": "/OFFER-thank-you" },
+    { "type": "thankyou", "url": "https://REPLACE-ME.invalid/OFFER-thank-you", "root": "xxty-root" }
   ]
 }

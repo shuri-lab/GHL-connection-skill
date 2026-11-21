@@ -25,7 +25,13 @@
 
 ### C. Funnel settings: domain, path, Optimize JavaScript
 8. Navigate to `…/funnels-websites/funnels/{funnel}/settings`.
-9. **Domain** (only after the person confirmed it in Stage 1): open the "Domain" dropdown ("Please select a domain") by ref. Clicking an option by coordinates did not select it; the key string `Down Down Enter` (one `key` action) did. Zoom to confirm the chosen domain; the field then shows "Can't find your domain? Purchase or connect domain" and **Remove**. If you opened it by mistake, close it with Escape without choosing.
+9. **Domain** (only the domain the person confirmed in Stage 1; a newly connected client domain must show as verified first: `knowledge/connect-a-domain.md`). On a shared account this list holds other brands' domains, so never pick by a fixed key count:
+   1. Open the "Domain" dropdown ("Please select a domain") by ref and **take a screenshot**. Read every option. Find the confirmed domain and count its position N in the list (watch for `www.` and non-`www.` twins).
+   2. Clicking an option by coordinates did not select it. Send **one** `key` action with N `Down`s and then `Enter` (e.g. N = 3: `Down Down Down Enter`). Depending on where the highlight starts, the first `Down` may land on the first option or one before it.
+   3. **Zoom** on the field and compare the shown domain with the plan letter by letter. If it isn't exactly the confirmed domain, click **Remove** and repeat with N one higher or lower.
+   4. When it's right, the field shows the domain, "Can't find your domain? Purchase or connect domain" and **Remove**. If you opened the list by mistake, close it with Escape without choosing.
+
+   Rickey example only: `Down Down Enter` picked `davidhsai.com` in a list of `davidhsai.com` and `www.davidhsai.com`. Your list will differ.
 10. **Path:** the default is built from the name (Rickey: `/rickey--tiktok-shop-headstart`). Triple-click it and type `/<slug>` (e.g. `/headstart`).
 11. Check before saving:
     ```js
@@ -33,46 +39,49 @@
     ```
     Rickey: `["Rickey · TikTok Shop Headstart","/headstart",""]`.
 12. `find "Save"` → click the ref (bottom right). **GHL jumps back to the Steps view after saving.** Don't click anything by coordinates now.
-13. **Optimize JavaScript OFF:** navigate to `/settings` again, then toggle the switch with JS (it is a `DIV.hr-switch` with `aria-checked`; `hr-switch--active` means on):
+13. **Optimize JavaScript OFF:** navigate to `/settings` again, then read the switch and click it **only if it is on** (it is a `DIV.hr-switch` with `aria-checked`; `hr-switch--active` means on). Clicking blindly would turn an already-off switch on:
     ```js
     const t=[...document.querySelectorAll('*')].find(e=>e.children.length===0&&e.textContent.trim()==='Optimize JavaScript');
     let row=t;for(let i=0;i<6&&row;i++){if(row.querySelector&&row.querySelector('.hr-switch'))break;row=row.parentElement;}
-    const sw=row.querySelector('.hr-switch');sw.click();
-    sw.getAttribute('aria-checked')   // expect "false"
+    const sw=row.querySelector('.hr-switch');
+    const before=sw.getAttribute('aria-checked');
+    if(before==='true') sw.click();
+    ({before, after:sw.getAttribute('aria-checked')})   // expect after: "false"
     ```
-    Then `find "Save"` → click the ref. Navigate to `/settings` again and re-run the last line of the snippet to confirm it stayed `"false"`.
-14. Leave the rest as it is: Favicon URL, Tracking & scripts (Head/Body tracking code: only for a pixel the person asks for), "Require credit card" (on), Image Optimization (on), GDPR compliant fonts (off), SEO & AEO → Auto-generate schema (on). **Never** touch "Delete funnel".
+    If it clicked, `find "Save"` → click the ref. Navigate to `/settings` again and re-read `aria-checked` to confirm it stayed `"false"`.
+14. **Tracking & scripts:** only if the plan (Stage 1, step 7) has a Meta pixel or GA4 id from the person. Type the base code they gave (or the vendor's standard base snippet with their id) into **Head tracking code**, `find "Save"` → click the ref, then check on a live page that `typeof fbq` (or `typeof gtag`) is `"function"`. The Purchase event goes on the thank-you page only (Stage 8). No id in the plan: leave it empty. Never create an ad or analytics account.
+15. Leave the rest as it is: Favicon URL, "Require credit card" (on), Image Optimization (on), GDPR compliant fonts (off), SEO & AEO → Auto-generate schema (on). **Never** touch "Delete funnel".
 
 ### D. Step paths (Publishing tab)
-15. Open a step's **Overview** (`…/steps/{step}/overview`), then `find "Publishing"` → click the ref. The URL becomes `…/steps/{step}/publish` (after that, navigating straight to `/publish` works; `/publishing` is blank).
-16. The tab has the step name ("Input Name") and the **path** ("Please Input"), plus an **Update step** button. GHL's defaults were `/sales-page`, `/checkout`, `/upsell`, `/thank-you`. These are app-level inputs, so set them with the native value setter (typing into a Vue input doesn't always register):
+16. Open a step's **Overview** (`…/steps/{step}/overview`), then `find "Publishing"` → click the ref. The URL becomes `…/steps/{step}/publish` (after that, navigating straight to `/publish` works; `/publishing` is blank).
+17. The tab has the step name ("Input Name") and the **path** ("Please Input"), plus an **Update step** button. GHL's defaults were `/sales-page`, `/checkout`, `/upsell`, `/thank-you`. These are app-level inputs, so set them with the native value setter (typing into a Vue input doesn't always register):
     ```js
     const i=[...document.querySelectorAll('input')].filter(i=>i.offsetParent)[1]; // 2nd visible input = path
     const set=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;
-    set.call(i,'/headstart-checkout');
+    set.call(i,'<PATH>');   // the planned step path, e.g. '/<slug>-checkout'
     i.dispatchEvent(new Event('input',{bubbles:true}));i.dispatchEvent(new Event('change',{bubbles:true}));
     const b=[...document.querySelectorAll('button,span,div')].find(e=>e.textContent.trim()==='Update step'&&e.children.length<=1);
     b&&b.click(); await new Promise(r=>setTimeout(r,2500));
     [...document.querySelectorAll('input')].filter(i=>i.offsetParent).map(i=>i.value)
     ```
     Check first that input `[1]` really is the path (read the list once before setting it).
-17. **Reload** and re-read the inputs to confirm each path saved. Do all four steps.
+18. **Reload** and re-read the inputs to confirm each path saved. Do all four steps.
 
 ### E. Step products (what the order form and the YES button sell)
 A **step product** is the catalog product attached to one funnel step, with its own id and its own **buyer-facing name**. The order form lists the checkout step's products; the YES button's Products picker lists only the upsell step's products.
 
-18. Checkout step → **Products** tab (`…/steps/{step}/products`). The table has Product name / Internal Product ID / Amount / Type / Last updated, and the banner "Multiple recurring products and bump products with subscriptions not supported with Paypal." Click **+ Add Product** (URL `…/products/create`).
-19. The form: "Back to products", the note "This information will be displayed publicly so be careful what you share.", **Products \*** (dropdown; "Create a new product by clicking here."), **Price \***, **Product name \***, **Price display override** (optional), **Additional Options** (collapsed), **Cancel / Save**.
-20. **Main product first:**
-    - **Products:** click the dropdown, **type to search** (e.g. `Headstart`), **hover** the right result, press **Return**. Take a screenshot: a coordinate click once picked the wrong product. If wrong: Escape, reopen, pick again.
-    - **Price:** click, hover `Rickey · TikTok Shop Headstart @ 27`, Return.
-    - **Product name:** it is **prefilled** with the catalog name, and typing inserts into it. Clear it first: click → `End` → `Backspace` ×80 → `Delete` ×40 → zoom to confirm empty → type the buyer-facing name (`TikTok Shop Headstart`) → zoom.
+19. Checkout step → **Products** tab (`…/steps/{step}/products`). The table has Product name / Internal Product ID / Amount / Type / Last updated, and the banner "Multiple recurring products and bump products with subscriptions not supported with Paypal." Click **+ Add Product** (URL `…/products/create`).
+20. The form: "Back to products", the note "This information will be displayed publicly so be careful what you share.", **Products \*** (dropdown; "Create a new product by clicking here."), **Price \***, **Product name \***, **Price display override** (optional), **Additional Options** (collapsed), **Cancel / Save**.
+21. **Main product first:**
+    - **Products:** click the dropdown, **type to search** (a distinctive part of the catalog name; Rickey: `Headstart`), **hover** the right result (`<Client> · <Main product>`), press **Return**. Take a screenshot: a coordinate click once picked the wrong product. If wrong: Escape, reopen, pick again.
+    - **Price:** click, hover `<Client> · <Main product> @ <price>` (Rickey: `Rickey · TikTok Shop Headstart @ 27`), Return.
+    - **Product name:** it is **prefilled** with the catalog name, and typing inserts into it. Clear it first: click → `End` → `Backspace` ×80 → `Delete` ×40 → zoom to confirm empty → type the buyer-facing name from the plan (Rickey: `TikTok Shop Headstart`) → zoom.
     - **Additional Options** → radio **Main Product** (leave "Allow multiple quantity to be purchased" off).
     - `find "Save"` → click the ref (`find "Save button"` found nothing; `find "Save"` works).
     - Do these one click at a time with a screenshot after each: in a fast batch the price and the name didn't stick.
-21. **Bump product:** + Add Product again → the bump catalog product → its price → Product name `The Starter Product List` → Additional Options → **Bump Product** ("Should this product be the bump on the order page if present?") → Save.
-22. **Upsell step** → Products → + Add Product → the upsell catalog product (search `4M`, hover, Return) → Price `… @ 97` (hover, Return) → clear the prefilled Product name → `My $4M TikTok Shop System` → Main Product (default) → Save.
-23. Copy each step product's **Internal Product ID** from the table into `funnel-record.md` (it differs from the catalog id).
+22. **Bump product:** + Add Product again → the bump catalog product → its price → Product name = the bump's buyer-facing name (Rickey: `The Starter Product List`) → Additional Options → **Bump Product** ("Should this product be the bump on the order page if present?") → Save.
+23. **Upsell step** → Products → + Add Product → the upsell catalog product (search a distinctive part of its name; Rickey: `4M`; hover, Return) → Price `… @ <upsell price>` (hover, Return) → clear the prefilled Product name → the upsell's buyer-facing name (Rickey: `My $4M TikTok Shop System`) → Main Product (default) → Save.
+24. Copy each step product's **Internal Product ID** from the table into `funnel-record.md` (it differs from the catalog id).
 
 ## Verify
 - Funnel Settings (after a reload): name, domain, path as planned; `aria-checked` of Optimize JavaScript = `"false"`.
@@ -99,6 +108,6 @@ None (the domain was confirmed in Stage 1; if it wasn't, stop and ask before ste
 ## Done when
 - [ ] Funnel created; id recorded.
 - [ ] Four steps in order; ids recorded.
-- [ ] Domain and funnel path saved; Optimize JavaScript off (re-checked after reload).
+- [ ] Domain (zoom-checked letter by letter) and funnel path saved; Optimize JavaScript off (re-checked after reload); tracking code only if the plan has an id.
 - [ ] Four step paths saved (re-checked after reload).
 - [ ] Main + bump on the checkout step (Bump badge), upsell product on the upsell step, buyer-facing names clean; step product ids recorded.

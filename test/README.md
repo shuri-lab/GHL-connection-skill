@@ -2,13 +2,14 @@
 
 **What it proves:** that a teammate's Claude agent that wasn't there on Nov 20 can follow this playbook and rebuild the whole Rickey funnel (pages, products, checkout with the order bump, one-click upsell, thank-you, course access, delivery workflows, checks and record) to the same quality, **without touching anything live**.
 
-**Who:** the tester is a teammate and their Claude agent (first: Moses). The grader is TJ.
+**Who:** the tester is a teammate (a person) and their Claude agent; first: Moses, the copywriter, and his agent. The grader is TJ.
 
 ## How it stays safe
 - It builds a **separate** funnel, `TEST · [Name] · Headstart`, in the same sub-account, on test paths (`/test-[name]-page` …) that are never shared or advertised.
-- It uses **test-prefixed products** (`TEST · [Name] · …`), a test course (or access to the existing course, if the person prefers) and test workflows that only fire for the test products.
+- It uses **test-prefixed products** (`TEST · [Name] · …`), a test course (or access to the existing course, if the person prefers: the test buyer then shows as one extra member, which is expected) and test workflows that only fire for the test products, each published only after its product filter was zoom-checked.
 - It reuses Rickey's four page files from `examples/rickey-headstart-funnel/pages/`, with their own root ids and links, hosted where the person approves.
-- The person signs in; Claude never types passwords or card numbers. A test purchase is made only by the person, or in Stripe test mode scoped to the test funnel with the person typing the test card.
+- The person signs in; Claude never types passwords or card numbers. A test purchase is made only by the person: with their own card (refunded by them), or, only if a test mode scoped to the test funnel exists, with the person typing Stripe's test card.
+- The test pages are marked noindex and the test checkout says "TEST, do not buy".
 - Nothing that existed before is changed. Before/after inventories and a before/after check of Rickey's live funnel prove it.
 - Clean-up happens only after the person says yes to the list.
 

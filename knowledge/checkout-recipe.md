@@ -26,14 +26,14 @@ David's reference was a checkout from another funnel: left headline + mockup + s
 3. Left column **+** → search `code` → **Code** card. It lands in "2 Column Row › 1st Column".
 4. Right column **+** → clear the search (End, Backspace ×10) → search `order` → **Order Form** card. It lands in the 2nd Column.
 5. **Save the page now** (floppy). Save again after each change below.
-6. Left Code element → **Open Code Editor** → type the loader → `zoom` → modal **Save** → page **Save** → **Publish**:
+6. Left Code element → **Open Code Editor** → type the one-line loader from `templates/loader.html` (root id `gtc-root` or yours, URL of the hosted `ghl-checkout-left.html`) → `zoom` → modal **Save** → page **Save** → **Publish**:
    ```html
-   <div id="gtc-root"></div><script>(function(){var u='https://OWNER.github.io/REPO/FOLDER/checkout-left.html';fetch(u,{cache:'no-cache'}).then(function(r){if(!r.ok){throw 0;}return r.text();}).then(function(h){var root=document.getElementById('gtc-root');root.innerHTML=h;root.querySelectorAll('script').forEach(function(s){var n=document.createElement('script');if(s.src){n.src=s.src;}else{n.textContent=s.textContent;}s.parentNode.replaceChild(n,s);});}).catch(function(){});})();</script>
+   <div id="gtc-root"></div><script>(function(){var u='https://OWNER.github.io/REPO/FOLDER/ghl-checkout-left.html';fetch(u,{cache:'no-cache'}).then(function(r){if(!r.ok){throw 0;}return r.text();}).then(function(h){var root=document.getElementById('gtc-root');root.innerHTML=h;root.querySelectorAll('script').forEach(function(s){var n=document.createElement('script');if(s.src){n.src=s.src;}else{n.textContent=s.textContent;}s.parentNode.replaceChild(n,s);});}).catch(function(){});})();</script>
    ```
    Rickey's live checkout still runs the first, unguarded version (no `r.ok` check). It once injected GitHub's 404 page because Pages hadn't deployed the file yet. Use the guarded one above.
 7. Configure the order form (section 4), then Save + Publish, then verify live (sections 11 and 12).
 
-**Why the CSS lives in the left column:** the fragment's `<style>` is global once injected, and the order form renders in the same page DOM (not an iframe). So one fragment styles both columns. That's why the form and bump CSS below sits in `checkout-left.html`.
+**Why the CSS lives in the left column:** the fragment's `<style>` is global once injected, and the order form renders in the same page DOM (not an iframe). So one fragment styles both columns. That's why the form and bump CSS below sits in the checkout-left fragment (hosted as `ghl-checkout-left.html`; the copy in this repo is `examples/rickey-headstart-funnel/pages/2-checkout-left.html`).
 
 **No wrapper fix on this page.** Every other fragment starts with the wrapper fix (`loader.md`). The checkout's does not: that rule sets `width:100%` on the column holding the root and zeroes the row, which would push the order form under the left column on desktop. The checkout only trims padding on phones (section 3).
 
@@ -173,8 +173,9 @@ Do every click one at a time with a short wait, and check the preview after each
 - Clearing the Description: `cmd+a` doesn't work. Click → `cmd+Down` → Backspace ×300 to 500 → Delete ×200 to 300 → `zoom` (empty) → type → `zoom`.
 
 ### 4.5 Checkout options
-- Toggles, all left **off**: Sticky contact, Create new contact on every purchase, Validate disposable email, Postal code on payment form (NMI/Authorize.net only), Terms & conditions.
-- **After purchase** ("Choose where the buyer lands after a successful payment."): Go to the next funnel step / Go to a website URL / Choose a specific funnel step. See section 10.
+- Toggles left **off**: Sticky contact, Create new contact on every purchase, Validate disposable email, Postal code on payment form (NMI/Authorize.net only).
+- **Terms & conditions:** off on Rickey's build; for a new client, as the person decided in Stage 1 (on = a checkbox that needs the terms URL).
+- **After purchase** ("Choose where the buyer lands after a successful payment."): Go to the next funnel step / Go to a website URL / Choose a specific funnel step. Always the first one: see section 10.
 
 ### 4.6 Content
 - HEADLINES: **Step headline** "Checkout" → `Contact information`. Shipping section heading: empty.
@@ -344,13 +345,9 @@ Why it is built this way:
 
 ## 10. After purchase
 
-| Situation | Setting |
-|---|---|
-| Upsell step not built yet | **Go to a website URL** = `https://<domain>/<thank-you path>` (temporary) |
-| One-click upsell exists | **Go to the next funnel step** (the step order must be Checkout → Upsell → Thank You) |
-| Special routing | Choose a specific funnel step |
+**Always "Go to the next funnel step"** (it is GHL's default, per session notes 1). The step order must be Checkout → Upsell → Thank You. Never "Go to a website URL" when the funnel has an upsell step: a hard-coded thank-you URL silently skips the upsell, and the one-click charge never happens. Set it in Stage 6 even if the upsell page isn't built yet: the funnel isn't live before Stage 12, so an empty upsell step in the meantime is harmless. "Choose a specific funnel step" is only for unusual routing the person asks for.
 
-A hard-coded thank-you URL silently skips the upsell. Rickey's checkout was switched to "Go to the next funnel step" when the upsell was published. The dropdown is custom: open → `Up`/`Down` as separate keys → `Return` → `zoom` to read the label (it once landed on "Choose a specific funnel step" by mistake).
+On Nov 20 Rickey's checkout first pointed at the thank-you URL until the upsell was published. That was the mistake this rule prevents; don't copy it. The dropdown is custom: open → `Up`/`Down` as separate keys → `Return` → `zoom` to read the label (it once landed on "Choose a specific funnel step" by mistake).
 
 ## 11. Test the totals without buying
 
@@ -379,8 +376,10 @@ Pass: `firstFieldTop` well under 852 (aim for the top half), `sideways` 0, `sele
 const b=document.querySelector('.order-form__bump'); window.scrollTo(0,b.getBoundingClientRect().top+scrollY-120);
 document.querySelector('.order-form__bump-desc').innerText
 ```
-Then run `node PLAYBOOK/tools/check_funnel.mjs my-funnel/funnel.json` and check at desktop width too.
+Then run `node PLAYBOOK/tools/check_funnel.mjs my-funnel/funnel.partial.json` (the full `funnel.json` only from Stage 8 on, when every step exists) and check at desktop width too.
 
 ## 13. Adapting to a new client
 
-Change: brand colors (`#D30805` red, `#101017` ink, `#FFF8E7` cream, `#FFEDEC` checked tint, `#E7E3DC` line) and fonts; all image URLs; `IMG` and its `alt` in the enhancer; the banner text; the email helper line ("Your course login is sent here." fits a course); the desktop box items, values, total and price; the phone card text; the trust line; the guarantee (verbatim from the approved copy). Keep: every selector, the order of CSS rules, the idempotent enhancer pattern, the phone padding trims.
+Change: brand colors (`#D30805` red, `#101017` ink, `#FFF8E7` cream, `#FFEDEC` checked tint, `#E7E3DC` line) and fonts; all image URLs and `alt`s (logo, mockup); `IMG` and its `alt` in the enhancer; the banner text; the email helper line ("Your course login is sent here." fits a course); the pill and H1; the desktop box items, values, total and price; the phone card text; the trust line (refund period); the guarantee (verbatim from the approved copy); `document.title`; the HTML comment at the top. Add: the legal links footer (Stage 6, section C). Keep: every selector, the order of CSS rules, the idempotent enhancer pattern, the phone padding trims.
+
+Then run the Rickey-content grep from Stage 2 (Verify) on the file: it must print nothing, or only lines the person approved.

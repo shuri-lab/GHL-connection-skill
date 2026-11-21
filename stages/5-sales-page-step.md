@@ -9,9 +9,9 @@
 ## Before you start (inputs)
 - Stage 2: the sales fragment URL, live and returning the current content, with the wrapper fix for its root id.
 - Stage 4: the funnel, the Sales Page step id, the domain and paths.
-- The loader text ready to type, one line, with your root id and URL (from `templates/loader.html`):
+- The loader text ready to type, one line, from `templates/loader.html`: replace `ROOTID` (both places) with the page's root id from the plan (Rickey: `gt-root`) and the URL with the fragment's Pages URL:
   ```html
-  <div id="gt-root"></div><script>(function(){var u='https://OWNER.github.io/REPO/FOLDER/FRAGMENT.html';fetch(u,{cache:'no-cache'}).then(function(r){if(!r.ok){throw 0;}return r.text();}).then(function(h){var root=document.getElementById('gt-root');root.innerHTML=h;root.querySelectorAll('script').forEach(function(s){var n=document.createElement('script');if(s.src){n.src=s.src;}else{n.textContent=s.textContent;}s.parentNode.replaceChild(n,s);});}).catch(function(){});})();</script>
+  <div id="ROOTID"></div><script>(function(){var u='https://OWNER.github.io/REPO/FOLDER/FRAGMENT.html';fetch(u,{cache:'no-cache'}).then(function(r){if(!r.ok){throw 0;}return r.text();}).then(function(h){var root=document.getElementById('ROOTID');root.innerHTML=h;root.querySelectorAll('script').forEach(function(s){var n=document.createElement('script');if(s.src){n.src=s.src;}else{n.textContent=s.textContent;}s.parentNode.replaceChild(n,s);});}).catch(function(){});})();</script>
   ```
   (`innerHTML` never runs `<script>` tags, so the loader re-creates each one; `if(!r.ok) throw` stops a GitHub 404 page from being injected; `cache:'no-cache'` makes every push show on the next load.)
 
@@ -54,7 +54,7 @@ Open a **separate tab** (`tabs_create`, then `navigate`) on `https://<domain>/<s
    Expect: the title you set, a long `rootLen` (Rickey: 117,173), `scrollW` = `W`, 0 broken images, the checkout URL.
 2. **If there is padding or a width cap**, walk up from the root and print each layer:
    ```js
-   let a=[],e=document.getElementById('gt-root');
+   let a=[],e=document.getElementById('<ROOTID>');   // e.g. 'gt-root'
    for(let i=0;i<10&&e;i++){const cs=getComputedStyle(e);a.push(e.tagName+'.'+String(e.className).split(' ').slice(0,2).join('.')+' p:'+cs.padding+' mt:'+cs.marginTop+' mw:'+cs.maxWidth+' top:'+Math.round(e.getBoundingClientRect().top));e=e.parentElement}
    a
    ```
@@ -67,9 +67,9 @@ Open a **separate tab** (`tabs_create`, then `navigate`) on `https://<domain>/<s
    Expect `scrollW` = 393 and an empty list. Take a screenshot of the hero (Rickey: the hero button's bottom at 784 px, inside 852).
 4. **No bump on the sales page:** `document.body.innerText.includes('<bump product name>')` → `false`.
 5. `curl -s -o /dev/null -w "%{http_code}"` on `https://<domain>/<slug>` → 200 (the funnel root serves step 1).
-6. **Checker:** make `my-funnel/funnel.partial.json` with only the steps built so far (same format as `funnel.json`), then run
+6. **Checker:** make `my-funnel/funnel.partial.json`: copy `my-funnel/funnel.json` and delete every step you haven't built yet (here, keep only the sales step). Then run
    `node PLAYBOOK/tools/check_funnel.mjs my-funnel/funnel.partial.json --out my-funnel/shots`.
-   Expect `PASS sales mobile` and `PASS sales desktop` ("1 button(s) to checkout" or more). The full `funnel.json` will show FAILs for steps you haven't built yet; that is expected until Stage 8.
+   Expect `PASS sales mobile` and `PASS sales desktop` ("1 button(s) to checkout" or more) and exit code 0. Use `funnel.partial.json` until Stage 8: the full `funnel.json` FAILs (exit code 1) on the steps you haven't built yet.
 7. Reset the viewport: `resize_window` preset `desktop`.
 
 ## Rickey example values

@@ -7,7 +7,7 @@ Conventions used below:
 - `{funnel}` = funnel id (`DH9wPGw485e8HHkbWJaf`, "Rickey · TikTok Shop Headstart").
 - `{step}` = funnel step id (Upsell step: `2e4e00f0-5834-4f28-a2cd-ca65bc7d26d1`).
 - `{page}` = builder page id. Upsell page: `LdwO92TMbPLv9CaOVOqI`. Checkout page: `NPewVghQNsX2rU9aEb0q`. Another funnel's upsell page (AI Avatars, Upsell #1), opened read-only: `xOzdUz04zbV6ZNcIkXrm`.
-- People are named by role: **owner** (David), **teammate** (Moses, TJ's Claude agent operator), **manager** (TJ, sign-off on going live). Email addresses are left out on purpose.
+- People are named by role: **owner** (David), **teammate** (Moses, the copywriter, a person), **manager** (TJ, sign-off on going live). Email addresses are left out on purpose.
 - Tooling: the Claude desktop app's built-in **browser pane** (`mcp__Claude_Browser__*`), signed in to app.gohighlevel.com.
 
 Funnel shape at the end of this slice: Sales `/headstart-page` → Checkout `/headstart-checkout` ($27 plus a $17 bump) → Upsell `/headstart-upsell` ($97 one-click) → Thank You `/headstart-thank-you`. All on domain davidhsai.com.
@@ -128,7 +128,7 @@ Funnel shape at the end of this slice: Sales `/headstart-page` → Checkout `/he
 
 ### A10. Checkout: after purchase → next funnel step
 - **Before:** the checkout order form's **After purchase** was `Go to a website URL` = `https://davidhsai.com/headstart-thank-you`, which skipped the upsell.
-- **How:** open the checkout builder (`…/page-builder/NPewVghQNsX2rU9aEb0q`, wait about 14 s, close Ask AI). Click the **order form** in the canvas. The right panel shows "Order Form" (Element name), the text "Steps, fields, products, the order bump, and theme all live in one full settings workspace.", and a **Customize order form** button (plus Mode: One-step, Fields: 2 shown). Click it to open the full-screen **Form settings** modal ("Everything for this order form, in one place — changes preview live and save automatically.").
+- **How:** open the checkout builder (`…/page-builder/NPewVghQNsX2rU9aEb0q`, wait about 14 s, close Ask AI). Click the **order form** in the canvas. The right panel shows "Order Form" (Element name), the text "Steps, fields, products, the order bump, and theme all live in one full settings workspace.", and a **Customize order form** button (plus Mode: One-step, Fields: 2 shown). Click it to open the full-screen **Form settings** modal ("Everything for this order form, in one place: changes preview live and save automatically."; GHL shows a dash after "place").
   - Left nav: **Steps** (One-step), **Contact fields** (2 shown), **Products**, **Order bump** (1 bump), **Checkout options**, **Content**, **Theme & style**. A **LIVE PREVIEW** sits on the right.
   - **Checkout options** has the toggles Sticky contact, Create new contact on every purchase, Validate disposable email, Postal code on payment form (NMI/Authorize.net only), and Terms & conditions. Then **After purchase** ("Choose where the buyer lands after a successful payment."), a custom dropdown with **Go to the next funnel step / Go to a website URL / Choose a specific funnel step**.
   - **This dropdown does open** in screenshots (unlike the button selects). Hover plus Up plus Return landed on "Choose a specific funnel step" by mistake, so it was reopened and Up, Up, Return chosen; a zoom confirmed **"Go to the next funnel step"**.
@@ -152,7 +152,7 @@ Funnel shape at the end of this slice: Sales `/headstart-page` → Checkout `/he
 - **Side effects of Remote Control:** see F (pane resized, next-step box and AskUserQuestion behave differently).
 
 ### A13. Edit the bump description in GHL, publish, verify
-- **How:** checkout builder → click the order form → **Customize order form** → **Order bump** → click the bump card **"Rickey · The Starter Product List — $17 · Customer selects"**. The modal then shows **CONTENT** "Editing for Rickey · The Starter Product List" with **Headline**, **OTO headline**, **Description** (textarea), **Custom image** (Upload image), **Preselect this product** toggle, and **Badge text**.
+- **How:** checkout builder → click the order form → **Customize order form** → **Order bump** → click the bump card **"Rickey · The Starter Product List: $17 · Customer selects"** (GHL shows a dash before the price). The modal then shows **CONTENT** "Editing for Rickey · The Starter Product List" with **Headline**, **OTO headline**, **Description** (textarea), **Custom image** (Upload image), **Preselect this product** toggle, and **Badge text**.
 - **Clearing the textarea:** `cmd+a` does not work here. Click into it, press `cmd+Down` to jump to the end, then Backspace ×300 and Delete ×200. Zoom to confirm it's empty, then type the new text and zoom again to confirm.
 - Close the modal (X) → page **Save** → **Publish**. The toast reads "Page published successfully" and the header shows "Last saved Nov 20, 6:58 PM".
 - **Verify live:** 393×852 tab → `https://davidhsai.com/headstart-checkout`, then:
@@ -172,7 +172,7 @@ Funnel shape at the end of this slice: Sales `/headstart-page` → Checkout `/he
   4. **User info → Personal Details:** Profile Image, **First name \***, **Last name \***, **Email \***, Phone, Extension; **Advanced settings ▾** (reveals **Password**); Calendar ("Select a calendar"); Signature. **Next** is disabled until the required fields are filled. Last name is required and wasn't known, so a placeholder last name was used (the org name); it can be fixed later in Settings → Users. **Password was left empty** so the invitee sets their own from the invite email.
   5. **Next → Roles & permissions:** a **Copy Permissions** button, **User role** (default **Admin**), a "Restrict data visibility to only assigned data" toggle, "Search permissions", and per-area toggles with counts: **Account Billing 1/1, Account Settings 2/2, Account Tools 1/2, AI Agents 11/11, AI Studio 1/3**, ASK AI, Audit Logs, Automation, Blogs, Calendars, Certificates, and more.
   6. **Ask the owner which role** before saving, since the Admin default includes billing. The options offered were "Admin, minus Billing" (Admin with Account Billing off), "Full Admin", and "User role". The owner chose **Full Admin**.
-  7. Click **Save**. A toast reads **"User Created — The user has been created successfully."** The list row shows `<First Last> | <email> | id … | User type: Account - admin`.
+  7. Click **Save**. A toast reads **"User Created"** then "The user has been created successfully." (GHL puts a dash between them; `find "User Created"` only) The list row shows `<First Last> | <email> | id … | User type: Account - admin`.
 - **Note:** Claude could not see whether GHL's invite email went out. It did; the teammate later confirmed he set his password from the invite and entered the login code.
 
 ### A15. Email the teammate (approval gate)
@@ -219,7 +219,7 @@ Funnel shape at the end of this slice: Sales `/headstart-page` → Checkout `/he
 
 ## C. Builder quirks and workarounds (this slice)
 
-- **Open a page builder** from the funnel step **Overview → Edit**, or navigate straight to `https://app.gohighlevel.com/location/{loc}/page-builder/{page}`. Wait **12–14 s**. The tab context may note "served with HTTP status 404"; this is harmless on GHL app routes.
+- **Open a page builder** from the funnel step **Overview → Edit**, or navigate straight to `https://app.gohighlevel.com/location/{loc}/page-builder/{page}`. Wait **12 to 14 s**. The tab context may note "served with HTTP status 404"; this is harmless on GHL app routes.
 - **Ask AI panel** opens on load (blank pages and the checkout); close it with its **X**. It may also open in "Build" mode with a chat box.
 - **Header:** **Back**, an autosave badge (**"Autosave off"** or **"Last saved <date time>"**), **preview (eye)**, **Save (floppy)**, and **Publish**.
   - A **yellow dot on Save** means unsaved changes.
@@ -254,11 +254,11 @@ Funnel shape at the end of this slice: Sales `/headstart-page` → Checkout `/he
 - **Where:** checkout page builder → click the order form element → right panel **Customize order form** → full-screen **Form settings** modal. The modal says it saves automatically, but the **page still needs Save and Publish** to go live.
 - **Order bump section:**
   - **Enable order bumps** toggle.
-  - A list of bump cards (e.g. "Rickey · The Starter Product List — $17 · Customer selects", with drag handle and remove ×).
+  - A list of bump cards (e.g. "Rickey · The Starter Product List: $17 · Customer selects", with a dash before the price in GHL, a drag handle and remove ×).
   - **+ Add order bump**.
   - **PRESETS** ("All bumps"; styling for every bump on the form; picking a preset replaces the settings below): **Legacy, Ledger, Hairline** (selected here), **Accent Rail, Soft Tint, Ribbon Deal**.
   - Collapsible **LAYOUT** and **TEXT & COLOR**.
-- **Bump text lives in the bump card:** click the card to get **CONTENT — "Editing for <product>"** with:
+- **Bump text lives in the bump card:** click the card to get **CONTENT: "Editing for <product>"** with:
   - **Headline:** `Yes! Add The Starter Product List`
   - **OTO headline:** `Only $17 today. One-time payment.`
   - **Description**
@@ -304,7 +304,7 @@ Funnel shape at the end of this slice: Sales `/headstart-page` → Checkout `/he
 | YES button left at default | "Open popup" with no popup: YES does nothing | link to = **One click up/down sell product** + Products |
 | Image overflow on phones | `scrollWidth` 778 vs 393 | `width:100%` with a max-width; check with the overflow JS on the live URL |
 | Flex bullet split | First bullet broke into columns because of `<b>` | Wrap each `li`'s text in a `<span>` |
-| Pages not deployed yet | Loader got a 404 or old CSS | Poll the Pages URL for a marker string after each push (about 60–70 s); the loader uses `cache:'no-cache'` and `if(!r.ok) throw` |
+| Pages not deployed yet | Loader got a 404 or old CSS | Poll the Pages URL for a marker string after each push (about 60 to 70 s); the loader uses `cache:'no-cache'` and `if(!r.ok) throw` |
 | Pane resized (Remote Control, user action) | Batch fails: "page, zoom or size has changed" | New screenshot, re-locate the coordinates |
 | Remote Control tool call rewritten by a hook | "Hook changed this call's input… issue the call once more with exactly that input" | Re-send with the hook-provided `session` string, alone in that response |
 | User on phone (Remote Control) | AskUserQuestion came back "Denied by user"; next-step box may not show | Ask in the closing text message with the choices spelled out |

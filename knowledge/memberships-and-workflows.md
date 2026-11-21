@@ -1,6 +1,6 @@
 # Memberships (the course) and the delivery workflows and emails
 
-How Rickey's course and deliveries were set up on Nov 20 2026, and the general recipe. Quirk codes refer to `builder-quirks.md`. The thank-you page and email copy that Moses (TJ's Claude agent, the copywriter on this project) wrote is in `examples/rickey-headstart-funnel/emails/`.
+How Rickey's course and deliveries were set up on Nov 20 2026, and the general recipe. Quirk codes refer to `builder-quirks.md`. The thank-you page and email copy that Moses (the copywriter on this project, a person) wrote is in `examples/rickey-headstart-funnel/emails/`.
 
 ## How delivery works in GHL (the model)
 
@@ -14,7 +14,8 @@ Buyer logs in at the client portal URL → sees the course
 ```
 - **One workflow per product.** A GHL email can't show or hide a paragraph depending on whether the bump or upsell was bought, so each product gets its own trigger and its own email.
 - **Course access is granted by a workflow action** ("Grant course access"), not by an offer.
-- Files (PDF guides) are delivered as links: in the email, on the thank-you page, and in the course's "Start here" lesson.
+- Paid files (PDF guides) live behind the login: attached to the course's "Start here" lesson, or in GHL Media, uploaded by the person. The email points to them. They never sit on public GitHub Pages, and the public thank-you page doesn't link them directly (Rickey's build did; see part E).
+- Each workflow also tags the buyer (`<client>-<product>-buyer`), so the client can find their buyers and other clients' broadcasts can exclude them.
 
 ---
 
@@ -60,7 +61,7 @@ Buyer logs in at the client portal URL → sees the course
 | 7 | Day 6: Posting the right way + keeping your account safe | new |
 | 8 | Day 7: Your first sale + what to do next | new |
 
-- "Start here" description (carries the downloads): `Welcome to the TikTok Shop Headstart. Do one lesson a day, about 15 minutes each. Your 30-Day First Sale Challenge guide: <PDF URL>`
+- "Start here" description (carries the downloads): `Welcome to the TikTok Shop Headstart. Do one lesson a day, about 15 minutes each. Your 30-Day First Sale Challenge guide: <PDF URL>`. Rickey's `<PDF URL>` was a public Pages link; for a new client, attach the file to this lesson instead (the person uploads it) and say "Your guide is attached below."
 - Day lesson description template (until the videos exist): `Rickey's Day N video is coming here. Watch it, then do today's task from your 30-Day First Sale Challenge.`
 - **Videos are uploaded by the person** (the pane can't upload). Leave each lesson ready for its video.
 
@@ -85,11 +86,12 @@ Buyer logs in at the client portal URL → sees the course
 1. **+ Create workflow** → **Start from scratch**. A prompt about the saving mode appears: keep **manual save** (no account setting changes).
 2. **Rename:** click the title at the top (pencil) → type `Rickey · Headstart delivery` → `Return`.
 3. **Add new trigger** → search `order` → under **Payments** there are "Order form submission" and **"Order submitted"** ("Fires after checkout completion in Funnel/Store"). Pick **Order submitted**.
-4. **Filters** → Select → Standard fields → **Global product** (other options: Order source, custom fields) → operator **Is** → product list: type `Headstart` → `hover` + click **"Rickey · TikTok Shop Headstart"** (the catalog product the checkout step uses) → **Save trigger**.
+4. **Filters** → Select → Standard fields → **Global product** (other options: Order source, custom fields) → operator **Is** → product list: type `Headstart` → `hover` + click **"Rickey · TikTok Shop Headstart"** (the catalog product the checkout step uses) → **Save trigger** → **zoom the trigger card**: it must read "Global product is in 'Rickey · TikTok…'". Without that line, never publish.
 5. **+** under the trigger → search `course` → **Grant course access** ("Give a contact access to a course") → Course = **TikTok Shop Headstart** → **Save action**. **Save the workflow** (top right).
+5b. **+** → search `tag` → **Add Tag** → `<client>-<product>-buyer` (e.g. `rickey-headstart-buyer`) → **Save action** → Save the workflow. (Not built on Nov 20.)
 6. **+** → search `send email` → **Send email** → fill it in (B4) → Save action → Save workflow.
-7. Top toggle **Draft → Publish**.
-- The canvas then reads: Order Submitted ("Global product is in 'Rickey · TikTok…'") → Grant Course Access → Delivery email.
+7. Zoom the trigger card once more, then the top toggle **Draft → Publish**. The list must show 0 enrolled until the test purchase.
+- The canvas then reads: Order Submitted ("Global product is in 'Rickey · TikTok…'") → Grant Course Access → (Add Tag) → Delivery email.
 
 ### B3. Bump workflow
 Same steps, a second workflow `Rickey · Starter Product List delivery`: Order submitted → filter Global product **Is** "Rickey · The Starter Product List" (search `Starter`) → **Send email** only (no course) → Save → Publish.
@@ -98,7 +100,7 @@ Same steps, a second workflow `Rickey · Starter Product List delivery`: Order s
 Fields: **Action name**, **From name**, **From email**, **Subject**, **Preview text**, then the body editor.
 
 1. Action name: `Delivery email` (bump: `Starter Product List email`).
-2. **From name / From email (sender rule):** a From name **requires** a From email, or saving flags a field error. If the client hasn't given a sender address, leave **both empty**: GHL uses the account's default sender. (Rickey: "Rickey" was typed as From name, then cleared with End + Backspace ×10.) Never pick or change a sending domain without asking.
+2. **From name / From email (sender rule):** a From name **requires** a From email, or saving flags a field error. With **both empty** GHL uses the account's default sender, so first **read what that is** (Settings → Business Profile and Settings → Email Services, read-only) and use it only after the person said yes (Stage 1, Money and identity): on a shared account it may be another client's name and address. (Rickey: "Rickey" was typed as From name, then cleared with End + Backspace ×10; the default sender was used without being read.) Never pick or change a sending domain without asking.
 3. Subject and Preview text: typed normally.
 4. Body: open the editor's **source code view (`<>`)**. It handles links better than the rich-text editor.
    - Type **one `<p>` per `type` action** (about 100 to 230 characters), `wait` 1 s, `zoom` after every two or three. Long bursts dropped keystrokes and duplicated "Hey".
@@ -109,8 +111,8 @@ Fields: **Action name**, **From name**, **From email**, **Subject**, **Preview t
 6. Merge fields: `{{contact.first_name}}`, `{{contact.email}}`.
 
 ### B5. Upsell delivery (still to build for Rickey)
-1. Content: a second course in Memberships (e.g. "My $4M TikTok Shop System", One Time $97, modules from the offer stack), or a Start-here lesson with the upsell's guides.
-2. Workflow `Rickey · System delivery` (suggested name): Order submitted → Global product **Is** "Rickey · My $4M TikTok Shop System" → Grant course access (the upsell course) → Send email (template C below) → Save → Publish.
+1. Content, depending on what the upsell is: a second course in Memberships (e.g. "My $4M TikTok Shop System", One Time $97, modules from the offer stack); a booking link or calendar for calls or coaching (template C2); a community invite (template C3).
+2. Workflow `Rickey · System delivery` (suggested name): Order submitted → Global product **Is** "Rickey · My $4M TikTok Shop System" → Grant course access (the upsell course; skip it for calls or a community) → Add Tag → Send email (template C, C2 or C3 below) → Save → zoom the filter → Publish.
 3. Test it in the test purchase: YES on the upsell must produce this email and the course access.
 
 ### B6. Check before you call it done
@@ -132,7 +134,7 @@ Write in the client's voice, first person, short lines, one clear next action. S
 <p style="margin:0 0 16px;font-family:Verdana,sans-serif;font-size:16px;line-height:1.6">Hey {{contact.first_name}},</p>
 <p style="margin:0 0 16px;font-family:Verdana,sans-serif;font-size:16px;line-height:1.6">You're in. Here's everything in one place:</p>
 <p style="margin:0 0 12px;font-family:Verdana,sans-serif;font-size:16px;line-height:1.6">1. Your course: <a href="[CLIENT PORTAL URL]" style="color:#D30805;font-weight:bold">Open my course</a>. Your login: {{contact.email}}. First time in? Click "Forgot password" on the login page to set your password.</p>
-<p style="margin:0 0 12px;font-family:Verdana,sans-serif;font-size:16px;line-height:1.6">2. Your [guide name]: <a href="[GUIDE PDF URL]" style="color:#D30805;font-weight:bold">Download</a></p>
+<p style="margin:0 0 12px;font-family:Verdana,sans-serif;font-size:16px;line-height:1.6">2. Your [guide name]: it's in your course, in the "Start here" lesson: <a href="[CLIENT PORTAL URL]" style="color:#D30805;font-weight:bold">Open it</a></p>
 <p style="margin:0 0 16px;font-family:Verdana,sans-serif;font-size:16px;line-height:1.6">3. [Community name], my private [channel type]: <a href="[COMMUNITY LINK]" style="color:#D30805;font-weight:bold">Join</a></p>
 <p style="margin:0 0 16px;font-family:Verdana,sans-serif;font-size:16px;line-height:1.6">Do Day 1 today. It's about 15 minutes, and it's the one that gets you moving.</p>
 <p style="margin:0 0 16px;font-family:Verdana,sans-serif;font-size:16px;line-height:1.6">[Client first name]</p>
@@ -144,7 +146,7 @@ Write in the client's voice, first person, short lines, one clear next action. S
 - **Preview:** `[the bump's one promise, e.g. "Pick your first products tonight instead of guessing."]`
 ```html
 <p style="margin:0 0 16px;font-family:Verdana,sans-serif;font-size:16px;line-height:1.6">Hey {{contact.first_name}},</p>
-<p style="margin:0 0 16px;font-family:Verdana,sans-serif;font-size:16px;line-height:1.6">Here's [bump product] you added to your order: <a href="[BUMP PDF URL]" style="color:#D30805;font-weight:bold">Download</a></p>
+<p style="margin:0 0 16px;font-family:Verdana,sans-serif;font-size:16px;line-height:1.6">Here's [bump product] you added to your order: <a href="[BUMP FILE URL: GHL Media, or the bump course]" style="color:#D30805;font-weight:bold">Download</a></p>
 <p style="margin:0 0 16px;font-family:Verdana,sans-serif;font-size:16px;line-height:1.6">[The one promise, one sentence.]</p>
 <p style="margin:0;font-family:Verdana,sans-serif;font-size:16px;line-height:1.6">[Client first name]</p>
 ```
@@ -159,6 +161,28 @@ Write in the client's voice, first person, short lines, one clear next action. S
 <p style="margin:0 0 16px;font-family:Verdana,sans-serif;font-size:16px;line-height:1.6">Start with [first module]. [One line on why it comes first.]</p>
 <p style="margin:0;font-family:Verdana,sans-serif;font-size:16px;line-height:1.6">[Client first name]</p>
 ```
+
+### Template C2: upsell delivered as calls or coaching (booking link)
+- **Subject:** `Book your [upsell product] call`
+- **Preview:** `Pick a time that works for you.`
+```html
+<p style="margin:0 0 16px;font-family:Verdana,sans-serif;font-size:16px;line-height:1.6">Hey {{contact.first_name}},</p>
+<p style="margin:0 0 16px;font-family:Verdana,sans-serif;font-size:16px;line-height:1.6">You added [upsell product] to your order. The first step is to book your call.</p>
+<p style="margin:0 0 12px;font-family:Verdana,sans-serif;font-size:16px;line-height:1.6"><a href="[BOOKING LINK]" style="color:#D30805;font-weight:bold">Book my call</a>. [How long it is, and what to bring.]</p>
+<p style="margin:0;font-family:Verdana,sans-serif;font-size:16px;line-height:1.6">[Client first name]</p>
+```
+
+### Template C3: upsell delivered as a community (invite link)
+- **Subject:** `You're in [community name]`
+- **Preview:** `Your invite link and where to start.`
+```html
+<p style="margin:0 0 16px;font-family:Verdana,sans-serif;font-size:16px;line-height:1.6">Hey {{contact.first_name}},</p>
+<p style="margin:0 0 16px;font-family:Verdana,sans-serif;font-size:16px;line-height:1.6">You added [upsell product] to your order. Here's your way in.</p>
+<p style="margin:0 0 12px;font-family:Verdana,sans-serif;font-size:16px;line-height:1.6"><a href="[INVITE LINK]" style="color:#D30805;font-weight:bold">Join [community name]</a>. [The first thing to do once you're in.]</p>
+<p style="margin:0;font-family:Verdana,sans-serif;font-size:16px;line-height:1.6">[Client first name]</p>
+```
+
+Replace `#D30805` in every template with the client's brand accent.
 
 ### Copy rules learned
 - Subject = the buyer's win plus the first step ("You're in. Here's Day 1").
@@ -181,7 +205,12 @@ Write in the client's voice, first person, short lines, one clear next action. S
 
 Both are published. No end-to-end test purchase was run on Nov 20. IDs are in `examples/rickey-headstart-funnel/funnel-map.md`.
 
-## E. Where the files live (and the move before going private)
+## E. Where the files live
 
-- Rickey's PDFs are on public GitHub Pages under clean URLs: `https://shuri-lab.github.io/rickey-tiktokshop-project/downloads/30-day-first-sale-challenge.pdf` and `.../downloads/starter-product-list.pdf`.
-- **Before the repo is made private**, move the PDFs (and the page fragments and images) into GHL Media storage and update every link (emails, lessons, thank-you page). Otherwise downloads and pages break.
+- **Paid files never go on public hosting.** A public GitHub repo is browsable and its Pages URLs are guessable, so anyone could download a paid PDF without buying.
+  - Main product files: attached to the course's "Start here" lesson (behind the portal login). ★ The person uploads them; the browser pane can't.
+  - Bump file: GHL Media, linked only from the bump email, or a small course the bump workflow grants. Not in the main course (every buyer would get it).
+  - Upsell files: in the upsell course.
+  - Only free files (a free lead magnet) and the page fragments and images belong on Pages.
+- **Rickey's build put both paid PDFs on public Pages** (`https://shuri-lab.github.io/rickey-tiktokshop-project/downloads/30-day-first-sale-challenge.pdf` and `.../downloads/starter-product-list.pdf`) and linked the guide from the public thank-you page. That is a gap to fix (open item), not a pattern.
+- **Before the repo is made private**, move the page fragments and images into GHL (paste the page, GHL Media) and update every link. Otherwise the pages break.

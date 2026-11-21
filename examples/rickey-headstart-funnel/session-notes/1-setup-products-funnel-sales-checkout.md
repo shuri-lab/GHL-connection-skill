@@ -1,6 +1,6 @@
 # GHL Funnel Playbook: mining notes, slice 1 (ghl1.txt)
 
-Source: `scratchpad/mine/ghl1.txt` (5,276 lines, read in full) plus the screenshots it references (in the session's `tool-results/` folder; ~40 of them viewed for exact UI labels) and the repo `rickey-tiktokshop-project/` (README GHL section, `offer-1-sales-page/ghl-*.html`, git log).
+Source: `scratchpad/mine/ghl1.txt` (the raw session transcript, not included in this repo; 5,276 lines, read in full) plus the screenshots it references (in the session's `tool-results/` folder; ~40 of them viewed for exact UI labels) and the repo `rickey-tiktokshop-project/` (README GHL section, `offer-1-sales-page/ghl-*.html`, git log).
 
 **Where this slice starts and ends.** It starts with David's request to do the GHL setup ourselves (not Moses), and ends in the middle of the checkout order form's **Theme & style → Theme & brand → Accent colour picker**. Everything after that point is in slices 2 and 3: the left-column checkout code, saving and publishing the checkout, the thank-you page, the Memberships course, the workflows and emails, the upsell, and the test purchase. In this slice, **courses and workflows were only looked at, read-only, during the audit.** Sections B.8 and B.9 record what was seen, and the rest belongs to the later slices.
 
@@ -300,8 +300,8 @@ Conventions: `{loc}` = location (sub-account) id, `{funnel}` = funnel id, `{step
      - The **"Order Form"** card lands in the 2nd Column.
 - **The default Order Form:** heading "Checkout / Upgrade Your Order & Save!" with fields Full Name\*, Email\*, Phone, **Company\***, address search, Address, Country, State, City and Zip Code.
   - Right panel "Order Form": "Element name"; "Steps, fields, products, the order bump, and theme all live in one full settings workspace."; **"Customize order form"**; Mode: One-step; Fields: 9 shown.
-- **"Customize order form"** opens the full-screen **"Form settings"** modal: "Everything for this order form, in one place — changes preview live and save automatically". It has a live preview on the right. Sections:
-  1. **Steps:** One-step / Two-step / Split. Kept **One-step** ("Single step — Checkout: Contact + payment on one page").
+- **"Customize order form"** opens the full-screen **"Form settings"** modal: "Everything for this order form, in one place: changes preview live and save automatically" (GHL shows a dash after "place"). It has a live preview on the right. Sections:
+  1. **Steps:** One-step / Two-step / Split. Kept **One-step** ("Single step: Checkout: Contact + payment on one page"; GHL shows a dash after "Single step").
   2. **Contact fields:** rows with a drag handle, required marker (a red asterisk when required), width toggle (half/full), edit pencil, and visibility eye; plus "+ Add Field" ("Custom fields save to the contact record").
      - First clicked Company's **required** marker to make it optional (it was required), then clicked the **eye** on Phone, Company, Address, Country, State, City and Zip Code.
      - **What went wrong:** a fast batch of 8 clicks left Company, Country and City visible. Fix: click them again one at a time with 2 s waits.
@@ -413,7 +413,7 @@ The README records the final build: the loader for `offer-2-upsell/ghl-upsell.ht
 
 ### B.8 Memberships and courses (only read-only here)
 - **Path:** Memberships (`memberships/courses/products`). Tabs: **Client Portal · Courses · Communities · Credentials · Gokollab Marketplace**. "Your Products" (course cards with member counts) has "+ Create Product", "Library Sorting" and "Manage Comments".
-- **Banner:** "Classic courses retires Dec 1, 2026 — Your members move to the new one automatically" ("Do it later" / "See what's new").
+- **Banner:** "Classic courses retires Dec 1, 2026: Your members move to the new one automatically" (GHL shows a dash) ("Do it later" / "See what's new").
 - Creating the "TikTok Shop Headstart" course (Start here + Day 1 to Day 7) and the client-portal login happened in later slices.
 
 ### B.9 Workflows (only read-only here)
@@ -532,7 +532,7 @@ The README records the final build: the loader for `offer-2-upsell/ghl-upsell.ht
 14. **The git push was rejected** by Pages-created commits. Inspect them, then pull with rebase.
 15. **GitHub Pages deploy lag** (404 at first). Poll until 200, or until a marker string appears.
 16. **Session expiry** (spinner, 401s). Ask the user to sign in again; don't keep retrying.
-17. **The After purchase dropdown** wouldn't take "Choose a specific funnel step" by click. Keyboard Down/Return works; "Go to a website URL" is an acceptable equivalent.
+17. **The After purchase dropdown** wouldn't take "Choose a specific funnel step" by click. Keyboard Down/Return works. (Corrected later: "Go to a website URL" is **not** an equivalent. It silently skips the upsell. Always "Go to the next funnel step", the default; see `knowledge/checkout-recipe.md` §10.)
 18. **The order bump image** is upload-only (no URL field), so it can't be done from the pane. (Later slices injected the image with JS from the left-column code.)
 19. **Repo privacy:** the loader depends on public GitHub Pages. Move the HTML, images and PDFs into GHL Media before making the repo private.
 

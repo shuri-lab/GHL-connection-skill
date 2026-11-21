@@ -9,12 +9,12 @@ Every problem hit while building Rickey's funnel (Nov 20 2026), with the fix tha
 3. **Opening the builder iframe URL directly broke the session.** `page-builder.leadconnectorhq.com/...` in its own tab showed 404/blank, then 401s, and the person had to sign in again. Fix: never open it.
 4. **Session expiry looks like a broken page.** Endless spinner, `find` finds nothing, 401/403 in the console. Fix: stop, say so honestly, list done vs. left, ask the person to sign in again.
 5. **Claiming "done" without checking.** Asked "have you created and verified the offer 1 page and the checkout?", the honest answer was: sales page verified; checkout started but the live URL had no order form. Fix: check the live URL (curl or the pane) before saying anything is done.
-6. **Borrowing from a live funnel.** Opening the AI Avatars upsell builder to copy a button risked changing a live page. Fix: read-only; never Save or Publish another funnel's page.
+6. **Borrowing from a live funnel.** Opening the AI Avatars upsell builder to copy a button risked changing a live page, and navigating there lost unsaved work. Fix: never open another client's page builder; read their live page only (the YES settings are documented in `upsell-recipe.md`).
 7. **Asking approval while the person is on the phone (Remote Control).** `AskUserQuestion` came back "Denied by user". Fix: ask in plain text with the choices spelled out, and wait for their words ("send the email ... I approve").
 
 ## Domains and funnel settings
 
-8. **No free GHL default domain.** The funnel's Domain list only had the domain another brand used (davidhsai.com). Fix: offer three options (preview links for review only; the existing domain with prefixed paths; buy or connect a brand domain, which is the person's purchase decision) and let the person choose.
+8. **No free GHL default domain.** The funnel's Domain list only had the domain another brand used (davidhsai.com). Fix: offer three options (preview links for review only; the existing domain with prefixed paths; connect the client's own domain, recipe in `connect-a-domain.md`, where buying one is the person's purchase) and let the person choose.
 9. **Generic step paths collide on a shared domain.** Defaults `/sales-page`, `/checkout`, `/upsell`, `/thank-you`. Fix: `/<offer>-page`, `/<offer>-checkout`, `/<offer>-upsell`, `/<offer>-thank-you`, and a short funnel path (`/headstart`, which serves step 1).
 10. **Switching domains later.** Pages stay, but shared links break, the Meta pixel/domain must be re-verified, and an expiring domain takes the whole funnel down. Fix: switch before ads start, add URL Redirects (Settings → Domains & URL Redirects), renew or replace an expiring domain (davidhsai.com showed "expiring soon").
 11. **Optimize JavaScript is on by default** and lazy-loads custom code, so Custom Code pages appear late. Fix: turn it off in funnel Settings.
@@ -72,7 +72,7 @@ Every problem hit while building Rickey's funnel (Nov 20 2026), with the fix tha
 48. **GHL re-renders the order form** (e.g. on ticking the bump), wiping injected nodes. Fix: idempotent enhancer + MutationObserver + a short interval.
 49. **Bump custom image is upload-only.** Fix: inject it from the fragment; if someone uploads one later, remove the injection.
 50. **Bump copy too long, too many numbers** (37, 29, 8 lanes, 8 viral). Fix: one pain, one number, one promise; ~130 characters; 5th-grade clear.
-51. **After purchase = website URL skips the upsell.** It was correct while the upsell didn't exist. Fix: "Go to the next funnel step" once the upsell is live.
+51. **After purchase = website URL skips the upsell.** Rickey's checkout pointed at the thank-you URL until the upsell existed. Fix: always "Go to the next funnel step", set in Stage 6 even before the upsell page is built (the funnel isn't live yet, so the empty step is harmless).
 
 ## Workflows, emails, course
 
@@ -111,9 +111,9 @@ Every problem hit while building Rickey's funnel (Nov 20 2026), with the fix tha
 
 ## Testing and go-live
 
-78. **No test purchase was run on Nov 20.** Totals were tested without buying (JS: $27 → $44 → $27). Payment, delivery emails, course access and the one-click charge are unproven until a purchase. Fix: the person buys once (bump + upsell YES), checks emails, course login and the next pages, then refunds; or use Stripe test mode with Stripe's test cards. Claude never types card numbers.
-79. **Stripe test mode affects real buyers.** While the funnel is in test mode, real buyers can't pay. Where the funnel's payment mode toggle lives was not seen in the session: find it, tell the person, and switch it back after the test.
-80. **Shared Stripe account.** The new offer's money lands in the same Stripe account and card-statement name as the other project. Fix: confirm with the person before real traffic.
+78. **No test purchase was run on Nov 20.** Totals were tested without buying (JS: $27 → $44 → $27). Payment, delivery emails, course access and the one-click charge are unproven until a purchase. Fix: the person buys once (bump + upsell YES), checks emails, course login and the next pages, then refunds; or, only if a funnel-scoped test mode exists, the person types Stripe's test card. Claude never types any card number.
+79. **Stripe test mode affects real buyers.** An account-wide test mode blocks every real buyer in the sub-account. Where a funnel-scoped payment mode toggle lives was not seen in the session. Fix: look only on the checkout step's Products tab and the funnel Settings; never change modes in Payments → Integrations; if there's no funnel-scoped switch, the person buys for real and refunds. Record the switch in `builder-quirks.md` F4 once found.
+80. **Shared Stripe account.** The new offer's money lands in the same Stripe account and card-statement name as the other project. Fix: decide it in Stage 1 (Money and identity) before building: accept in writing with a product Statement Descriptor, or a separate sub-account with the client's Stripe.
 81. **Going live without sign-off.** Fix: real traffic only after the required sign-off (TJ for his projects).
 82. **Placeholder offer values** (upsell stack $297/$47/$47/$37 were made up). Fix: flag them for the client to approve.
 
@@ -123,3 +123,11 @@ Every problem hit while building Rickey's funnel (Nov 20 2026), with the fix tha
 84. **Remote Control call rewritten by a hook.** Fix: re-send with exactly the provided input, alone.
 85. **`claude rc` doesn't apply** in the desktop app. Fix: use the session's set-remote-control tool.
 86. **Swift/PDFKit renderer failed** (SDK vs compiler mismatch) when reading the course deck. Fix: `pypdf` (+ Pillow) in a venv; for image-only decks, extract each page's largest image into a contact sheet.
+
+## Added after the blind review (gaps the Rickey build didn't hit, or hit without noticing)
+
+87. **Workflows cross-fire on a shared account.** A published workflow whose product filter didn't save fires on the other client's real orders; the other client's broad triggers (Order submitted with no filter, Contact created, a tag) fire on yours. Fix: read every Published workflow's trigger in Stage 0 and flag broad ones; zoom your own trigger card before every Publish; 0 enrolled until the test.
+88. **Paid files on public Pages.** Rickey's PDFs sat at guessable URLs in a browsable public repo. Fix: paid files in the course or GHL Media (uploaded by the person); only free files on Pages.
+89. **Rickey's content shipped on a new client's pages.** Adapted fragments kept Rickey's names, prices, links and comments. Fix: the Stage 2 Rickey-content grep must print nothing (or only approved lines).
+90. **A fixed key count picks the wrong domain.** `Down Down Enter` worked for Rickey's list only. Fix: screenshot the list, count the confirmed domain's position, zoom and compare after choosing (`builder-quirks.md` D3).
+91. **Buyers see another client's brand.** On a shared account the default sender, the card-statement name and the portal belong to whoever set them up. Fix: the Stage 1 Money and identity block, decided in writing before building.

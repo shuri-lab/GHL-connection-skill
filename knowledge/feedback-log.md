@@ -38,7 +38,7 @@ David's messages from Nov 20 2026 (session messages #36 to #55), in order. For e
 
 **#46 + screenshot:** "for the checkout... create a checkout in Go High Level... And I want to have the order bump there. So it's like a checkbox... I'll upload screenshot here of what I want it to look like regarding structure... It's from a different funnel... different branding, but it's just for you to have a reference of the structure."
 - **Rule:** copy the **structure** of a reference, never its branding. Checkout = two columns: offer summary left, GHL order form right, bump as a checkbox box inside the form.
-- **Implemented:** section → 2 Column row → left Code (loader for `checkout-left.html`), right native Order Form; one-step; Full Name + Email; bump enabled. See `checkout-recipe.md`.
+- **Implemented:** section → 2 Column row → left Code (loader for the hosted `ghl-checkout-left.html`, repo copy `examples/rickey-headstart-funnel/pages/2-checkout-left.html`), right native Order Form; one-step; Full Name + Email; bump enabled. See `checkout-recipe.md`.
 
 ## 6. "Have you created and verified...?"
 

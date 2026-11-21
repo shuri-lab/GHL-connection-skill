@@ -7,7 +7,7 @@ Grouped by topic. "Rickey:" gives the real example from the Nov 20 2026 build.
 | Term | Plain meaning |
 |---|---|
 | **GoHighLevel (GHL, HighLevel)** | An all-in-one marketing platform: pages, checkouts, payments, courses, email automations, CRM. App at `app.gohighlevel.com`. Some pages are served from `leadconnectorhq.com` (its white-label domain). |
-| **Agency** | The top-level GHL account. It owns many sub-accounts and handles billing and company settings. We don't work at this level. |
+| **Agency** | The top-level GHL account. It owns many sub-accounts and handles billing and company settings. We don't work at this level: if a new sub-account is needed, an agency admin creates it (Stage 0, "If the person picks Separate sub-account"). |
 | **Sub-account / location** | One business inside the agency, with its own funnels, products, contacts, Stripe connection, domains, users. GHL calls it a "location"; its id is in every URL (`/v2/location/{loc}/...`). Rickey: "Hot Pursuit LLC", `54EJrjBw49eCsIsOZH44`, shared with another project. |
 | **User** | A login with access to a sub-account. Created in Settings → Users. |
 | **User role** | Admin (everything, including billing by default) or User (limited). Per-area permission toggles below the role (Account Billing, Account Settings, Automation, ...). |
@@ -54,9 +54,9 @@ Grouped by topic. "Rickey:" gives the real example from the Nov 20 2026 build.
 | **"One click up/down sell product"** | The YES button's action (Button Actions → link to) that performs the one-click charge for the chosen step product. |
 | **After purchase** | Order form setting (Checkout options): where the buyer goes after paying: next funnel step, a website URL, or a specific step. |
 | **Stripe / payment provider** | The company that processes the card. Connected per sub-account in Payments → Integrations. Rickey's account: Stripe, Default, Connected (shared with another project). |
-| **Test mode** | Stripe's sandbox. Purchases with Stripe's test cards charge nothing. Real buyers can't pay while a funnel is in test mode. |
+| **Test mode** | Stripe's sandbox. Purchases with Stripe's test cards charge nothing. Real buyers can't pay while in test mode, so only a switch that affects this funnel alone may be used (not located yet: `builder-quirks.md` F4), and the person types the test card. |
 | **Transactions** | Payments → Transactions: real sales. Their presence shows an account is live. |
-| **Statement descriptor** | The name on the buyer's card statement (product → Additional options). |
+| **Statement descriptor** | The name on the buyer's card statement (product → Pricing → Additional options). Set it when the Stripe account isn't the client's, so buyers recognise the charge (Stage 1, Money and identity). |
 
 ## Courses and delivery
 
@@ -66,7 +66,7 @@ Grouped by topic. "Rickey:" gives the real example from the Nov 20 2026 build.
 | **Course** | A product in Memberships with modules and lessons. Rickey: "TikTok Shop Headstart" (Start here + Day 1 to 7). |
 | **Module / Lesson** | A course section, and one video/text item inside it. New lessons are drafts until "Save and publish". |
 | **Offer (course offer)** | An older way to sell or grant a course ("Offers (Advanced)"). Not needed for new-style courses: a workflow grants access. |
-| **Client portal** | The buyer-facing site where they log in and see their courses. URL format `https://<location id lowercase>.app.clientclub.net/`. |
+| **Client portal** | The buyer-facing site where they log in and see their courses. One per sub-account, with one name and logo for every client in it. URL format `https://<location id lowercase>.app.clientclub.net/`. |
 | **Classic courses** | The older course system; a banner says it retires Dec 1, 2026 with automatic migration. |
 | **Workflow** | An automation (Automation → Workflows): a **trigger** followed by **actions**. Must be saved and **published** to run. |
 | **Trigger** | The event that starts a workflow. Rickey: **Order submitted** ("Fires after checkout completion in Funnel/Store"), with a **filter** on Global product. |
@@ -89,5 +89,7 @@ Grouped by topic. "Rickey:" gives the real example from the Nov 20 2026 build.
 | **Enhancer script** | The checkout fragment's script that adds the bump banner, arrow, image, placeholders and helper text, and re-adds them after GHL re-renders the form. |
 | **Text tagging** | Finding native GHL buttons by their text ("YES!", "No thanks") and adding classes so the fragment can style them. |
 | **Client prefix** | `Rickey · ` (with the middle dot) at the start of every internal name we create. Buyer-facing names have no prefix. |
+| **Buyer tag** | A contact tag `<client>-<product>-buyer` added by each delivery workflow, so the client can find their buyers and other clients' broadcasts can exclude them. |
+| **Money and identity** | The Stage 1 ★ block: whose Stripe, which card-statement name, which sender, which portal branding the buyer sees. |
 | **★ gate** | A point in the stages where the person must act or decide. |
 | **The phone check** | 393×852, no sideways scroll; on the checkout, the first form field is on the first screen. |

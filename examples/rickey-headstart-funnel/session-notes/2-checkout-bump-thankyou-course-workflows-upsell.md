@@ -1,6 +1,6 @@
 # GHL Funnel Playbook: mined notes, part 2 (middle of the Nov 20 2026 session)
 
-Source: `mine/ghl2.txt` (post-compaction continuation through David's big feedback round and the study of the reference upsell page). The actual upsell build (GHL product, page, buttons, YES-action blocker, after-purchase switch) happened right after this slice, so it was read from the start of `mine/ghl3.txt` (lines 1-2106) and the full session log to make section C complete. Final file states were checked against the repo: `offer-1-sales-page/ghl-checkout-left.html`, `offer-1-sales-page/ghl-thank-you.html`, `offer-2-upsell/ghl-upsell.html`, `README.md`.
+Source: `mine/ghl2.txt` (raw session transcript, not included in this repo; post-compaction continuation through David's big feedback round and the study of the reference upsell page). The actual upsell build (GHL product, page, buttons, YES-action blocker, after-purchase switch) happened right after this slice, so it was read from the start of `mine/ghl3.txt` (also not included; lines 1-2106) and the full session log to make section C complete. Final file states were checked against the repo: `offer-1-sales-page/ghl-checkout-left.html`, `offer-1-sales-page/ghl-thank-you.html`, `offer-2-upsell/ghl-upsell.html`, `README.md`.
 
 Project constants used below (swap per client):
 
@@ -111,7 +111,7 @@ Project constants used below (swap per client):
 David's asks, in order: (1) remove the order-bump announcement from the sales page; (2) make all sales-page media load fast; (3) mobile checkout: left column too tall, form below the fold, make it compact (desktop unchanged); (4) restyle the contact section (font, inputs), remove "Select Product"; payment section and "GET INSTANT ACCESS" button are fine; (5) order bump: add the product image, stronger copy with a concrete product count, background, animated arrow, dashed border, make it pop; (6) build the upsell page in custom HTML modeled on davidhsai.com/upsell-1-product--model-videos-page, with two GHL buttons (YES one-click at $97, NO link). Plan list created with these 8 steps.
 
 ### A11. Sales page: bump removed + speed (summary only)
-- Removed the bump block and its lone "1 / 2" step labels from `body-src.html`; verified tag balance; no "Starter Product List" text remains on the live page.
+- Removed the bump block and its lone "1 / 2" step labels from `body-src.html` (the sales page source in the Rickey project repo, not here); verified tag balance; no "Starter Product List" text remains on the live page.
 - Speed (details skipped per brief): all images → WebP at display size in `images/opt/` (Pillow in a venv), `srcset`/`sizes`, `decoding="async"`, `loading="lazy"` except hero; videos via Cloudinary `w_320,q_auto:eco,ac_none,du_10,f_auto`, loaded by IntersectionObserver, loop duplicates wait for the original's `loadeddata` so each video downloads once. One rebuild script regenerates body → page → check → export → repo copy → GHL fragment with absolute URLs. Live measurement via `performance.getEntriesByType('resource')`: ~1.2 MB images on phone (~1.5 MB desktop) vs ~15 MB before. The checkout/thank-you fragments were also switched to the WebP files.
 
 ### A12. Bump copy research
@@ -133,7 +133,7 @@ David's asks, in order: (1) remove the order-bump announcement from the sales pa
   - Section 4: offer row `row-MpwJqze4wB` with `display:none` until the timer ends: "ONLY $67 $47 NOW", description, "➡️ This is exclusive one-time offer. Only available right here, right now", YES, NO.
   - YES = native GHL Button: `div.c-button#button-XXXX > button#button-XXXX_btn.cbutton-XXXX.pulse-button` (no href: one-click action). NO = also a GHL Button but rendered as `<a href="https://www.davidhsai.com/thank-you">` (link-to-URL action).
   - Revealed the hidden row with `document.getElementById('row-…').style.display='block'` to screenshot its styling (live page, nothing saved).
-- Offer 2 contents: offer stack PDF text via `pypdf`; Offer 2 course deck is image-only, and the Swift/PDFKit renderer no longer compiled (SDK/compiler mismatch), so page images were pulled out of the PDF with `pypdf` + Pillow into a contact sheet to read the 8 module titles. Offer 2 product image: `project-files/offer-2-image-v2.png` ("My $4M TikTok Shop System": laptop + three guides).
+- Offer 2 contents: offer stack PDF text via `pypdf`; Offer 2 course deck is image-only, and the Swift/PDFKit renderer no longer compiled (SDK/compiler mismatch), so page images were pulled out of the PDF with `pypdf` + Pillow into a contact sheet to read the 8 module titles. Offer 2 product image: `project-files/offer-2-image-v2.png` (in the Rickey project repo, not here) ("My $4M TikTok Shop System": laptop + three guides).
 
 ### A15. Upsell build (from ghl3 lines 1-2106)
 1. Images: copied the Offer 2 image, made `offer-2-system-720/1280.webp` and 240px thumbnail crops of each item (`o2-course`, `o2-hooks`, `o2-formats`, `o2-checklist`) with Pillow; checked a preview strip.

@@ -32,11 +32,11 @@ In GHL: Sites → Funnels → "Rickey · TikTok Shop Headstart" → a step → E
 | `pages/2-checkout-left.html` | Checkout left column (root `gtc-root`, scope `#gtc`): desktop block + phone card, **plus the CSS that restyles GHL's order form and bump, and the enhancer script**. No wrapper fix (on purpose: see `knowledge/checkout-recipe.md`). |
 | `pages/3-upsell.html` | Upsell page (root `gtu-root`, scope `#gtu`): alert bar to lead-in, **plus the script and CSS that style the native YES button and the NO link** by their text. |
 | `pages/4-thank-you.html` | Thank-you page (root `gtty-root`, scope `#gty`) with the `GT_LINKS` config (course, WhatsApp, support; empty = greyed placeholder). |
-| `emails/moses-thank-you-and-delivery-copy-v1.md` | The copywriter's thank-you page and delivery email copy (Moses, TJ's Claude agent). The live emails were built from it, split per product. |
+| `emails/moses-thank-you-and-delivery-copy-v1.md` | The copywriter's thank-you page and delivery email copy (Moses, the copywriter, a person). The live emails were built from it, split per product. |
 | `screenshots/` | The live pages at phone and desktop size (`1-sales-*`, `2-checkout-*`, `3-upsell-*`, `4-thankyou-*`). |
 | `session-notes/` | The detailed build log, in three parts: (1) setup, products, funnel, sales page, checkout start; (2) checkout finish, bump, thank-you, course, workflows, upsell; (3) upsell button, bump copy, Remote Control, team access. Use it when a stage file or knowledge file isn't enough. |
 
-All page files fetch images from `https://shuri-lab.github.io/rickey-tiktokshop-project/`. For a new client, change every URL to the client's host.
+All page files fetch images from `https://shuri-lab.github.io/rickey-tiktokshop-project/`. For a new client, change every URL to the client's host, then run the Rickey-content grep in `stages/2-host-the-pages.md` (Verify). This folder holds the account's real ids: keep the repo private.
 
 ## How to use it for a new client
 
@@ -52,3 +52,7 @@ All page files fetch images from `https://shuri-lab.github.io/rickey-tiktokshop-
 - The upsell's **YES action** had to be set by the owner (native select the browser pane can't reach). Expect the same ★ gate.
 - **No test purchase** was run on Nov 20, and the **upsell delivery** isn't built. Both are part of a complete build (Stages 10 and 12).
 - The NO decline is a Custom Code link, not a native button (reason in `knowledge/upsell-recipe.md` section 6).
+- The paid PDFs sit on public GitHub Pages and the thank-you page links one directly. The recommended build keeps paid files in the course or GHL Media.
+- No legal links, tracking, tax decision, buyer tags or statement descriptor, and the default sender was never read. A new build decides these in Stage 1.
+- The After purchase setting was a thank-you URL until the upsell existed. The recommended build sets "Go to the next funnel step" from the start.
+- `pages/2-checkout-left.html` now sets `document.title`; the live fragment did not.

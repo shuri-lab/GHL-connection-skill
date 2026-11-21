@@ -1,6 +1,6 @@
 # Funnel map: Rickey · TikTok Shop Headstart (built Nov 20 2026)
 
-Every object created (or touched) in GoHighLevel and on the static host for Rickey's funnel, with names, IDs, URLs and the settings that matter. This is a filled-in `templates/funnel-record.md`. People are named by role where it matters; no email addresses.
+Every object created (or touched) in GoHighLevel and on the static host for Rickey's funnel, with names, IDs, URLs and the settings that matter. This is a filled-in `templates/funnel-record.md`. People are named by role where it matters; no email addresses. It holds the account's real ids, so this repo must stay private.
 
 App URL prefix used below: `https://app.gohighlevel.com/v2/location/54EJrjBw49eCsIsOZH44/` (= `{app}`). Builder URLs have no `/v2`.
 
@@ -88,10 +88,10 @@ Bump copy history: v1 "Want a shortcut on picking products? Get the product lane
 
 | What | Value |
 |---|---|
-| YES button | Native GHL Button; text `YES! Add My $4M TikTok Shop System to My Order For Only $97`; Element name `YES button (one-click upsell)`. **Action to set: Button Actions → link to = "One click up/down sell product", Products = "My $4M TikTok Shop System".** It could not be set from the browser pane (native select); handed to the owner. Status at the end of the session: **not confirmed**. |
+| YES button | Native GHL Button; text `YES! Add My $4M TikTok Shop System to My Order For Only $97`; Element name `YES button (one-click upsell)`. **Action to set: Button Actions → link to = "One click up/down sell product", Products = "My $4M TikTok Shop System".** It could not be set from the browser pane (native select); handed to the owner (David) with the exact clicks. Status at the end of the session: **not confirmed** (no zoomed check, no purchase; session notes 2 §C6 and 3 §A11). |
 | NO link | Custom Code: `<a class="gtu-no" href="https://davidhsai.com/headstart-thank-you">No thanks, I'll keep guessing which products and hooks work, and take 10x longer to get my sales.</a>` |
 | Styling | By the fragment (text tagging `.gtu-yes` / `.gtu-no`) |
-| Read-only reference | AI Avatars funnel → Upsell #1 (builder page `xOzdUz04zbV6ZNcIkXrm`), live at `https://www.davidhsai.com/upsell-1-product--model-videos-page`. YES = link to "One click up/down sell product", Products "AI Avatars System Upsell". Nothing saved there. |
+| Reference | AI Avatars funnel → Upsell #1 (builder page `xOzdUz04zbV6ZNcIkXrm`), live at `https://www.davidhsai.com/upsell-1-product--model-videos-page`. YES = link to "One click up/down sell product", Products "AI Avatars System Upsell". Nothing saved there. Its builder was opened on Nov 20; the playbook now forbids opening another client's builder. |
 
 ## 8. Course (Memberships)
 
@@ -126,7 +126,7 @@ Bump copy history: v1 "Want a shortcut on picking products? Get the product lane
 
 | Who (role) | User type | Role chosen | Notes |
 |---|---|---|---|
-| Teammate Moses (TJ's Claude agent on this project; also wrote the thank-you and delivery copy) | Account - admin | **Full Admin** (owner's choice over "Admin minus Billing" and "User") | Created Nov 20 via Settings → Users → + Add user; password left empty (he set his own from GHL's invite); last name placeholder "Hot Pursuit" (fix in Settings → Users). Then got "Error while bootstrapping the session" on his own login; owner-approved workaround: "Continue with Google" with the account owner's login. Fix unconfirmed. |
+| Teammate Moses (the copywriter on this project, a person; he wrote the thank-you and delivery copy) | Account - admin | **Full Admin** (owner's choice over "Admin minus Billing" and "User") | Created Nov 20 via Settings → Users → + Add user; password left empty (he set his own from GHL's invite); last name placeholder "Hot Pursuit" (fix in Settings → Users). Then got "Error while bootstrapping the session" on his own login; owner-approved workaround: "Continue with Google" with the account owner's login. Fix unconfirmed. |
 
 Follow-up email to the teammate: sent as a reply in his access-request thread, manager cc'd, after the owner's explicit "I approve".
 
@@ -150,7 +150,7 @@ Red `#D30805`, ink `#101017`, cream `#FFF8E7`, line `#E7E3DC`; fonts Poppins (he
 ## 13. Open items (end of Nov 20 2026)
 
 1. **YES button action** on the upsell: link to = One click up/down sell product, Products = My $4M TikTok Shop System, Save, Publish (owner, about 30 s). Until then YES does nothing.
-2. **Test purchase, end to end:** checkout with bump → upsell YES → thank-you; check both emails, course login, totals; also the NO link. Either the owner buys and refunds, or Stripe test mode (real buyers can't pay meanwhile; find the funnel's payment mode setting). Claude never enters cards.
+2. **Test purchase, end to end:** checkout with bump → upsell YES → thank-you; check both emails, course login, totals; also the NO link. The owner buys and refunds; Stripe test mode only if a switch scoped to this funnel exists (never the account-wide one). The person types the card. Claude never enters cards.
 3. **Upsell delivery:** no course, workflow or email delivers the $97 System yet.
 4. **WhatsApp channel link** (Rickey Army): `GT_LINKS.whatsapp` on the thank-you page and `https://WHATSAPP-LINK-GOES-HERE` in the live delivery email (broken for any buyer now).
 5. **Support email:** `GT_LINKS.support`.
@@ -160,7 +160,9 @@ Red `#D30805`, ink `#101017`, cream `#FFF8E7`, line `#E7E3DC`; fonts Poppins (he
 9. **Upsell stack values** $297 / $47 / $47 / $37 (total $428) are placeholders: client to approve.
 10. **Loaders on the sales page and checkout are the unguarded version.** Replace with the guarded loader next time those pages are edited.
 11. **Domain:** davidhsai.com belongs to the other brand and is expiring soon. Renew, or connect a Game Tape domain before ads (then redirects + Meta re-verification).
-12. **Shared Stripe:** confirm Rickey's revenue should land in this Stripe account and statement name.
+12. **Shared Stripe, sender and portal:** confirm Rickey's revenue should land in this Stripe account and statement name (or set a product Statement Descriptor), read the default sender, and accept or change the portal branding (Stage 1, Money and identity).
+12b. **Paid PDFs on public Pages:** move `downloads/*.pdf` into the course (lesson attachment) or GHL Media, and point the emails and the thank-you page there.
+12c. **Legal links, tracking, tax, buyer tags:** none set (Stage 1, step 7).
 13. **Product type "Physical":** confirm during the test purchase that checkout never asks for shipping.
 14. **Before making the repo private:** move fragments, images and PDFs into GHL (paste the pages, GHL Media), or pages go blank and downloads break.
 15. **Upsell path:** confirm `/headstart-upsell` in the Upsell step's Publishing tab.

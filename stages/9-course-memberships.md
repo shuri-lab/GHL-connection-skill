@@ -8,7 +8,7 @@
 
 ## Before you start (inputs)
 - Course title (customer-facing, no client prefix), a one-paragraph description, lesson titles (from the approved copy), the main price.
-- Links that belong in lessons (e.g. the guide PDF URL from Stage 2).
+- The paid files that belong in lessons (the person uploads them; they never go on public Pages, Stage 2).
 - The Stage 0 list of existing courses and their member counts (off-limits).
 
 ## Steps
@@ -27,7 +27,7 @@
 6. **Rename a sample lesson:** hover the lesson → the edit (pencil) icon → the title field: click → `End` → `Backspace` ×90 to ×100 → zoom (empty) → type the title → zoom. `cmd+a` sometimes didn't select, and the new title was appended to the old one. Then the description → **Save and publish**.
 7. **Add a lesson:** **Add Content** → **Lesson** → title → **module** dropdown = "Course Contents" → **Create**. A new lesson is a **draft**: open it → description → **Save and publish**.
    - The module dropdown is custom: a plain click on the option didn't register; keyboard Down + Return worked once and then didn't. Most reliable: open it → **hover** the option → `Return` (or `find` the option, click its ref, then Return). Zoom to check.
-8. Put the downloads in the first lesson ("Start here") description, so buyers find them inside the course too.
+8. **Paid files live here, behind the login.** ★ The person uploads each paid PDF as an attachment (or file) on the first lesson ("Start here"); the browser pane can't upload. Then the delivery email (Stage 10) and the thank-you page (Stage 8) point buyers to this lesson instead of to a public file URL. Until the upload is done, the lesson description says the guide is coming, and the upload is an open item.
 9. If the plan has fewer lessons than the samples, set the extra sample lessons to draft or delete them (they are part of the course you just created; nothing else).
 10. **Videos:** ★ the person uploads them (the pane can't). Until then each lesson description says the video is coming (Rickey: "Rickey's Day N video is coming here. Watch it, then do today's task from your 30-Day First Sale Challenge.").
 
@@ -36,13 +36,15 @@
 12. **The auto-created Payments product:** creating the course added a product with the course name and price (type MEMBERSHIP / Service) to Payments → Products. Leave it. The funnel sells the `<Client> · …` catalog product, and the workflows must filter on **that** product, not this one. Record its existence in `funnel-record.md` so nobody gets confused later.
 
 ### D. The login URL
-13. Memberships → **Client Portal ▾** → **Dashboard** → **"Client portal URL"**. The format is `https://<location id in lower case>.app.clientclub.net/`. Put it in:
+13. Memberships → **Client Portal ▾** → **Dashboard** → **"Client portal URL"**. The format is `https://<location id in lower case>.app.clientclub.net/`. There is **one portal per sub-account**: on a shared account, buyers of every client log in to the same portal, under whatever name and logo it has. The person accepted that branding in Stage 1 (Money and identity); don't change it yourself. Put the URL in:
     - the thank-you fragment `GT_LINKS.course` (one-line edit + push, Stage 8);
     - the delivery email's "Open my course" link (Stage 10).
 14. How buyers log in the first time is **not confirmed**: the Rickey email tells first-timers to click "Forgot password" on the login page to set their password. Check what actually happens during the Stage 12 test purchase and update the email if GHL sends its own set-password email.
 
 ### E. The upsell course (if the upsell is course content)
 15. Same steps A to D with the upsell's customer-facing title and price. Rickey's upsell course ("My $4M TikTok Shop System", 8 modules) was **not built** on Nov 20; it is the worked gap to close for the next client.
+16. If the upsell is calls, coaching or a community instead (Stage 1, step 11), skip this part: Stage 10 delivers it by email with the booking or invite link.
+17. **The bump file:** a bump buyer always has the main course, so don't put the bump PDF in the main course (every buyer would get it). Either a small course for the bump (same steps, granted by the bump workflow), or GHL Media (★ uploaded by the person) with the link only in the bump email.
 
 ## Verify
 - The course outline screenshot shows every lesson **published** (no draft badge), titles exactly as planned (zoom on each; look for appended old text).
@@ -62,12 +64,12 @@
 | Open | thumbnail, lesson videos, upsell course |
 
 ## ★ Gates (ask the person)
-- Videos and the course thumbnail are uploaded by the person.
+- Videos, the course thumbnail and the paid files are uploaded by the person.
 - If lesson titles aren't in the approved copy, ask before inventing them.
 
 ## Done when
 - [ ] New course created, customer-facing title, One Time price; product_id recorded.
-- [ ] All planned lessons published with exact titles; downloads in the first lesson.
+- [ ] All planned lessons published with exact titles; paid files attached to the first lesson (or the upload listed as open).
 - [ ] Client portal URL recorded and set in the thank-you page; the email will use it.
 - [ ] Auto-created Payments product noted; existing courses untouched.
 - [ ] Upsell course built if the plan needs one (or listed as open).

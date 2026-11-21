@@ -2,7 +2,7 @@
 
 **Goal:** every teammate who needs to review or test the funnel has their own GHL user in the sub-account, with the role the account owner chose, and has been told how to get in. Nobody's password was typed, shared or stored by you.
 
-**Why:** on Nov 20 the copywriter (Moses) asked to be added as a HighLevel user to check the setup and run the test purchase. Adding him taught three things: GHL's default role is **Admin, which includes billing**, so the role is the owner's call; **Last name is required** and wasn't known; and Claude can't see whether GHL's invite email went out. Later his own login loaded forever and ended in "Error while bootstrapping the session", and the owner unblocked the review with his Google sign-in.
+**Why:** on Nov 20 the copywriter (Moses, a person) asked to be added as a HighLevel user to check the setup and run the test purchase. Adding him taught three things: GHL's default role is **Admin, which includes billing**, so the role is the owner's call; **Last name is required** and wasn't known; and Claude can't see whether GHL's invite email went out. Later his own login loaded forever and ended in "Error while bootstrapping the session", and the owner unblocked the review with his Google sign-in.
 
 **Read first:** `knowledge/safety-rules.md` (Access, "Inviting users"), Stage 0 "When a teammate can't load the dashboard".
 
@@ -23,12 +23,12 @@
    - **Admin minus Billing:** Admin with the **Account Billing** toggle off. Enough for funnels, payments, workflows, courses and settings.
    - **Full Admin:** everything, including billing.
    - **User:** may hide the settings and payments pages the person needs to review the funnel.
-7. Set what they chose, then `find "Save"` → click the ref. The toast reads **"User Created: The user has been created successfully."** The list row shows the name, email, id and **User type: Account - admin** (or Account - user).
+7. Set what they chose, then `find "Save"` → click the ref. The toast reads **"User Created"** followed by "The user has been created successfully." (GHL puts a dash between the two parts; if you search for it, `find "User Created"` only.) The list row shows the name, email, id and **User type: Account - admin** (or Account - user).
 8. Call & voicemail, User availability and Calendar configuration are not needed for a funnel review.
 9. **The invite:** GHL sends an invite email to set a password; on first sign-in the person also enters a login code. You can't see this from GHL. Ask the teammate to confirm they received it. If it's missing, look on their row in Settings → Users for a resend option, and tell the owner.
 10. ★ **Tell the teammate** (only after the owner approves the exact text and recipients). Draft a short note: they've been added (role, sub-account name), the invite email lets them set a password, the funnel name and domain, where the course (Memberships) and the workflows (Automation) are, and what you need from them (e.g. the test purchase). Reply in their own access-request thread if there is one. cc someone only if the owner says so. Send only after an explicit yes.
     - If the owner is answering from the phone (Remote Control), a question card may come back "Denied by user" without them seeing it. Ask in a plain text message with the choices spelled out ("send as written / without cc / change / skip?").
-11. **If they can't get in** ("Error while bootstrapping the session"): follow Stage 0. Check the user is listed as Account - admin/user in this sub-account first; then a private window or another browser, cleared site data, GHL support. The owner may choose to let them sign in with "Continue with Google" on the owner's account. You never handle that password; prefer fixing their own login.
+11. **If they can't get in** ("Error while bootstrapping the session"): follow Stage 0. Check the user is listed as Account - admin/user in this sub-account first; then a private window or another browser, cleared site data, GHL support. Only if the owner offers it, as a last resort, they may let the teammate sign in with "Continue with Google" on the owner's account. You never handle that password; prefer fixing their own login.
 
 ## Verify
 - Settings → Users, search the name: one row, the right email, User type as chosen.
@@ -37,7 +37,7 @@
 - No other user was edited.
 
 ## Rickey example values
-- Teammate: Moses (copywriter), added on Nov 20 at his request "to check the setup and run test purchases".
+- Teammate: Moses (the copywriter, a person), added on Nov 20 at his request "to check the setup and run test purchases".
 - Search: "No Users found" → Add user → First/Last name (last name placeholder = organisation name), email from his own thread, password empty.
 - Role: the owner (David) chose **Full Admin** out of "Admin minus Billing / Full Admin / User".
 - Result: "User Created", row "User type: Account - admin".

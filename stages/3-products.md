@@ -17,11 +17,13 @@
 3. **Product Information:**
    - Switch **Include in Online store** OFF (it defaults to ON). These products are sold only through the funnel.
    - **Title \***: `<Client> · <Product>`, e.g. `Rickey · TikTok Shop Headstart`. This is the internal catalog name. The buyer never sees it (the buyer-facing name is set on the funnel step in Stage 4).
-   - Leave Description, Enable Product Label, Product Collection, Product Tax Code, "Include tax in prices" (As per Global Settings) and Attach Tax rates as they are, unless the person asks.
+   - Leave Description, Enable Product Label and Product Collection as they are.
+   - **Tax** (Product Tax Code, "Include tax in prices" (As per Global Settings), Attach Tax rates): follow the plan's tax decision (Stage 1, step 7). Claude never decides tax. If the plan says "no tax setup", leave them as they are and keep "tax: client to confirm with their accountant" in Open items.
 4. **Pricing:** click **Pricing** in the left nav to jump there. Under **Prices**:
    - **Type** = `Onetime` (the default).
    - **Amount \*** = the price, digits only (`27`).
-   - Leave Track Inventory and Add Margin unchecked. **Additional options >** only reveals **Statement Descriptor** ("Overrides default account descriptors…"); leave it empty unless the person wants a different card-statement name. Don't use **+ Add another price**.
+   - Leave Track Inventory and Add Margin unchecked. Don't use **+ Add another price**.
+   - **Additional options >** only reveals **Statement Descriptor** ("Overrides default account descriptors…"). **If the Stripe account isn't the client's** (Stage 1, Money and identity), type the descriptor the person approved (e.g. `ACME 21DAY`, up to 22 characters), on all three products. If the Stripe account is the client's own, leave it empty.
    - There is **no product-type selector** anywhere on the create or edit page (a JS search of the page text for physical/digital/service found nothing). The product will show as "Physical". Stage 6 hides every address field so the checkout never asks for shipping.
 5. **Check the values before saving** (the product page is a normal app page, so JS works):
    ```js
@@ -48,13 +50,13 @@
 | `Rickey · The Starter Product List` | $17 one-time | `6b00b71eb426cdb2e0c81064` |
 | `Rickey · My $4M TikTok Shop System` | $97 one-time | `6b00cb846b61070feb19cb0a` |
 
-All three show type "Physical". After the course was created, the list also held the auto-created "TikTok Shop Headstart" (MEMBERSHIP, $27, Service) and the two AI Avatars products (untouched): 6 products in all.
+All three show type "Physical". After the course was created, the list also held the auto-created "TikTok Shop Headstart" (MEMBERSHIP, $27, Service) and the two AI Avatars products (untouched): 6 products in all. Statement Descriptor and tax were left empty although the Stripe was shared with AI Avatars: an open item, not a pattern to copy.
 
 ## ★ Gates
-None. (Only ask if the person's prices or names are missing from the plan.)
+None. (Only ask if the person's prices, names, statement descriptor or tax decision are missing from the plan.)
 
 ## Done when
-- [ ] Three products created, online store off, one-time prices, names prefixed.
+- [ ] Three products created, online store off, one-time prices, names prefixed; statement descriptor and tax as the plan says.
 - [ ] Each checked with the JS dump before saving and re-opened after.
 - [ ] Three product ids in `funnel-record.md`.
 - [ ] No existing product touched.

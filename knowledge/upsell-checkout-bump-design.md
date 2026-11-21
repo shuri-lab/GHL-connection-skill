@@ -1,6 +1,6 @@
 # Upsell page, checkout column and order bump
 
-The same playbook builds the pages around the sales page. This is how we built Rickey's $97 one-click upsell page and styled the checkout's left column and order bump (Nov 20 2026). The live files: `examples/rickey-headstart/upsell/`. GoHighLevel wiring (one-click charge, products, workflows) is out of scope.
+This is how we built Rickey's $97 one-click upsell page and styled the checkout's left column and order bump (Nov 20 2026). It started as a copy from the Sales Page Playbook, so it begins at part D: **parts A to C (the sales page itself) are in the Sales Page Playbook**. The live files: `examples/rickey-headstart-funnel/pages/3-upsell.html` and `examples/rickey-headstart-funnel/pages/2-checkout-left.html`. GHL wiring (one-click charge, products, order form settings, workflows): `upsell-recipe.md` and `checkout-recipe.md`.
 
 ## D. Upsell page (one-click upsell, $97)
 
@@ -14,7 +14,7 @@ The same playbook builds the pages around the sales page. This is how we built R
 ### D2. Offer contents: sourced, not invented
 - The offer stack and deliverable text came from the project PDFs via pypdf (`PdfReader(f).pages[i].extract_text()`).
 - The course deck was image-only, so the module titles were read from a contact sheet. Each page's largest embedded image was pulled with pypdf + PIL, resized to 480 wide and pasted 5 per row (39 pages). The Swift PDFKit renderer stopped building after an SDK/compiler mismatch.
-- The product image (`offer-2-image-v2.png`, 1672×941) was converted to `offer-2-system-720/1280.webp`. Stack thumbnails were cropped from the same image: `o2-course (355,390,1010,905)`, `o2-hooks (1012,440,1250,885)`, `o2-formats (1236,445,1448,885)`, `o2-checklist (1440,445,1660,885)`, each thumbnailed into 240×240 at WebP q82.
+- The product image (`offer-2-image-v2.png`, 1672×941, a source file from the Rickey project repo, not included here) was converted to `offer-2-system-720/1280.webp`. Stack thumbnails were cropped from the same image: `o2-course (355,390,1010,905)`, `o2-hooks (1012,440,1250,885)`, `o2-formats (1236,445,1448,885)`, `o2-checklist (1440,445,1660,885)`, each thumbnailed into 240×240 at WebP q82.
 - The price ($97) came from the user. Item values ($297, $47, $47, $37) were **made up as placeholders**, as on Offer 1, and flagged as such in the report.
 
 ### D3. Section-by-section structure (final `ghl-upsell.html`, scoped under `#gtu`, tokens `--red:#D30805 --ink:#101017 --cream:#FFF8E7 --line:#E7E3DC`)
@@ -52,7 +52,7 @@ The same playbook builds the pages around the sales page. This is how we built R
 - **Alert bar:** confirm the purchase plus an access time ("in the next 5 minutes"), then "Don't close this page" + "exclusive one-time opportunity" + ↓.
 - **Headline:** "You Just Unlocked Your [Offer 1]. Now Get Your [Result] 10x Faster…"
 - **Bridge:** "[Offer 1] gets you [first result]. This is how you [keep/multiply it]."
-- **Stack:** every item = name + a one-line "so you…" benefit + crossed value. Total crossed. Savings = total − price. "Today, only on this page: $X". One-click reassurance ("no need to enter your card again").
+- **Stack:** every item = name + a one-line "so you…" benefit + crossed value. Total crossed. Savings = total minus price. "Today, only on this page: $X". One-click reassurance ("no need to enter your card again").
 - **Urgency without fake deadlines:** "only on this page / once you leave, it's gone" (true for a one-time offer). Never "today only" when no deadline exists (a learned rule from Offer 1).
 - **YES:** "YES! Add [Product] to My Order For Only $[price]".
 - **NO:** "No thanks, I'll [keep doing the painful thing] and take 10x longer to [get the result]."
@@ -156,7 +156,7 @@ Two columns, like the user's reference checkout: left = offer summary (custom HT
 5. Count something concrete the buyer gets ("37 products"), and get the number from the real deliverable (counted with pypdf). Never use internal structure words ("lanes", "scroll-stoppers", "seasonal calendar").
 6. **One number only.** Sub-counts confuse (the "29 picks across 8 lanes, 8 viral" version was rejected).
 7. 5th-grade test: a 10-year-old can say what they get and why it helps.
-8. Length: it must fit on a phone next to the 96–110px image (~130 characters worked; 256 was "too long").
+8. Length: it must fit on a phone next to the 96 to 110px image (~130 characters worked; 256 was "too long").
 
 ---
 

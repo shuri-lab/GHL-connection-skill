@@ -1,6 +1,6 @@
 # GHL builder and UI quirks (and the exact workaround for each)
 
-Read this before Stage 4. Every quirk below cost time on the Rickey build (Nov 20 2026). The workaround is the one that worked, not a guess.
+Read this before Stage 0 (Stage 0 needs §1 and S1 to S11; the rest before Stage 4). Every quirk below cost time on the Rickey build (Nov 20 2026). The workaround is the one that worked, not a guess.
 
 Conventions: `{loc}` = sub-account (location) id, `{funnel}` = funnel id, `{step}` = funnel step id, `{page}` = builder page id. "Pane" = the Claude desktop app's built-in browser (`mcp__Claude_Browser__*`). Coordinates are always from the latest screenshot.
 
@@ -63,7 +63,7 @@ Rules that follow from this table:
 | B3 | **Drag-and-drop never registers** | Select the section or column, open its **+**, search in **Quick Add**, then **click** the card. |
 | B4 | The section's center **+** sometimes needs two clicks | First click selects the section, second opens Quick Add. |
 | B5 | Which **+** does what | **Green +** on a section's bottom edge = add a section below. **Blue +** on a row's bottom edge = add a row below. **Orange +** on an element's bottom edge = add an element below (same column). |
-| B6 | Quick Add search keeps the last query | Click the search box → `End` → `Backspace` ×10 → type. (`triple_click` then type worked once; `cmd+a` did not.) |
+| B6 | Quick Add search keeps the last query | Click the search box → `End` → `Backspace` ×10 → `zoom` (empty) → type (the T2 recipe). Don't rely on `triple_click` (it worked once) or `cmd+a` (it didn't). |
 | B7 | Finding the Custom Code element | Search `code` or `custom` → the **Code** card in the "Custom" group (next to "QR Code"). It inserts **"Custom HTML/Javascript"** wrapped in a "1 Column Row". The right panel calls it "Custom Code" (tabs General / Styles, Element name, **Open Code Editor**). |
 | B8 | The toolbar `</>` icon | It is **page-level Tracking Code**, not a Code element. Don't use it for page HTML. |
 | B9 | Rows with columns | Quick Add → **Rows** → 1 to 6 Column. The checkout uses **2 Column**. Then each column's **+** adds into that column. |
@@ -93,7 +93,7 @@ Rules that follow from this table:
 |---|---|---|---|
 | D1 | **Native `<select>` inside the builder iframe** | Button → General → **Button Actions → "link to"**, and the button's **Products** picker | **Nothing, from the pane.** The open list is never drawn in screenshots. Click, click on the chevron, typing "One" + Return, Down + Return, Space, double-click: the value stays "Open popup". Arrow keys scroll the settings panel. Escape deselects the element. `find`/`read_page` can't see it. **Hand it to the person** (exact clicks in `upsell-recipe.md`), or, with their OK, try Claude in Chrome (unverified). |
 | D2 | **Custom (GHL-drawn) dropdowns** | Step Products and Price pickers, course lesson module, workflow trigger filters, order form **After purchase** | Open → type to filter (if it has a search) → **`hover` the option → `Return`**. Most reliable. Plain clicks on options often don't register. Separate key presses (`Down`, `Down`, `Return`) also work; one combined `"Down Down Enter"` string did **not** work in the order form modal. Keys can land one option off: `zoom` to read the chosen label every time. |
-| D3 | App-shell select | Funnel Settings → **Domain** | Option clicks didn't select. `key "Down Down Enter"` (one string) did. |
+| D3 | App-shell select | Funnel Settings → **Domain** | Option clicks didn't select; one `key` string of `Down`s + `Enter` did. On a shared account the list holds other brands' domains, so **never use a fixed count**: open the list, screenshot, count the position N of the domain confirmed in Stage 1, send N `Down`s + `Enter` in one `key` action, then `zoom` and compare letter by letter. Wrong → **Remove** and retry with N one higher or lower. (Rickey only: `Down Down Enter` picked `davidhsai.com`.) |
 | D4 | Wrong item picked by coordinates | Step Products dropdown picked "AI Avatars System Upsell" | Escape, reopen, pick again, screenshot before saving. |
 | D5 | Course module dropdown | Add Content → Lesson → module | Plain click failed; keyboard worked once then stopped; `find` ref click highlighted the option and `Return` confirmed; `hover` + `Return` was the most reliable. |
 
@@ -118,7 +118,8 @@ Rules that follow from this table:
 |---|---|---|
 | F1 | **Optimize JavaScript is on by default** ("Custom javascript and html codes added will be lazy loaded") | Turn it **off** for any funnel built with Custom Code. Toggle by JS (section 6), Save by ref, re-navigate. |
 | F2 | Step paths default to `/sales-page`, `/checkout`, `/upsell`, `/thank-you`; funnel path to `/<client>--<offer>` | On a shared domain these collide. Set `/<offer>-page`, `/<offer>-checkout`, ... via the native value setter (section 6). |
-| F3 | No free GHL default domain in the account | The Domain list showed only the connected domain. See `pitfalls.md` (domains). |
+| F3 | No free GHL default domain in the account | The Domain list showed only the connected domain. Choose with the person (Stage 1, step 3; `pitfalls.md` 8); to use the client's own domain, follow `connect-a-domain.md` first. |
+| F4 | Funnel-scoped test/live payment mode | **Not located yet** (the Nov 20 notes mention a funnel "payment mode" toggle but not where it is). Look only on the checkout step's **Products** tab and in the funnel's **Settings**; never change modes in Payments → Integrations (account-wide). When you find it, write its exact place here, with the date. |
 
 ### Batching
 
@@ -192,10 +193,12 @@ Reload and re-read afterwards to confirm the save.
 ```js
 const t=[...document.querySelectorAll('*')].find(e=>e.children.length===0&&e.textContent.trim()==='Optimize JavaScript');
 let row=t;for(let i=0;i<6&&row;i++){if(row.querySelector&&row.querySelector('.hr-switch'))break;row=row.parentElement;}
-const sw=row.querySelector('.hr-switch');sw.click();
-sw.getAttribute('aria-checked') // expect "false"
+const sw=row.querySelector('.hr-switch');
+const before=sw.getAttribute('aria-checked');
+if(before==='true') sw.click();   // read first: a blind click turns an off switch on
+({before, after:sw.getAttribute('aria-checked')}) // expect after: "false"
 ```
-Then `find "Save"` → click the ref → check `location.href` (Save leaves the settings page).
+If it clicked, `find "Save"` → click the ref → check `location.href` (Save leaves the settings page).
 
 ## 7. Details: dropdown recipes
 
@@ -214,9 +217,9 @@ const W=document.documentElement.clientWidth;
 ```
 `scrollW` must equal `W`. Then screenshot, repeat at desktop width (1280×800 was used; `check_funnel.mjs` uses 1440×900), and reset with `resize_window preset:"desktop"`. To screenshot a section further down: `window.scrollTo(0, el.getBoundingClientRect().top+scrollY-120)`.
 
-Walk the wrapper chain when something has unexpected padding:
+Walk the wrapper chain when something has unexpected padding (`<ROOTID>` = the page's root id, e.g. `gt-root`):
 ```js
-let a=[],e=document.getElementById('gtc-root');
+let a=[],e=document.getElementById('<ROOTID>');
 for(let i=0;i<10&&e;i++){const cs=getComputedStyle(e);a.push(e.tagName+'.'+String(e.className).split(' ').slice(0,2).join('.')+' p:'+cs.padding+' mt:'+cs.marginTop+' mw:'+cs.maxWidth);e=e.parentElement}
 a
 ```

@@ -1,9 +1,9 @@
 {
   "name": "Rickey · TikTok Shop Headstart (davidhsai.com)",
   "steps": [
-    { "type": "sales",    "url": "https://davidhsai.com/headstart-page",      "next": "/headstart-checkout" },
-    { "type": "checkout", "url": "https://davidhsai.com/headstart-checkout",  "bump": true, "price": "$27" },
-    { "type": "upsell",   "url": "https://davidhsai.com/headstart-upsell",    "yes": "YES", "no": "/headstart-thank-you" },
-    { "type": "thankyou", "url": "https://davidhsai.com/headstart-thank-you" }
+    { "type": "sales",    "url": "https://davidhsai.com/headstart-page",      "root": "gt-root",   "next": "/headstart-checkout" },
+    { "type": "checkout", "url": "https://davidhsai.com/headstart-checkout",  "root": "gtc-root",  "bump": true, "price": "$27" },
+    { "type": "upsell",   "url": "https://davidhsai.com/headstart-upsell",    "root": "gtu-root",  "yes": "YES", "no": "/headstart-thank-you" },
+    { "type": "thankyou", "url": "https://davidhsai.com/headstart-thank-you", "root": "gtty-root" }
   ]
 }

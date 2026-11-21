@@ -1,4 +1,5 @@
-<!-- First lines of every fragment (replace ROOTID with the page's root id). Removes GHL's section/row/column padding and width cap around our HTML. -->
+<!-- First lines of every fragment except the checkout's left column (replace ROOTID with the page's root id). Removes GHL's section/row/column padding and width cap around our HTML.
+     Not on the checkout's left column: that page has two columns, and width:100% on the column would push the order form under it. See knowledge/checkout-recipe.md section 2. -->
 <style>
 section:has(#ROOTID),[class*="section-"]:has(#ROOTID),.c-row:has(#ROOTID),.c-column:has(#ROOTID),.inner:has(#ROOTID),.c-custom-code:has(#ROOTID),.custom-code-container:has(#ROOTID){padding:0!important;margin:0!important;max-width:none!important;width:100%!important}
 </style>
