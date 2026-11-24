@@ -84,14 +84,16 @@ The file `examples/rickey-headstart-funnel/pages/2-checkout-left.html` holds thr
 
 To adapt: the full list is in Stage 2, step 5 and `knowledge/checkout-recipe.md` §13 (texts, prices, values, guarantee, logo and image URLs, the `IMG` constant and its `alt`, `document.title='Checkout | <Offer>';`). Then run the Stage 2 Rickey-content grep on the file. Full DOM map and CSS: `knowledge/checkout-recipe.md`.
 
-**Legal links footer** (the Rickey file has none; a real checkout needs them). With the URLs from the plan, add this as the last child of `#gtc` (after `.gtc-m`), so it shows on desktop and on phones:
+**Legal links:** Part 2 already writes them (`.legal`, shown on phone and desktop) from `legal` in the JSON: don't add a second footer. Check both sizes: `[...document.querySelectorAll('#gtc .legal a, #gtc .gtc-legal a')].map(a=>[a.href,a.offsetParent!==null])`.
+
+**Only with the Rickey file** (it has no legal links; a real checkout needs them). With the URLs from the plan, add this as the last child of `#gtc` (after `.gtc-m`), so it shows on desktop and on phones:
 ```html
 <p class="gtc-legal"><a href="PRIVACY-URL" target="_blank" rel="noopener">Privacy policy</a> · <a href="TERMS-URL" target="_blank" rel="noopener">Terms</a> · <a href="REFUND-URL" target="_blank" rel="noopener">Refund policy</a></p>
 ```
 and this CSS inside the fragment's `<style>`:
 ```css
 #gtc .gtc-legal{margin:14px 0 0;text-align:center;font:400 12.5px/1.4 Lato,sans-serif;color:#6b6b75}
-#gtc .gtc-legal a{color:inherit;text-decoration:underline}
+#gtc .legal a, #gtc .gtc-legal a{color:inherit;text-decoration:underline}
 @media(max-width:767px){#gtc .gtc-legal{margin:6px 0 0}}
 ```
 On a phone it adds one short line above the form (not tested on Nov 20): re-run the checker and confirm the first field is still on the first screen. If a URL is missing, leave that link out and list it as an open item; never point it at `#`.
@@ -114,7 +116,7 @@ On a separate tab on `https://<domain>/<slug>-checkout` (Pages polled first if y
    document.querySelector('.order-form__bump-desc').innerText
    ```
 4. **Only two fields:** `[...document.querySelectorAll('.order-form__label')].map(l=>l.innerText)` → Full Name, Email only.
-4b. **Legal links:** `[...document.querySelectorAll('#gtc .gtc-legal a')].map(a=>a.href)` → the plan's URLs, each returning 200 with `curl -s -o /dev/null -w "%{http_code}"`.
+4b. **Legal links:** `[...document.querySelectorAll('#gtc .legal a, #gtc .gtc-legal a')].map(a=>a.href)` → the plan's URLs, each returning 200 with `curl -s -o /dev/null -w "%{http_code}"`.
 5. **Desktop** (1280×800): two columns, the Stripe card field, the bump checkbox, the button faded until the form is valid.
 6. **Phone** (393×852): the compact card, then "1 Contact information" high on the first screen; screenshot the form top and the bump; `scrollWidth` = 393.
 7. Compare with `examples/rickey-headstart-funnel/screenshots/2-checkout-mobile.png` and `2-checkout-desktop.png`.

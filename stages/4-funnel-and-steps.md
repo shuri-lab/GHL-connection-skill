@@ -81,7 +81,7 @@ A **step product** is the catalog product attached to one funnel step, with its 
     - Do these one click at a time with a screenshot after each: in a fast batch the price and the name didn't stick.
 22. **Bump product:** + Add Product again → the bump catalog product → its price → Product name = the bump's buyer-facing name (Rickey: `The Starter Product List`) → Additional Options → **Bump Product** ("Should this product be the bump on the order page if present?") → Save.
 23. **Upsell step** → Products → + Add Product → the upsell catalog product (search a distinctive part of its name; Rickey: `4M`; hover, Return) → Price `… @ <upsell price>` (hover, Return) → clear the prefilled Product name → the upsell's buyer-facing name (Rickey: `My $4M TikTok Shop System`) → Main Product (default) → Save.
-24. Copy each step product's **Internal Product ID** from the table into `funnel-record.md` (it differs from the catalog id).
+24. Copy each step product's **Internal Product ID** from the table into `funnel-record.md` (it differs from the catalog id). Put the upsell's id in `funnel.json` as `"yes_product"`.
 
 ## Verify
 - Funnel Settings (after a reload): name, domain, path as planned; `aria-checked` of Optimize JavaScript = `"false"`.

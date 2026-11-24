@@ -8,7 +8,7 @@
 
 ## Before you start (inputs)
 - Which sub-account to use (its name, or its location id from a dashboard URL).
-- Which browser: the Claude desktop app's built-in browser pane (`mcp__Claude_Browser__*`, used for the whole Rickey build) or Claude in Chrome (`mcp__claude-in-chrome__*`, the person's real Chrome). The built-in pane cannot set two native dropdowns inside the page builder (see Stage 7). Claude in Chrome might, but that is untested.
+- Which browser: the Claude desktop app's built-in browser pane (`mcp__Claude_Browser__*`, used for the whole Rickey build) or Claude in Chrome (`mcp__claude-in-chrome__*`, the person's real Chrome). The built-in pane sets two native dropdowns in the page builder only with the Stage 7 D method. Claude in Chrome is untested there.
 - The person available for a few minutes to sign in.
 - A working folder for your notes: `my-funnel/` (inside the playbook folder it is git-ignored).
 

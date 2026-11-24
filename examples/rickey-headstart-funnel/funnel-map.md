@@ -88,7 +88,7 @@ Bump copy history: v1 "Want a shortcut on picking products? Get the product lane
 
 | What | Value |
 |---|---|
-| YES button | Native GHL Button; text `YES! Add My $4M TikTok Shop System to My Order For Only $97`; Element name `YES button (one-click upsell)`. **Action to set: Button Actions → link to = "One click up/down sell product", Products = "My $4M TikTok Shop System".** It could not be set from the browser pane (native select); handed to the owner (David) with the exact clicks. Status at the end of the session: **not confirmed** (no zoomed check, no purchase; session notes 2 §C6 and 3 §A11). |
+| YES button | Native GHL Button; text `YES! Add My $4M TikTok Shop System to My Order For Only $97`; Element name `YES button (one-click upsell)`. Action set Nov 23: One click up/down sell product, Products = "My $4M TikTok Shop System", Sale Actions = Go to Next step. Proven in the live page data |
 | NO link | Custom Code: `<a class="gtu-no" href="https://davidhsai.com/headstart-thank-you">No thanks, I'll keep guessing which products and hooks work, and take 10x longer to get my sales.</a>` |
 | Styling | By the fragment (text tagging `.gtu-yes` / `.gtu-no`) |
 | Reference | AI Avatars funnel → Upsell #1 (builder page `xOzdUz04zbV6ZNcIkXrm`), live at `https://www.davidhsai.com/upsell-1-product--model-videos-page`. YES = link to "One click up/down sell product", Products "AI Avatars System Upsell". Nothing saved there. Its builder was opened on Nov 20; the playbook now forbids opening another client's builder. |
@@ -103,24 +103,26 @@ Bump copy history: v1 "Want a shortcut on picking products? Get the product lane
 | Description | "Rickey's 7-day course to get your first TikTok Shop sales, starting from zero. Do one lesson a day, about 15 minutes each, then follow the 30-Day First Sale Challenge." |
 | Pricing | **One Time, $27** (not Free) |
 | Offers (Advanced) | Empty; access is granted by the workflow |
-| Thumbnail | Not uploaded (pane can't upload) |
+| Thumbnail | Uploaded Nov 23 (1280×720) |
 | Module | "Course Contents" |
 | Lessons (all published) | Start here: welcome + your downloads · Day 1: How TikTok Shop works + posting your first video · Day 2: Getting to your first 1,000 followers (the gate that lets you sell) · Day 3: Picking a product that sells · Day 4: Hooking people in the first 2 seconds · Day 5: Filming your first product video on the phone you already own · Day 6: Posting the right way + keeping your account safe · Day 7: Your first sale + what to do next |
-| Lesson content | Text placeholders ("Rickey's Day N video is coming here..."); "Start here" holds the 30-Day guide link. **Videos not uploaded yet.** |
+| Lesson content | Text placeholders ("Rickey's Day N video is coming here..."); "Start here" holds the 30-Day PDF as a Downloadable Resource. **Videos not uploaded yet.** |
 | Client portal (login) | **https://54ejrjbw49ecsisozh44.app.clientclub.net/** (Memberships → Client Portal ▾ → Dashboard) |
 
 ## 9. Workflows
 
 | Name | Id / URL | Trigger | Actions | Status |
 |---|---|---|---|---|
-| `Rickey · Headstart delivery` | `ff695f45-2300-420a-a945-b2ad6a6b7a50` (`{app}automation/workflow/ff695f45-2300-420a-a945-b2ad6a6b7a50`) | Order submitted; filter Global product Is "Rickey · TikTok Shop Headstart" | Grant course access (TikTok Shop Headstart) → Send email "Delivery email": subject "You're in. Here's Day 1", preview "Your course login, your guides and the Rickey Army link." | **Published** |
-| `Rickey · Starter Product List delivery` | `adcfb2b0-a859-4660-9d94-9ae04a2700a4` (`{app}automation/workflow/adcfb2b0-a859-4660-9d94-9ae04a2700a4`) | Order submitted; filter Global product Is "Rickey · The Starter Product List" | Send email "Starter Product List email": subject "Your Starter Product List", preview "Pick your first products tonight instead of guessing." | **Published** |
-| (upsell delivery) | not built | | | open |
+| `Rickey · Headstart delivery` | `ff695f45-2300-420a-a945-b2ad6a6b7a50` (`{app}automation/workflow/ff695f45-2300-420a-a945-b2ad6a6b7a50`) | Order submitted; filter Global product Is "Rickey · TikTok Shop Headstart" | Grant course access (TikTok Shop Headstart) → email "You're in. Here's Day 1" (text: `emails/published-emails.md`) | Published |
+| `Rickey · Starter Product List delivery` | `adcfb2b0-a859-4660-9d94-9ae04a2700a4` (`{app}automation/workflow/adcfb2b0-a859-4660-9d94-9ae04a2700a4`) | Order submitted; filter Global product Is "Rickey · The Starter Product List" | Grant course access (The Starter Product List) → email "Your Starter Product List" | Published |
+| `Rickey · System delivery` | built Nov 23 | Order submitted; filter Global product Is "Rickey · My $4M TikTok Shop System" | Grant course access (My $4M TikTok Shop System) → email "Your $4M TikTok Shop System is ready" | Published |
 
-- Sender: GHL default (From name and From email empty; a From name without an email blocked saving).
+**Since Nov 23:** the Headstart and Product List workflows grant their own course and send the new emails (`emails/published-emails.md`). Two more courses exist: "My $4M TikTok Shop System" ($97, Start here + 8 lessons, 3 PDFs) and "The Starter Product List" ($17, 1 lesson, 1 PDF). Badges and credentials are Draft on all three; the account's "Course sign-up" and "Course access" emails are off.
+
+- Sender (Nov 23): From name Rickey, From email `reply@amail.msgsndrlf.com`.
 - Save mode: manual save kept on new workflows.
 - Existing drafts "New Workflow : 1749480932675" and "New Workflow : 1763563288239": untouched.
-- Email bodies: `knowledge/memberships-and-workflows.md` sections C and D.
+- Email bodies: `knowledge/memberships-and-workflows.md` and `emails/published-emails.md`.
 
 ## 10. Users
 
@@ -138,35 +140,31 @@ Follow-up email to the teammate: sent as a reply in his access-request thread, m
 | Base URL | `https://shuri-lab.github.io/rickey-tiktokshop-project/` |
 | Fragments | `offer-1-sales-page/ghl-sales-page.html` (= `pages/1-sales-page.html` here), `offer-1-sales-page/ghl-checkout-left.html` (= `2-checkout-left.html`), `offer-2-upsell/ghl-upsell.html` (= `3-upsell.html`), `offer-1-sales-page/ghl-thank-you.html` (= `4-thank-you.html`) |
 | Images | `images/opt/*.webp`, e.g. `logo-gametape-black-400.webp`, `hero-headstart-mockup-nobg-720.webp` / `-1280.webp`, `starter-product-list-320.webp` (bump), `offer-2-system-720.webp` / `-1280.webp`, `o2-course-240.webp`, `o2-checklist-240.webp`, `o2-hooks-240.webp`, `o2-formats-240.webp`; thank-you uses `images/logo-gametape-stacked-white.png` and `images/rickey-bestbuy.jpg` |
-| Downloads | `downloads/30-day-first-sale-challenge.pdf`, `downloads/starter-product-list.pdf` |
+| Downloads | None. Paid files are in the courses |
 | CORS | `access-control-allow-origin: *` (checked with curl) |
-| Thank-you config | `GT_LINKS={course:'https://54ejrjbw49ecsisozh44.app.clientclub.net/',whatsapp:'',support:''}` |
+| Thank-you config | `GT_LINKS={course:'https://54ejrjbw49ecsisozh44.app.clientclub.net/',whatsapp:'<channel link>',support:'<support email>'}` (filled Nov 23) |
 | Commits from the GHL work (first ones) | `41db95b` "Add HighLevel version of the Offer 1 sales page (absolute image links, checkout link)"; `ed0bda1` "HighLevel page: remove wrapper padding and width cap, set tab title" |
 
 ## 12. Brand tokens
 
 Red `#D30805`, ink `#101017`, cream `#FFF8E7`, line `#E7E3DC`; fonts Poppins (headings), Lato (body), Caveat (signature). Brand: Game Tape.
 
-## 13. Open items (end of Nov 20 2026)
+## 13. Open items (Nov 24 2026)
 
-1. **YES button action** on the upsell: link to = One click up/down sell product, Products = My $4M TikTok Shop System, Save, Publish (owner, about 30 s). Until then YES does nothing.
-2. **Test purchase, end to end:** checkout with bump → upsell YES → thank-you; check both emails, course login, totals; also the NO link. The owner buys and refunds; Stripe test mode only if a switch scoped to this funnel exists (never the account-wide one). The person types the card. Claude never enters cards.
-3. **Upsell delivery:** no course, workflow or email delivers the $97 System yet.
-4. **WhatsApp channel link** (Rickey Army): `GT_LINKS.whatsapp` on the thank-you page and `https://WHATSAPP-LINK-GOES-HERE` in the live delivery email (broken for any buyer now).
-5. **Support email:** `GT_LINKS.support`.
-6. **Sender name and email** for the workflow emails (default sender now).
-7. **Course thumbnail and the 7 lesson videos** (Rickey films them; the person uploads).
-8. **Bump custom image:** optional upload in GHL; if done, remove the script injection.
-9. **Upsell stack values** $297 / $47 / $47 / $37 (total $428) are placeholders: client to approve.
-10. **Loaders on the sales page and checkout are the unguarded version.** Replace with the guarded loader next time those pages are edited.
-11. **Domain:** davidhsai.com belongs to the other brand and is expiring soon. Renew, or connect a Game Tape domain before ads (then redirects + Meta re-verification).
-12. **Shared Stripe, sender and portal:** confirm Rickey's revenue should land in this Stripe account and statement name (or set a product Statement Descriptor), read the default sender, and accept or change the portal branding (Stage 1, Money and identity).
-12b. **Paid PDFs on public Pages:** move `downloads/*.pdf` into the course (lesson attachment) or GHL Media, and point the emails and the thank-you page there.
-12c. **Legal links, tracking, tax, buyer tags:** none set (Stage 1, step 7).
-13. **Product type "Physical":** confirm during the test purchase that checkout never asks for shipping.
-14. **Before making the repo private:** move fragments, images and PDFs into GHL (paste the pages, GHL Media), or pages go blank and downloads break.
-15. **Upsell path:** confirm `/headstart-upsell` in the Upsell step's Publishing tab.
-16. **Auto-created MEMBERSHIP product** "TikTok Shop Headstart": decide whether to keep it.
-17. **Teammate login error** ("Error while bootstrapping the session"): fix his own login; replace the placeholder last name.
-18. **Password setup email:** confirm whether GHL sends one when course access is granted (the delivery email tells first-timers to use "Forgot password").
-19. **Go-live sign-off:** nothing goes to real customers without the manager's (TJ's) sign-off.
+**Closed since Nov 20:** YES action, upsell delivery, WhatsApp link, thumbnails, paid PDFs off Pages, sender, password setup (the email's sign-in link), "Edit Shipping" (hidden; the form shows only Full Name and Email), path `/headstart-upsell`.
+
+1. **Two test orders** by the owner (Stage 12 C), then check them.
+2. **Payment mode is TEST.** Switch to Live after the orders, and check.
+3. **Final domain** (then: sales → checkout link, NO link, step domain, dedicated sending domain, one re-test).
+4. **Rickey's videos** and the lesson texts that say they're coming.
+5. **Stripe account and statement name** shared with AI Avatars: confirm.
+6. **Upsell stack values** ($428) and whether the guarantee covers the upsell: client to approve.
+7. **Privacy, terms, refund links; tracking ids; tax; buyer tags:** none set.
+8. **Refund → revoke access:** not decided, not built.
+9. **Support email** is temporary.
+10. **Where the emails land** (Inbox or Spam): not recorded.
+11. **Non-card payment methods** (bank, Cash App, Amazon Pay) may not support the one-click upsell.
+12. **Dec 1 2026:** GHL moves classic courses and portal. Recheck access.
+13. **Repo visibility:** review it with the owner before launch (this repo holds ids).
+14. Two test contacts to delete. Loaders on the sales page and checkout are the unguarded version. Teammate login error.
+15. **Go-live sign-off:** TJ.

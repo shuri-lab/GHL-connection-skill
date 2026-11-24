@@ -7,6 +7,7 @@
 **Read first:** `templates/funnel-plan.md`, `knowledge/upsell-checkout-bump-design.md` (copy rules for the bump and upsell), `knowledge/glossary.md`, `examples/rickey-headstart-funnel/funnel-map.md` (a finished plan with every value).
 
 ## Before you start (inputs)
+- **The Sales Page Playbook, Part 2 output** (`my-funnel-pages/dist/ghl-texts.md` and the fragments). If it exists, most of steps 1, 6, 8, 9 and 11 and step 12 (except the sales page's root id) are already answered there: copy them into the plan and don't reinvent. If not, run Part 2 first.
 - The Stage 0 audit and the person's decisions (sub-account, off-limits list, flagged workflows).
 - The offer documents: approved copy (e.g. `copy.md`), the sales page if it exists, the deliverables (PDFs, course outline or deck).
 - Prices for the main product, the bump and the upsell (one-time or recurring).
@@ -14,7 +15,7 @@
 - Brand tokens (colours, fonts, logo files).
 
 ## Steps
-1. **Collect the buyer-facing copy first.** Thank-you page text, delivery email text, bump text, upsell text. On Rickey, the copywriter (Moses, a person) sent `rickey-thankyou-and-delivery-email-v1.md` by email; it is in `examples/rickey-headstart-funnel/emails/moses-thank-you-and-delivery-copy-v1.md`. `[Brackets]` in such files mark values to fill in from GHL. Normalise spellings to the sales page (Rickey: "Head Start" became "Headstart").
+1. **Collect the buyer-facing copy first.** Thank-you page text, delivery email text, bump text, upsell text. On Rickey, the copywriter (Moses, a person) sent `rickey-thankyou-and-delivery-email-v1.md` by email; it is in `examples/rickey-headstart-funnel/emails/moses-thank-you-and-delivery-copy-v1.md`. That file is history ("[Only if bump]" lines can't work in GHL): use Part 2's emails. `[Brackets]` in such files mark values to fill in from GHL. Normalise spellings to the sales page (Rickey: "Head Start" became "Headstart").
 2. **Pick the slug.** One short lowercase word for the offer (Rickey: `headstart`). Every path and file name uses it.
 3. **Choose the domain.** You saw the options in Stage 0 (funnel Settings → Domain lists only domains connected to the sub-account). Present these three, with the trade-offs:
    1. **Preview links:** review only. Not for live payments or real traffic.
@@ -25,7 +26,7 @@
 4. ★ **Money and identity.** On a shared sub-account the buyer can end up paying, reading email from and logging in to **another client's** brand. Settle four things, in writing, before building:
    1. **Stripe account:** which Stripe receives the money (Stage 0 step 7). If it belongs to another client or project, the options are: the owner accepts it in writing (and step 4.2 applies), or a separate sub-account with the client's own Stripe (Stage 0, "If the person picks Separate sub-account"). Claude never opens Stripe settings.
    2. **Card-statement name:** what buyers see on their bank statement. If the Stripe account isn't the client's, the products get a **Statement Descriptor** the person approves (Stage 3), e.g. `ACME 21DAY` (Stripe's limit: up to 22 characters, letters, numbers and spaces). A name the buyer doesn't recognise causes chargebacks.
-   3. **Sender (From name and From email):** read the default sender first (Stage 0 audit row "Email sender": Settings → Business Profile and Settings → Email Services, read-only) and tell the person what buyers would see. Then they choose: the client's own From name and email (only if they confirm it can send from this account), or the default sender, accepted in writing.
+   3. **Sender (From name and From email):** read the default sender first (Stage 0 audit row "Email sender": Settings → Business Profile and Settings → Email Services, read-only) and tell the person what buyers would see. Then they choose: (a) the client's own address on a **dedicated sending domain** connected to this account; (b) **GHL's shared sending address with the founder's name** (Rickey: `reply@amail.msgsndrlf.com`; read this account's own in Settings → Email Services); (c) the default sender, accepted in writing.
    4. **Portal branding:** buyers log in to the sub-account's one client portal (Stage 0 audit row "Client portal"). Tell the person its current name and logo. They accept it, or choose a separate sub-account. Never change the portal's branding yourself: the other client's buyers see it too.
 
    Write the four answers in the plan's Account section.
@@ -36,7 +37,7 @@
    - **Internal (catalog) name:** `<Client> · <Product>`, e.g. `Rickey · TikTok Shop Headstart`. Everything you create in GHL gets the client prefix.
    - **Customer-facing name:** no prefix. It is used for the step product name, the bump headline and the course title, because buyers see those.
    - **Price:** one-time unless the person says otherwise. (GHL warns that "Multiple recurring products and bump products with subscriptions not supported with Paypal".)
-   - **Delivered how:** one or more of: course access (Memberships); an email with the files (paid files live inside the course or in GHL Media, never on public GitHub Pages: Stage 2); a booking link or calendar (calls, coaching); a community invite.
+   - **Delivered how:** one or more of: course access (Memberships); an email with the files (paid files live inside that product's course lesson, never on public GitHub Pages: Stage 2); a booking link or calendar (calls, coaching); a community invite.
 7. **Legal, tracking, tax and buyer tags** (a real funnel needs them; the Rickey build skipped them):
    - **Legal links:** the client's privacy policy, terms and refund policy URLs. They go in the checkout's left-column footer (Stage 6). Also decide with the person whether to turn on the order form's **Terms & conditions** checkbox (Stage 6; it needs the terms URL). If the client has none, list them as missing. Never write legal text yourself.
    - **Tracking:** a Meta pixel id and/or a GA4 measurement id, only if the client gives them. The base code goes in funnel Settings → Tracking & scripts (Stage 4) and a Purchase event on the thank-you page (Stage 8). None given: none added, noted in the plan.
@@ -49,21 +50,24 @@
    - Description: **one pain + one number + one promise**, one sentence, about 130 characters, so it fits next to the 96 to 110 px image on a phone. Count the number from the real deliverable (open the PDF with `pypdf` and count). **One number only:** "29 picks across 8 lanes, 8 viral…" was rejected. A 10-year-old must be able to say what they get.
 9. **Plan the upsell** (one-click, shown right after checkout). Patterns that worked:
    - Alert bar: order confirmed + access time ("in the next 5 minutes") + "Don't close this page. Take a look at this exclusive one-time opportunity first ↓".
-   - Headline: "You Just Unlocked Your [Offer 1]. Now Get Your [Result] 10x Faster…".
+   - Headline: "You Just Unlocked Your [Offer 1]. Now [the next result they want]…" (a number such as 10x only with the client's source).
    - YES (native button, must start with `YES!`): "YES! Add [Product] to My Order For Only $[price]".
-   - NO (a link, must start with `No thanks`): "No thanks, I'll [keep doing the painful thing], and take 10x longer to [get the result]."
+   - NO (a link, must start with `No thanks`): "No thanks, I'll [keep doing the painful thing], and take longer to [get the result]."
    - Urgency without fake deadlines: "only on this page / once you leave, it's gone". Never "today only" if there is no deadline.
    - Values in the offer stack: if the client didn't give them, mark them as placeholders in the plan and ask (Rickey's $297/$47/$47/$37 were placeholders).
    - The guarantee: the client's real guarantee, word for word.
 10. **Plan the course.** Title (customer-facing, no prefix), description, lessons (titles from the approved copy), which product grants it. A separate course for the upsell only if the upsell is course content. Pricing will be **One Time** (never Free: "anyone with the link can enroll").
 11. **Plan the delivery.** One workflow per product, because GHL can't show or hide parts of one email based on whether the bump was bought:
     - main product → grant course access + buyer tag + delivery email;
-    - bump → buyer tag + email with the download link (the file in GHL Media, or a small course the bump grants);
+    - bump → **its own small course** + buyer tag + its own email (never inside the main course);
     - upsell → depends on what it is: a course (grant the upsell course + email), calls or coaching (email with the booking link), a community (email with the invite link); plus its buyer tag.
+    - write the "who gets what" table (main only / + bump / + upsell / all) and get a yes: nobody gets what they didn't buy. Ask too: does a refunded buyer lose access?
     List the links each email needs and which are still missing (community link, booking link, support email, sender name and email).
 12. **Plan the pages and root ids.** One unique root id per page; it must end in `-root` (the checker looks for `[id$="-root"]`). Rickey used `gt-root` (sales), `gtc-root` (checkout left), `gtu-root` (upsell), `gtty-root` (thank-you). Write the planned fragment URLs (Stage 2 hosts them). Say which pages come from the Sales Page Playbook and which start from the Rickey files (Stage 2 table).
 13. **Plan team access and sign-off.** Who needs a GHL user and which role (Stage 11). Who signs off before real traffic (for TJ's projects: TJ).
-14. **Write `my-funnel/funnel.json`** from `templates/funnel.json`: replace every `REPLACE-ME.invalid` URL with the planned live URL, `next` = the checkout path, `price` = the main price as shown on the page (e.g. `"$27"`), `yes` = `"YES"`, `no` = the thank-you path, `root` = each page's root id. The checker refuses to run while any `REPLACE-ME` is left.
+14. **Write `my-funnel/funnel.json`** from `templates/funnel.json`: replace every `REPLACE-ME.invalid` URL with the planned live URL, `next` = the checkout path, `price` = the main price as shown on the page (e.g. `"$27"`), `yes` = `"YES"`, `no` = the thank-you path, `root` = each page's root id. The checker refuses to run while any `REPLACE-ME` is left; `yes_product` stays `REPLACE-ME` until Stage 4 gives the upsell step product's Internal Product ID (runs without the upsell step are fine until then).
+14b. **Back in the Sales Page Playbook's `funnel-pages.json`:** set `domain`, `slug`, `legal`, and every known link (`course` = the portal URL from Stage 0; `community`; `support`). In Stage 2, once the repo exists, set `assets_base` and rebuild. Use `--final` when everything is known; until then build without it, list each CHECK under Open items, and run `--final` before the Stage 12 sign-off.
+14c. **No bump?** Remove `bump` from the JSON; skip its product (3), step product (4), order-bump setting (6), course (9) and workflow (10); `"bump": false` in `funnel.json`; test order 2 without it. **No upsell?** Remove `upsells` from the JSON; skip its product (3), step and step product (4), Stage 7, its course (9) and workflow (10); take it out of `funnel.json` (the checker then prints 6 rows, not 8), the thank-you note and the test orders. The checkout goes straight to the thank-you page.
 15. ★ **Send the plan for confirmation.** A short message: the offer map table, the four URLs, the domain choice and its trade-off, the money and identity answers, the legal/tracking/tax decisions, and the list of missing inputs. Wait for a clear yes, especially on the domain and the money and identity block.
 
 ## Verify
@@ -77,8 +81,8 @@
 | Piece | Customer-facing name | Internal name | Price | Delivered how |
 |---|---|---|---|---|
 | Main | TikTok Shop Headstart | Rickey · TikTok Shop Headstart | $27 one-time | Course "TikTok Shop Headstart" + delivery email |
-| Bump | The Starter Product List | Rickey · The Starter Product List | $17 one-time | Email with the PDF link |
-| Upsell | My $4M TikTok Shop System | Rickey · My $4M TikTok Shop System | $97 one-time | Not built yet on Nov 20 (open item) |
+| Bump | The Starter Product List | Rickey · The Starter Product List | $17 one-time | Its own one-lesson course + its own email |
+| Upsell | My $4M TikTok Shop System | Rickey · My $4M TikTok Shop System | $97 one-time | Its own course (8 lessons, 3 PDFs) + its own email (built Nov 23) |
 
 | # | Step | Path | Root id |
 |---|---|---|---|
@@ -102,5 +106,5 @@
 
 ## Done when
 - [ ] `my-funnel/funnel-plan.md` is complete and the person said yes to it.
-- [ ] `my-funnel/funnel.json` has the four planned URLs and root ids, and no `REPLACE-ME` left.
+- [ ] `my-funnel/funnel.json` has the four planned URLs and root ids, and no `REPLACE-ME` left except `yes_product`.
 - [ ] Missing inputs are listed in the plan and in `funnel-record.md` → Open items.

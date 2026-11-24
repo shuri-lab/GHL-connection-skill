@@ -49,11 +49,11 @@ Every problem hit while building Rickey's funnel (Nov 20 2026), with the fix tha
 31. **`cmd+a` doesn't select all** in hex, title, button text, element name, bump description, product name, Quick Add search, email source. New text got appended (lesson titles "Day 2" and "Day 3"). Fix: End (or `cmd+Down`) + Backspace ×N + Delete ×N, `zoom` empty, type, `zoom`.
 32. **Batched clicks silently dropped changes** (8 eye toggles left Company, Country and City visible). Fix: one click at a time with 2 s waits, then check the preview.
 33. **Company is required** in the default order form, so it can't just be hidden. Fix: click its required marker first, then the eye.
-34. **Native `<select>` inside the builder** (button "link to", button "Products") can't be operated from the pane at all. Fix: say so up front; hand the 4 clicks to the person (`upsell-recipe.md`), or with their OK try Claude in Chrome (unverified).
+34. **Native `<select>` inside the builder** (button "link to", "Products") ignores clicks and typing. Fix: Ask AI for "link to", one `key` press of the first letter for Products (`stages/7-upsell-step.md` D).
 35. **Custom dropdown keys land one off** (After purchase landed on "Choose a specific funnel step"). Fix: separate `Up`/`Down` presses from the current value, `Return`, `zoom` to read the label.
 36. **Escape deselects the element** instead of closing a dropdown. Fix: re-select and scroll back.
 37. **Clipboard paste doesn't reach the pane.** Fix: type; for big pages use the loader.
-38. **The pane can't upload** (course thumbnail, videos, bump custom image, product media). Fix: list them for the person; inject images from the fragment where possible.
+38. **No file picker in the pane.** Fix: on app pages a script fills the file input from a public image URL; paid files are dragged in by the person (`stages/9-course-memberships.md` 8 and F); the bump image is injected from the fragment.
 
 ## Loader and hosting
 
@@ -61,7 +61,7 @@ Every problem hit while building Rickey's funnel (Nov 20 2026), with the fix tha
 40. **Pages cache lag** (10 to 70 s, sometimes over a minute; a check after 45 s saw the old file). Fix: poll with a cache-buster for a marker string from the change.
 41. **`git push` rejected** because Pages setup added commits ("Create CNAME", "Delete CNAME"). Fix: `git fetch`, inspect `git log HEAD..origin/main`, `git pull --rebase`, push.
 42. **A chained `sleep 60` is blocked** by the harness. Fix: polling loops with short sleeps.
-43. **Repo privacy.** The loaders fetch from public GitHub Pages. Fix: before making the repo private, move code, images and PDFs into GHL (paste the page, GHL Media) or every page goes blank and downloads break.
+43. **Repo privacy.** The loaders fetch from public GitHub Pages. Fix: before making the repo private, move the code and images into GHL or every page goes blank.
 
 ## Checkout and order form
 
@@ -81,17 +81,17 @@ Every problem hit while building Rickey's funnel (Nov 20 2026), with the fix tha
 54. **Long email HTML garbled** (dropped keystrokes, "Hey" twice). Fix: one paragraph per `type`, 1 s waits, `zoom`.
 55. **Source box ignores select-all and modifiers; `form_input` can't reach it.** Fix: clear in the visual editor, reopen source.
 56. **Editor strips paragraph spacing.** Fix: inline `margin` on every `<p>`.
-57. **From name without From email** blocks saving. Fix: both set, or both empty (default sender).
+57. **From name without From email** blocks saving. Fix: set both (or both empty only with the default sender accepted in writing).
 58. **"Free" course pricing** lets anyone with the link enroll. Fix: One Time at the product's price.
 59. **New lessons are drafts.** Fix: open each → description → Save and publish.
 60. **Course module dropdown ignored clicks.** Fix: `hover` the option → `Return`.
 61. **Placeholder links in live emails** (`https://WHATSAPP-LINK-GOES-HERE`). Any buyer now gets a broken link. Fix: list as an open item; fill before real traffic.
-62. **Upsell bought but nothing delivers it.** Rickey's upsell has no delivery workflow yet. Fix: build it (course + workflow + email) before real traffic.
+62. **Upsell bought but nothing delivers it.** Fix: build its course, workflow and email before the page goes live (Rickey's: Nov 23).
 
 ## Upsell page
 
-63. **YES button left at its default** ("Open popup", no popup): YES does nothing. Fix: link to = One click up/down sell product, Products = the step product.
-64. **`check_funnel.mjs` can't see the YES action**; a YES button with no action still passes. Fix: confirm the setting with the person or in the test purchase.
+63. **YES button left at its default** ("Open popup"): YES sells nothing, and it looks fine. It was live like that on Rickey's page. Fix: Stage 7 D, and trust only the checker's `YES sells` line.
+64. **A check that only looks can be fooled.** The old `check_funnel.mjs` passed the broken YES. It now decodes the page data and reads the action and the product.
 65. **Image overflow on phones** (`scrollWidth` 778 vs 393): `#gtu .shot{max-width:760px}` beat `#gtu img{max-width:100%}`. Fix: `width:100%` plus the max-width.
 66. **Flex bullet split** (a `<b>` became its own flex item). Fix: wrap each `li`'s content in one `<span>`.
 67. **Squashed circles** on phones: `flex:0 0 44px` in a column layout sets height, not width. Fix: `flex:none;width:44px;height:44px`.
@@ -111,8 +111,8 @@ Every problem hit while building Rickey's funnel (Nov 20 2026), with the fix tha
 
 ## Testing and go-live
 
-78. **No test purchase was run on Nov 20.** Totals were tested without buying (JS: $27 → $44 → $27). Payment, delivery emails, course access and the one-click charge are unproven until a purchase. Fix: the person buys once (bump + upsell YES), checks emails, course login and the next pages, then refunds; or, only if a funnel-scoped test mode exists, the person types Stripe's test card. Claude never types any card number.
-79. **Stripe test mode affects real buyers.** An account-wide test mode blocks every real buyer in the sub-account. Where a funnel-scoped payment mode toggle lives was not seen in the session. Fix: look only on the checkout step's Products tab and the funnel Settings; never change modes in Payments → Integrations; if there's no funnel-scoped switch, the person buys for real and refunds. Record the switch in `builder-quirks.md` F4 once found.
+78. **A funnel that looks finished isn't proven.** Delivery can be proven on test contacts without buying (Stage 12 B2); the checkout, bump, one-click charge and triggers only with two test orders by the person (Stage 12 C).
+79. **Test mode.** The funnel's own switch is funnel Settings → Payments & checkout → Payment mode. Never the account-wide one. **Forgetting to switch back means nobody can buy:** write the mode in the record; the checker prints a NOTE, and fails with `--live`.
 80. **Shared Stripe account.** The new offer's money lands in the same Stripe account and card-statement name as the other project. Fix: decide it in Stage 1 (Money and identity) before building: accept in writing with a product Statement Descriptor, or a separate sub-account with the client's Stripe.
 81. **Going live without sign-off.** Fix: real traffic only after the required sign-off (TJ for his projects).
 82. **Placeholder offer values** (upsell stack $297/$47/$47/$37 were made up). Fix: flag them for the client to approve.
@@ -126,8 +126,24 @@ Every problem hit while building Rickey's funnel (Nov 20 2026), with the fix tha
 
 ## Added after the blind review (gaps the Rickey build didn't hit, or hit without noticing)
 
-87. **Workflows cross-fire on a shared account.** A published workflow whose product filter didn't save fires on the other client's real orders; the other client's broad triggers (Order submitted with no filter, Contact created, a tag) fire on yours. Fix: read every Published workflow's trigger in Stage 0 and flag broad ones; zoom your own trigger card before every Publish; 0 enrolled until the test.
-88. **Paid files on public Pages.** Rickey's PDFs sat at guessable URLs in a browsable public repo. Fix: paid files in the course or GHL Media (uploaded by the person); only free files on Pages.
+87. **Workflows cross-fire on a shared account.** A published workflow whose product filter didn't save fires on the other client's real orders; the other client's broad triggers (Order submitted with no filter, Contact created, a tag) fire on yours. Fix: read every Published workflow's trigger in Stage 0 and flag broad ones; zoom your own trigger card before every Publish; 0 enrolled until your own test contacts.
+88. **Paid files on public Pages.** Guessable URLs in a browsable public repo. Fix: paid files in the course lesson (dragged in by the person); only free files on Pages.
 89. **Rickey's content shipped on a new client's pages.** Adapted fragments kept Rickey's names, prices, links and comments. Fix: the Stage 2 Rickey-content grep must print nothing (or only approved lines).
 90. **A fixed key count picks the wrong domain.** `Down Down Enter` worked for Rickey's list only. Fix: screenshot the list, count the confirmed domain's position, zoom and compare after choosing (`builder-quirks.md` D3).
 91. **Buyers see another client's brand.** On a shared account the default sender, the card-statement name and the portal belong to whoever set them up. Fix: the Stage 1 Money and identity block, decided in writing before building.
+
+## Added Nov 23 and 24 (finishing and testing Rickey's funnel)
+
+92. **GHL's own emails reach your buyers.** Account-wide course emails carried another client's brand ("Welcome to the AI Avatars System!!"), and each new course's Welcome Badge sends "🎉 Welcome to …!". Fix: Stage 10 D2 and Stage 9 step 9b, then prove it with a fresh test contact.
+93. **The bump given to everyone.** One course or one email for all would do it. Fix: one course, one workflow, one email per product; the main email never names the add-ons; check a main-only test contact sees one course.
+94. **Paid PDFs made public to upload them.** Removing them later doesn't undo it. Fix: the person drags them in.
+95. **A sender GHL isn't authorised for** shows "sent" and may never be seen. Fix: GHL's shared address with the founder's name for now, a dedicated sending domain at launch, and a person looking in Inbox, Promotions and Spam.
+96. **"Delivered" in GHL isn't the inbox,** and the Gmail connector can't see Spam.
+97. **Sign-in links expire after 24 hours.** Fix: say so in the email, and give the portal link and "Forgot password" as the second way in.
+98. **Two products with one name.** The course's auto-created product sits next to the prefixed catalog product in every list. Fix: pick the prefixed one, zoom.
+99. **Spinner on YES** for 7 to 10 s looks broken to a tester. Fix: tell them; wait before checking.
+100. **YES text at 16px** because GHL's inner class wins. Fix: the `.main-heading-button` override in the fragment.
+101. **Opening the wrong account.** The pane's Gmail was signed in as someone else. Fix: check whose account it is before reading; leave at once and say so.
+102. **Costs from testing.** Ask AI and emails can be billed by HighLevel. Fix: mention it.
+103. **Platform changes.** GHL moves classic courses and the classic portal on Dec 1 2026. Fix: recheck access and login after it.
+104. **Saying "everything is ready"** when it's built but not proven. Fix: three lists: proven, built but unproven, not done.

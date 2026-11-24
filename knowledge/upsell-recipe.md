@@ -39,13 +39,13 @@ Everything is HTML (one fragment) **except the YES button**. The NO is a tiny Cu
 |---|---|---|---|
 | 1 | **Alert bar** (red, full width, `role="status"`, 17/18 px phone, 20/22 px desktop) | "✓ Your order is confirmed! You'll have access to TikTok Shop Headstart in the next 5 minutes." / bold: "Don't close this page. Take a look at this exclusive one-time opportunity first ↓" | Confirm the purchase + access time. Then "Don't close this page" + "exclusive one-time opportunity" + ↓. No VSL: don't say "watch the video". |
 | 2 | **Progress band** (ink) | "ORDER 90% COMPLETE" + 90% bar with moving red stripes | Same. |
-| 3 | **Hero** | Pill "⚡ Exclusive one-time offer"; H1 "You Just Unlocked Your Headstart. Now Get Your Sales **10x Faster**…"; product image; product title chip "My $4M TikTok Shop System"; subheadline "The exact system behind my $4M TikTok Shop. **How I find winning products, hook people in the first 2 seconds, and film videos that sell**, so every video you post has a real shot at making money." | "You Just Unlocked Your [Offer 1]. Now Get Your [Result] 10x Faster…" + the upsell's product image + one strong subheadline. |
+| 3 | **Hero** | Pill "⚡ Exclusive one-time offer"; H1 "You Just Unlocked Your Headstart. Now Get Your Sales **10x Faster**…"; product image; product title chip "My $4M TikTok Shop System"; subheadline "The exact system behind my $4M TikTok Shop. **How I find winning products, hook people in the first 2 seconds, and film videos that sell**, so every video you post has a real shot at making money." | "You Just Unlocked Your [Offer 1]. Now [the next result]…" (a number only with a source) + the upsell's product image + one strong subheadline. |
 | 4 | **Bridge** (dark card) | "The Headstart gets you your first sale. **This is how you keep them coming.**" + 3 ✓ wins | "[Offer 1] gets you [first result]. This is how you [keep / multiply it]." + 3 concrete wins. |
 | 5 | **Offer stack** (2 px ink border, red offset shadow) | "Everything You **Get Today**" + chip "One-time $97 · instant access"; items with thumbnail + title + one-line benefit + crossed value: course ~~$297~~ (with its 8 module titles), Product Checklist ~~$47~~, Hook Bank ~~$47~~, Format List ~~$37~~; "Total value: ~~$428~~"; chip "Exclusive discount · you save $331"; "Today, only on this page: **$97**"; "One-time payment. Added to your order in one click, no need to enter your card again." | Each item = name + "so you..." benefit + crossed value. Total crossed. Savings = total minus price. "Today, only on this page: $X". One-click reassurance. |
 | 6 | **Guarantee strip** | "**Your money's protected.** Do the work and still no sale? You get a full refund." | Short, matches the client's real guarantee. |
 | 7 | **Lead-in** | "➡️ This is an exclusive one-time offer." / "Only available right here, right now. Once you leave this page, it's gone." + bouncing ↓ | Urgency that is true for a one-time offer. Never "today only" if no deadline exists. |
 | 8 | **YES** (native button) | "YES! Add My $4M TikTok Shop System to My Order For Only $97" | "YES! Add [Product] to My Order For Only $[price]". Must start with "YES!". |
-| 9 | **NO** (link) | "No thanks, I'll keep guessing which products and hooks work, and take 10x longer to get my sales." | "No thanks, I'll [keep doing the painful thing] and take 10x longer to [get the result]." Must start with "No thanks". |
+| 9 | **NO** (link) | "No thanks, I'll keep guessing which products and hooks work, and take 10x longer to get my sales." | "No thanks, I'll [keep doing the painful thing] and take longer to [get the result]." Must start with "No thanks". |
 
 Content sourcing: the offer stack and module titles came from the project PDFs (`pypdf`; for an image-only deck, a contact sheet of each page's largest image). The price came from the person. **Item values were placeholders made up by Claude** (as on Offer 1) and must be flagged for the client to approve.
 
@@ -79,7 +79,7 @@ Rule: the builder has **no autosave**, and leaving the page discards unsaved wor
    - **Page Save.**
 6. With the YES button selected, click the **orange +** on its bottom edge (adds an element below, same column) → Quick Add → `custom` → **Code** → Open Code Editor → type the NO link (section 6) → modal **Save** → **page Save**.
 7. **Publish**. Toast "Page published successfully"; the URL badge shows "• Live".
-8. Set the YES action (section 7). If you can't, hand it off.
+8. Set the YES action (section 7) and prove it with the checker.
 
 Final layout: Section 1 (full width) → Row 1: Code (loader) → Row 2: Button (YES) and, under it in the same column, Code (NO link).
 
@@ -87,7 +87,7 @@ Alternative first-build layout (also works): a separate **Wide** section under t
 
 ## 5. Styling the native YES button from the fragment
 
-GHL gives no easy way to add a class to a native button, so the fragment **finds the buttons by their text** and tags them. It retries for about 9 s while the builder renders:
+GHL gives no easy way to add a class to a native button, so the fragment **finds the buttons by their text** and tags them. It retries for 24 s, because GHL can take about 10 s to show the one-click button:
 ```html
 <script>
 document.title='One-time offer | My $4M TikTok Shop System';
@@ -99,7 +99,7 @@ document.title='One-time offer | My $4M TikTok Shop System';
       else if(t.indexOf('no thanks')===0) b.classList.add('gtu-no');
     });
   }
-  tag(); var n=0,iv=setInterval(function(){tag();if(++n>30)clearInterval(iv);},300);
+  tag(); var n=0,iv=setInterval(function(){tag();if(++n>80)clearInterval(iv);},300);
 })();
 </script>
 ```
@@ -110,6 +110,7 @@ CSS (global, so it reaches outside `#gtu`; `!important` beats GHL's button style
 [class*="section-"]:has(.gtu-yes){padding-bottom:0!important}
 .gtu-yes,.gtu-yes *{font-family:Poppins,sans-serif!important}
 .gtu-yes{display:block!important;width:100%!important;max-width:720px;margin:0 auto!important;background:var(--gtu-red,#D30805)!important;color:#fff!important;border:2px solid #101017!important;border-radius:14px!important;padding:20px 18px!important;font-weight:900!important;font-size:21px!important;line-height:1.25!important;text-transform:none!important;box-shadow:5px 5px 0 #101017!important;cursor:pointer;animation:gtupulse 1.8s ease-in-out infinite;white-space:normal!important}
+button.gtu-yes .main-heading-group .main-heading-button{font-size:inherit!important;font-weight:900!important;line-height:1.25!important} /* GHL forces 16px otherwise */
 .gtu-yes:hover{filter:brightness(1.06)}
 @keyframes gtupulse{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
 .gtu-no,.gtu-no *{font-family:Lato,sans-serif!important}
@@ -129,30 +130,19 @@ Typed into the Code element under YES:
 ```html
 <a class="gtu-no" href="https://davidhsai.com/headstart-thank-you">No thanks, I'll keep guessing which products and hooks work, and take 10x longer to get my sales.</a>
 ```
-Why a code link and not a second native button (David asked for both buttons in GHL, like the reference): a decline needs no payment action, and a native button's "link to" is the same native select the pane can't operate (D1). The code link avoids that and is styled by the fragment. If the person prefers a native NO button: Button → Text "No thanks, ..." → Button Actions → link to = the URL option → the thank-you URL; the fragment styles it anyway.
+Why a code link and not a second native button (David asked for both buttons in GHL, like the reference): a decline needs no payment action, and a native button's "link to" is an awkward native select (D1). The code link avoids that and is styled by the fragment. If the person prefers a native NO button: Button → Text "No thanks, ..." → Button Actions → link to = the URL option → the thank-you URL; the fragment styles it anyway.
 
-## 7. The YES action: setting, blocker and human handoff
+## 7. The YES action: setting and proof
 
 **The setting:** select the YES button → right panel **General** → scroll to **Button Actions** → **link to** = **One click up/down sell product** → **Products** = the step product (`My $4M TikTok Shop System`) → page **Save** → **Publish**. New buttons default to link to = "Open popup" with an empty "Popup" field.
 
-**The blocker (expect it):** "link to" and "Products" are native `<select>` menus inside the cross-origin builder iframe. From the browser pane: the open list is never drawn; click, chevron click, typing "One" + Return, Down + Return, Space and double-click all leave "Open popup"; arrow keys scroll the panel; Escape deselects the button; `find` returns "No matches"; `javascript_tool` can't reach into `page-builder.leadconnectorhq.com`. Copying a working YES button from another funnel (Saved Assets) doesn't help: its Products select would still need changing (and on Rickey's build that picker didn't open either).
+**How Claude sets it:** both fields are native dropdowns in the builder's cross-origin frame, so clicking and typing don't work. What works (Nov 23): the builder's own **Ask AI** (Build tab, with the button selected) sets "link to" to sell-product; then **one** `key` press of the product's first letter on the focused **Products** select picks the product. Exact prompts and steps: `stages/7-upsell-step.md`, section D.
 
-Try once. If the value stays "Open popup", stop and hand it off. Don't burn time.
+**Proof:** `check_funnel.mjs` reads the live page's data and fails unless the YES action is `sell-product` with a product. The same decoder found the original bug (`openPopup`), which the eye and the old checker missed. Two working "sale actions" exist: `go-to-next-funnel-step` (Rickey) and `step-path` (the other funnel).
 
-**Human handoff message (send it as is, filled in):**
-> Everything on the upsell is live except one setting I can't reach from my browser: the YES button's action. It takes about 30 seconds:
-> 1. GHL → Sites → Funnels → "<funnel name>" → **Upsell** → **Edit**.
-> 2. Click the **YES** button on the page.
-> 3. In the right panel (General), scroll to **Button Actions** → **link to** → choose **One click up/down sell product**.
-> 4. **Products** → choose **<step product name>**.
-> 5. Click **Save** (disk icon), then **Publish**.
-> Until this is done, the YES button does nothing. Tell me when it's done and I'll check it.
+**If it can't be done,** send the person the 4 clicks in Stage 7 step 17. Never open the iframe URL as the top page (it broke the session once; `builder-quirks.md` S4).
 
-Offer two buttons: "Done, test it" and "Use my Chrome". The second means trying Claude in Chrome (`mcp__claude-in-chrome__*`) in the person's own signed-in Chrome, where native selects may work. That route is **unverified**; use it only with the person's OK.
-
-Other untried ideas, for the record: opening the iframe URL as the top page so DOM tools are same-origin is **not allowed** (it broke the session once; see `builder-quirks.md` S4).
-
-**How to check it was done:** `check_funnel.mjs` and the live-page JS can only see that a YES button exists, not its action. Ask the person to confirm the two fields, or check during the test purchase (YES charges and lands on the thank-you page).
+**After it's set:** the button loads disabled with a spinner for about 7 to 10 s on every visit. That's GHL waiting for payments. Not a bug.
 
 ## 8. Checkout routing
 
@@ -179,7 +169,7 @@ After a push, poll Pages for a marker from the change (e.g. `grep -q 'shot{width
 ## 10. After the upsell
 
 - YES (once set) charges the saved card and GHL continues to the next step (Thank You). NO goes straight to the thank-you URL.
-- **Delivery of the upsell is a separate job** (it was not built on Nov 20): a course or content for the upsell, plus a workflow "Order submitted, Global product Is <upsell catalog product>" → Grant course access → email. Recipe in `memberships-and-workflows.md`.
+- **Delivery of the upsell is a separate job** (built on Nov 23 for Rickey): a course or content for the upsell, plus a workflow "Order submitted, Global product Is <upsell catalog product>" → Grant course access → email. Recipe in `memberships-and-workflows.md`.
 - The thank-you page can't tell whether the upsell was bought. Put upsell access in its own email.
 
 ## 11. Done when

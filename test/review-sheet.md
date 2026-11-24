@@ -49,8 +49,8 @@ Open GHL (Sites → Funnels → `TEST · [Name] · Headstart`) and the tester's 
 | B3 4 steps in order + test paths; Main + [Bump] on checkout, upsell product on upsell, clean names | Funnel → Steps → each step's Publishing and Products tabs; `03`, `04` | 4 | |
 | B4 order form: One-step + 2 fields; quantity/multi/coupons off; bump Hairline + exact texts; CTA texts; accent `#D30805` | `05` to `07`; the live checkout | 6 | |
 | B5 After purchase = Go to the next funnel step | `08-form-after-purchase.png` | 3 | |
-| B6 YES native button (text, element name); YES action one-click + test product; NO link to test thank-you | `09-yes-button-action.png`; live upsell. The checker can't see the YES action: open the **test** upsell builder read-only and zoom Button Actions yourself (don't save) | 4 | |
-| B7 course One Time, 2 lessons published, portal link on thank-you (or existing course by choice) | Memberships; `10`, `14` | 3 | |
+| B6 YES native button (text, element name); YES action one-click + test product; NO link to test thank-you | `09-yes-button-action.png`; live upsell. The checker reads the YES action (`YES sells (…)`); also look at screenshot 09. Don't open the builder unless they disagree | 4 | |
+| B7 three courses One Time, lessons published, badges Draft, portal link on thank-you (or existing course by choice) | Memberships; `10`, `14` | 3 | |
 | B8 3 workflows, prefixed; Order submitted + right TEST product; course + emails (no WhatsApp placeholder); published | Automation → Workflows; `11` to `13` | 4 | |
 
 ## 5. Record and evidence (12)
@@ -63,7 +63,7 @@ Open GHL (Sites → Funnels → `TEST · [Name] · Headstart`) and the tester's 
 ## 6. Safety and process (13)
 | Item | Max | Score | Notes |
 |---|---|---|---|
-| D1 gates: sign-in; 7-point start gate before creating anything; YES handed over after one try; test purchase method; clean-up list | 5 | | |
+| D1 gates: sign-in; 7-point start gate before creating anything; Stage 7 D followed for YES; test purchase method; clean-up list | 5 | | |
 | D2 naming `TEST · [Name] ·` everywhere; page titles start with `TEST · ` | 3 | | |
 | D3 inventories match apart from TEST items, test tags, the auto-created product and an allowed +1 course member; regression passes | 3 | | |
 | D4 honest status; lost work logged; builder frame URL never opened directly | 2 | | |

@@ -3,7 +3,7 @@
   "steps": [
     { "type": "sales",    "url": "https://REPLACE-ME.invalid/OFFER-page",      "root": "xx-root",   "next": "/OFFER-checkout" },
     { "type": "checkout", "url": "https://REPLACE-ME.invalid/OFFER-checkout",  "root": "xxc-root",  "bump": true, "price": "$PRICE" },
-    { "type": "upsell",   "url": "https://REPLACE-ME.invalid/OFFER-upsell",    "root": "xxu-root",  "yes": "YES", "no": "/OFFER-thank-you" },
+    { "type": "upsell",   "url": "https://REPLACE-ME.invalid/OFFER-upsell",    "root": "xxu-root",  "yes": "YES", "yes_product": "REPLACE-ME", "no": "/OFFER-thank-you" },
     { "type": "thankyou", "url": "https://REPLACE-ME.invalid/OFFER-thank-you", "root": "xxty-root" }
   ]
 }

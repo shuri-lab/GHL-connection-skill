@@ -2,18 +2,18 @@
 
 **Put a complete sales funnel live in GoHighLevel with Claude, for any offer, the way we did for Rickey's TikTok Shop Headstart.**
 
-On Nov 20 2026, David and Claude took Rickey's finished sales page and built the whole funnel around it in GoHighLevel (GHL) in one day:
+On Nov 20 2026, David and Claude took Rickey's finished sales page and built the whole funnel around it in GoHighLevel (GHL) in one day, then finished the delivery on Nov 23 and tested it on test contacts (no order has completed yet):
 - a sales page (our own HTML inside GHL);
 - a two-column checkout with a standout $17 order bump and the form on the first phone screen;
 - a $97 one-click upsell page;
 - a thank-you page;
-- the course in Memberships;
-- delivery workflows with emails;
+- one course per product in Memberships, with the paid files behind the login;
+- one delivery workflow and email per product (nobody gets what they didn't buy);
 - team access.
 
 This repo packages every step, setting, workaround and piece of feedback, so any teammate's Claude agent (Moses's agent first; Moses is the copywriter, a person) can do it for the next client without David.
 
-**Keep this repo private.** `examples/` holds the Rickey account's real ids (location, funnel, step, page and workflow ids, the portal URL).
+**Keep this repo private** (check its visibility on GitHub). `examples/` holds the Rickey account's real ids (location, funnel, step, page and workflow ids, the portal URL).
 
 | Step | Live (Rickey) | Phone screenshot |
 |---|---|---|
@@ -22,11 +22,13 @@ This repo packages every step, setting, workaround and piece of feedback, so any
 | One-click upsell ($97) | https://davidhsai.com/headstart-upsell | `…/3-upsell-mobile.png` |
 | Thank you | https://davidhsai.com/headstart-thank-you | `…/4-thankyou-mobile.png` |
 
-`tools/check_funnel.mjs` passes on all 4 steps, at phone and desktop size.
+`tools/check_funnel.mjs` passes on all 4 steps, at phone and desktop size (Nov 24), including the YES button's real action.
+
+**Honest status:** delivery is proven on test contacts added to the workflows by hand (so the triggers are not). **No order has gone through this funnel yet** (test or real), so the checkout charge, the bump charge, the one-click upsell charge and the order triggers are built but unproven. No one new has built a full funnel with this playbook yet, and there's no traffic data.
 
 ## How to start (2 minutes)
 1. **Get this repo:** clone https://github.com/shuri-lab/GHL-connection-skill (or unzip it). The folder is named `GHL-connection-skill` when cloned; it may be `ghl-funnel-playbook` when unzipped or renamed. Both are the same playbook.
-2. **Have the pages ready.** Build the sales page with the **Sales Page Playbook** (https://github.com/shuri-lab/landing-pages-skill). Start the checkout, upsell and thank-you pages from the four Rickey files in `examples/rickey-headstart-funnel/pages/`: they carry the GHL-specific parts (table in `stages/2-host-the-pages.md`).
+2. **Have the pages ready.** Build them with the **Sales Page Playbook** (https://github.com/shuri-lab/landing-pages-skill): Part 1 makes the sales page, Part 2 makes the checkout column, the bump, the upsell, the thank-you page, the emails and the list of texts this playbook types into GHL.
 3. **Open Claude Code.** The desktop app is best, because its built-in browser is what drives GHL. Then say:
    > Read `<path to this folder>/START-HERE.md` and start. The offer is [X]; the pages are at [URL or folder].
 
@@ -39,17 +41,17 @@ This repo packages every step, setting, workaround and piece of feedback, so any
 |---|---|---|---|
 | 0 | Access and safety | Checks the sub-account, what's already there and off-limits, other clients' live workflows, Stripe, sender, portal, domain | Sign in; say what's off-limits; same or separate sub-account |
 | 1 | Plan | Writes the funnel plan: steps, paths, domain, whose Stripe/sender/portal, products, bump, upsell, course, emails, legal links, tracking, tax | Confirm it; add DNS records if connecting your domain |
-| 2 | Host the pages | Puts each page on GitHub Pages in the format GHL needs | Create the repo if needed |
+| 2 | Host the pages | Puts each page from the Sales Page Playbook on GitHub Pages in the format GHL needs | Create the repo if needed |
 | 3 | Products | Main, bump and upsell products with one-time prices | none |
 | 4 | Funnel | The funnel, its 4 steps and paths on your domain | none |
 | 5 | Sales page | A custom-code "loader" pulls our HTML into GHL; buttons go to checkout | none |
 | 6 | Checkout | Two columns: our content left, GHL order form right. Styled form, a bump that pops, form above the fold on phones | none |
-| 7 | Upsell | Our HTML + the native YES button (one-click upsell) + a NO link | Set the YES button's action if Claude can't (4 clicks) |
+| 7 | Upsell | Our HTML + the native YES button (set and proven by Claude) + a NO link | Approve the values |
 | 8 | Thank you | Course and channel links | Give the missing links |
-| 9 | Course | Memberships course, lessons, offer, client portal | Upload videos |
-| 10 | Delivery | Workflows: purchase → access → email; bump and upsell deliveries | Approve emails, sender |
+| 9 | Course | One course per product, lessons, badges off, client portal | Add videos and paid files |
+| 10 | Delivery | One workflow and email per product; GHL's own emails off | Approve emails, sender |
 | 11 | Team | Invite teammates with the right role | Confirm email and role |
-| 12 | Test and go live | Funnel check at phone and desktop size, test plan, sign-off list | Test purchase (you type the card); refunds; sign-off (TJ) |
+| 12 | Test and go live | Funnel check, delivery proven on test contacts, test mode, two-order script, sign-off list | Two test orders (you type the card); sign-off (TJ) |
 
 ## What's inside
 
@@ -69,5 +71,5 @@ This repo packages every step, setting, workaround and piece of feedback, so any
 | [`test/`](test/) | The test for a teammate's agent (Moses's first): build a test copy of the funnel safely, graded by TJ |
 
 ## Related
-- **Sales Page Playbook** (build the pages first): https://github.com/shuri-lab/landing-pages-skill
+- **Sales Page Playbook** (build the pages first; Part 2 makes the checkout, bump, upsell, thank-you and emails): https://github.com/shuri-lab/landing-pages-skill
 - This playbook is self-contained for everything inside GHL.

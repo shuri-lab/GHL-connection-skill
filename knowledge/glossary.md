@@ -54,7 +54,7 @@ Grouped by topic. "Rickey:" gives the real example from the Nov 20 2026 build.
 | **"One click up/down sell product"** | The YES button's action (Button Actions → link to) that performs the one-click charge for the chosen step product. |
 | **After purchase** | Order form setting (Checkout options): where the buyer goes after paying: next funnel step, a website URL, or a specific step. |
 | **Stripe / payment provider** | The company that processes the card. Connected per sub-account in Payments → Integrations. Rickey's account: Stripe, Default, Connected (shared with another project). |
-| **Test mode** | Stripe's sandbox. Purchases with Stripe's test cards charge nothing. Real buyers can't pay while in test mode, so only a switch that affects this funnel alone may be used (not located yet: `builder-quirks.md` F4), and the person types the test card. |
+| **Test mode** | Stripe's sandbox. Purchases with Stripe's test cards charge nothing. Real buyers can't pay while in test mode, so only the funnel's own switch may be used (funnel Settings → Payments & checkout → Payment mode: `builder-quirks.md` F4), and the person types the test card. |
 | **Transactions** | Payments → Transactions: real sales. Their presence shows an account is live. |
 | **Statement descriptor** | The name on the buyer's card statement (product → Pricing → Additional options). Set it when the Stripe account isn't the client's, so buyers recognise the charge (Stage 1, Money and identity). |
 
@@ -75,7 +75,7 @@ Grouped by topic. "Rickey:" gives the real example from the Nov 20 2026 build.
 | **Draft / Published** | A workflow's state (toggle at the top). Drafts don't run. |
 | **Merge field / custom value** | Placeholders filled per contact: `{{contact.first_name}}`, `{{contact.email}}`. The `{+}` pickers insert them. |
 | **From name / From email** | The sender shown on emails. Setting a name requires an email; with both empty GHL uses the account's default sender. |
-| **Media storage (GHL Media)** | GHL's file storage for images, videos and PDFs. Where hosted files should move before the GitHub repo goes private. |
+| **Media storage (GHL Media)** | GHL's file storage, for images and videos. Never for paid files: its links work without a login. |
 | **Contact** | A person record in the CRM. A checkout creates or updates one. |
 
 ## Our own terms (this playbook)
@@ -93,3 +93,8 @@ Grouped by topic. "Rickey:" gives the real example from the Nov 20 2026 build.
 | **Money and identity** | The Stage 1 ★ block: whose Stripe, which card-statement name, which sender, which portal branding the buyer sees. |
 | **★ gate** | A point in the stages where the person must act or decide. |
 | **The phone check** | 393×852, no sideways scroll; on the checkout, the first form field is on the first screen. |
+| **Payment mode** | The funnel's own Live/Test switch (funnel Settings → Payments & checkout). Test blocks real buyers of this funnel only. |
+| **Magic link / Login URL** | `{{membership_contact.login_url}}`: signs the buyer in once, valid 24 hours. |
+| **Downloadable Resources** | The files attached to a lesson, behind the login. |
+| **Welcome Badge / Course Completion Credential** | GHL's automatic badge and certificate on every new course. They email buyers; set both to Draft. |
+| **Offer (Memberships)** | The older way to grant courses at purchase. Some clients in an account may use it: leave it alone. |

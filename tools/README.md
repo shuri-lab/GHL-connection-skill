@@ -14,6 +14,7 @@ node PLAYBOOK/tools/check_funnel.mjs --help                                # usa
 node PLAYBOOK/tools/check_funnel.mjs my-funnel/funnel.partial.json         # Stages 5 to 7: only the steps built so far
 node PLAYBOOK/tools/check_funnel.mjs my-funnel/funnel.json                 # Stage 8 on: report
 node PLAYBOOK/tools/check_funnel.mjs my-funnel/funnel.json --out shots/    # + screenshots (1-sales-mobile.png ...)
+node PLAYBOOK/tools/check_funnel.mjs my-funnel/funnel.json --live          # final run: fails while the funnel is in test mode
 node PLAYBOOK/tools/check_funnel.mjs my-funnel/funnel.json --json --out shots/   # machine-readable, screenshots too
 node PLAYBOOK/tools/check_funnel.mjs examples/rickey-headstart-funnel/funnel.json   # the worked example
 ```
@@ -26,7 +27,7 @@ Options can come in any order (`--out DIR` or `--out=DIR`). `funnel.partial.json
   "steps": [
     { "type": "sales",    "url": "https://REPLACE-ME.invalid/OFFER-page",      "root": "xx-root",   "next": "/OFFER-checkout" },
     { "type": "checkout", "url": "https://REPLACE-ME.invalid/OFFER-checkout",  "root": "xxc-root",  "bump": true, "price": "$PRICE" },
-    { "type": "upsell",   "url": "https://REPLACE-ME.invalid/OFFER-upsell",    "root": "xxu-root",  "yes": "YES", "no": "/OFFER-thank-you" },
+    { "type": "upsell",   "url": "https://REPLACE-ME.invalid/OFFER-upsell",    "root": "xxu-root",  "yes": "YES", "yes_product": "REPLACE-ME", "no": "/OFFER-thank-you" },
     { "type": "thankyou", "url": "https://REPLACE-ME.invalid/OFFER-thank-you", "root": "xxty-root" }
   ]
 }
@@ -46,35 +47,46 @@ Options can come in any order (`--out DIR` or `--out=DIR`). `funnel.partial.json
 | checkout | Order form present | No `.c-order-form` (or form) |
 | checkout (phone) | **First form field on the first screen** | First visible input's top ≥ 852 px |
 | checkout | "Select product" hidden | `.order-form__offer` visible |
-| checkout | Bump present (if `"bump": true`) | No `.order-form__bump` |
+| checkout | Bump present (if `"bump": true`) and unticked | No `.order-form__bump`, or it starts ticked |
+| checkout | No address fields | A visible address, shipping, city, state or zip label |
 | checkout | Price shown (if `"price"` set) | The price text isn't inside `.c-order-form` (our left column's price doesn't count) |
 | upsell | YES button | No link or button whose text starts with `yes` |
+| upsell | **YES really sells** (read from the page data) | Action isn't `sell-product`, no product, no sale action, or not the product in `"yes_product"` |
 | upsell | NO link to the thank-you step | No link whose `href` contains `no` |
-| thankyou | Loads with content | (covered by the every-step checks) |
+| thankyou | No file links | A link to a pdf, zip, doc or sheet |
+| checkout, with `--live` | The funnel takes real payments | It's in TEST MODE (without `--live` this is a NOTE) |
 
-Each page gets 7 s to load (the builder page, the loader's fetch, the order form render). A cache-buster (`?chk=<time>`) is added to every URL.
+Each page gets 5 s, then is looked at every 2 s for up to about 25 s (the builder page, the loader's fetch, the order form, the one-click button). A cache-buster (`?chk=<time>`) is added to every URL.
 
-### Output (real run on the Rickey example, Nov 20 2026)
+### Output (real run on the Rickey example, Nov 24 2026)
 ```
 FUNNEL CHECK  Rickey · TikTok Shop Headstart (davidhsai.com)
 ------------------------------------------------------------------------
 PASS  sales     mobile   1 button(s) to checkout
 PASS  sales     desktop  1 button(s) to checkout
-PASS  checkout  mobile   form field at 313px, bump yes
-PASS  checkout  desktop  form field at 134px, bump yes
-PASS  upsell    mobile   YES: "YES! Add My $4M TikTok Shop System to My…", NO link ok
-PASS  upsell    desktop  YES: "YES! Add My $4M TikTok Shop System to My…", NO link ok
+PASS  checkout  mobile   form field at 313px, bump yes, unticked
+PASS  checkout  desktop  form field at 271px, bump yes, unticked
+PASS  upsell    mobile   YES sells (go-to-next-funnel-step): "YES! Add My $4M TikTok Shop System…", NO link ok
+PASS  upsell    desktop  YES sells (go-to-next-funnel-step): "YES! Add My $4M TikTok Shop System…", NO link ok
 PASS  thankyou  mobile   "You're in | TikTok Shop Headstart"
 PASS  thankyou  desktop  "You're in | TikTok Shop Headstart"
+NOTE  sales: no privacy / terms / refund link on this page
+NOTE  checkout: the funnel is in TEST MODE: real buyers cannot pay
+NOTE  checkout: no privacy / terms / refund link on this page
 ------------------------------------------------------------------------
 All steps pass
 ```
-On a phone the first checkout field sits at 313 px of 852: that is the bar. The run takes about a minute (8 page loads × 7 s). (That run predates the `root` field and the order-form price check; the Rickey `funnel.json` now carries `root` ids.)
+On a phone the first checkout field sits at 313 px of 852: that is the bar. The run takes about a minute (8 page loads).
 
 **Exit code:** `0` = every row PASS; `1` = at least one FAIL row, or the run itself failed (Chrome didn't start, a page didn't load); `2` = usage or input error (bad option, unreadable JSON, a placeholder still in `funnel.json`), and nothing was loaded. Check it with `echo $?` right after the run.
 
+### What it reads since Nov 24
+- **The YES button's real action** (from the page data): must be `sell-product` with a product. On Nov 20 a YES left on "Open popup" passed the older version.
+- The bump starts unticked, no visible address fields, no file links on the thank-you page.
+- NOTE lines (they don't fail the run): funnel in TEST MODE, no privacy/terms link, greyed links.
+- It looks every 2 s for up to 25 s per page, because the one-click button needs about 10 s.
+
 ### What it can't check (do these by hand)
-- **The YES button's action.** A native button left on "Open popup" still passes. Confirm "One click up/down sell product" + the right product with the person, then prove it in the test purchase.
 - Payment, the bump charge, delivery emails, course access, the client portal login: only a test purchase proves them (Stage 12).
 - The bump total math: use the JS test in `knowledge/checkout-recipe.md` §11 ($27 → $44 → $27 on Rickey's page).
 - Design quality: compare its screenshots with `examples/rickey-headstart-funnel/screenshots/` and look at them yourself.

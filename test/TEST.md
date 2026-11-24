@@ -3,7 +3,7 @@
 > For the Claude agent taking the test (e.g. Moses's agent), working with its person. TJ grades it with `test/rubric.md` and `test/review-sheet.md`.
 
 ## The task in one paragraph
-Using this playbook only, build a **complete copy of Rickey's TikTok Shop Headstart funnel as a separate test funnel** in the same GHL sub-account: four pages on test paths (sales page, two-column checkout with the standout order bump, one-click upsell with a native YES button and a NO link, thank-you page), test-prefixed products, a test course (or access to the existing course), three test delivery workflows, a full check with `tools/check_funnel.mjs`, screenshots, and a filled `funnel-record.md`. Nothing reaches real customers, no real money moves unless the person does it, and nothing that existed before the test is changed.
+Using this playbook only, build a **complete copy of Rickey's TikTok Shop Headstart funnel as a separate test funnel** in the same GHL sub-account: four pages on test paths (sales page, two-column checkout with the standout order bump, one-click upsell with a native YES button and a NO link, thank-you page), test-prefixed products, three test courses (main, bump, upsell; or access to the existing course), three test delivery workflows, a full check with `tools/check_funnel.mjs`, screenshots, and a filled `funnel-record.md`. Nothing reaches real customers, no real money moves unless the person does it, and nothing that existed before the test is changed.
 
 `[Name]` below is your person's first name (e.g. `Moses`); `[name]` is the same in lower case (e.g. `moses`).
 
@@ -13,7 +13,7 @@ Using this playbook only, build a **complete copy of Rickey's TikTok Shop Headst
 3. **Create only.** Never edit, save, publish, unpublish or delete anything that existed before the test: Rickey's funnel, pages, products, course and workflows; the AI Avatars funnel and its courses and products; other workflows; the Stripe connection; domains; users; billing; account settings. You may *read* Rickey's live pages and the files in `examples/`. Selecting `davidhsai.com` in your test funnel's own Settings is allowed.
 4. **Everything you create is named `TEST · [Name] · …`** (funnel, products, workflows, course).
 5. **No real traffic.** Never share the test URLs outside the team, link them from anything public or use them in ads. Workflow emails must only ever reach the test buyer (your person).
-6. **Money:** a test purchase is made only by the person (real card, then they refund it themselves), or in Stripe test mode **scoped to the test funnel only** with the person typing the test card. Look for that switch only where Stage 12 says (the checkout step's Products tab, the funnel Settings). If no funnel-scoped switch is there, the person uses their real card or skips the purchase. Never switch an account-wide test mode, and never open Payments → Integrations to change modes.
+6. **Money:** a test purchase is made only by the person (real card, then they refund it themselves), or in Stripe test mode **scoped to the test funnel only** with the person typing the test card. The switch: the test funnel's Settings → Payments & checkout → Payment mode; switch it back to Live and prove it. If no funnel-scoped switch is there, the person uses their real card or skips the purchase. Never switch an account-wide test mode, and never open Payments → Integrations to change modes.
 7. **Clean-up** (unpublish, delete, archive) happens only after the person says yes to the exact list.
 8. **Be honest.** Report a check as passed only if the output says so. If you lose unsaved work or hit a wall, write it in the log.
 9. **Never open another funnel's page builder** (Rickey's, AI Avatars'). Read their live pages only. You open only your own test pages' builders. The one read-only look into existing items is the Stage 0 trigger check of Published workflows (open, zoom, leave without saving).
@@ -29,7 +29,8 @@ Using this playbook only, build a **complete copy of Rickey's TikTok Shop Headst
 | Step products (buyer-facing) | "TikTok Shop Headstart" (Main), "The Starter Product List" (Bump), "My $4M TikTok Shop System" (upsell step) | same |
 | Root ids | `test-gt-root`, `test-gtc-root`, `test-gtu-root`, `test-gtty-root` | `gt-root`, `gtc-root`, `gtu-root`, `gtty-root` |
 | Course | `TEST · [Name] · Headstart course`, One Time $27, 2 lessons published ("Start here: welcome + your downloads", "Day 1: How TikTok Shop works + posting your first video"); or access to the existing "TikTok Shop Headstart" course if the person chooses (a test purchase then adds the test buyer as **one extra member** of Rickey's live course: expected and allowed, logged in `log.md`, and on the clean-up list) | "TikTok Shop Headstart", 8 lessons |
-| Workflows | `TEST · [Name] · Headstart delivery`, `TEST · [Name] · Starter Product List delivery`, `TEST · [Name] · System delivery` | `Rickey · Headstart delivery`, `Rickey · Starter Product List delivery` (upsell delivery never built) |
+| Bump and upsell courses | `TEST · [Name] · Starter Product List` (One Time $17, 1 lesson, no real file) and `TEST · [Name] · System` (One Time $97, 1 lesson); badges and credentials Draft on all three | one course per product |
+| Workflows | `TEST · [Name] · Headstart delivery`, `TEST · [Name] · Starter Product List delivery`, `TEST · [Name] · System delivery` | `Rickey · Headstart delivery`, `Rickey · Starter Product List delivery` and `Rickey · System delivery` (built Nov 23) |
 | Buyer tags | `test-[name]-headstart-buyer`, `test-[name]-starter-list-buyer`, `test-[name]-system-buyer` | none |
 | Email subjects | `[TEST] You're in. Here's Day 1`, `[TEST] Your Starter Product List`, `[TEST] Your $4M TikTok Shop System` | without `[TEST]` |
 | Page titles | each starts with `TEST · ` | e.g. "TikTok Shop Headstart \| Game Tape" |
@@ -60,7 +61,7 @@ Create it inside the playbook folder at the start (it is git-ignored there) and 
   "steps": [
     { "type": "sales",    "url": "https://davidhsai.com/test-[name]-page",      "root": "test-gt-root",   "next": "/test-[name]-checkout" },
     { "type": "checkout", "url": "https://davidhsai.com/test-[name]-checkout",  "root": "test-gtc-root",  "bump": true, "price": "$27" },
-    { "type": "upsell",   "url": "https://davidhsai.com/test-[name]-upsell",    "root": "test-gtu-root",  "yes": "YES", "no": "/test-[name]-thank-you" },
+    { "type": "upsell",   "url": "https://davidhsai.com/test-[name]-upsell",    "root": "test-gtu-root",  "yes": "YES", "yes_product": "<Internal Product ID, Stage 4>", "no": "/test-[name]-thank-you" },
     { "type": "thankyou", "url": "https://davidhsai.com/test-[name]-thank-you", "root": "test-gtty-root" }
   ]
 }
@@ -75,7 +76,7 @@ Follow each stage file. Only the differences are listed here.
 - The person signs in. Run the full audit table (with the trigger and filter of each Published workflow, read-only) and save it as `my-funnel/inventory-before.md`.
 - Regression baseline: `node tools/check_funnel.mjs examples/rickey-headstart-funnel/funnel.json > my-funnel/rickey-before.txt` (read-only: it never clicks buy or submits).
 
-**Stage 1: Plan.** Fill `funnel-plan.md` with the test values. Money and identity: the test uses the account's Stripe, no statement descriptor, the default sender (read it and write what you saw) and the existing portal; confirm that inside point 1 of the start gate. Legal links, tracking and tax: write "not used: test". Then the **★ start gate**: one message to the person, and wait for a clear yes to each point:
+**Stage 1: Plan.** Fill `funnel-plan.md` with the test values. Money and identity: the test uses the account's Stripe, no statement descriptor, the sender the person chooses at the start gate (read the default one and write what you saw) and the existing portal; confirm that inside point 1 of the start gate. Legal links, tracking and tax: write "not used: test". Then the **★ start gate**: one message to the person, and wait for a clear yes to each point:
 1. Build in Hot Pursuit LLC, on `davidhsai.com`, on the test paths above.
 2. Test-prefixed products (recommended) or Rickey's products (with the warning above).
 3. Where the test page files are hosted (your own public GitHub repo with Pages, or a `test-[name]/` folder in a team repo they name). Not Rickey's client repo unless they say so.
@@ -87,12 +88,12 @@ Follow each stage file. Only the differences are listed here.
 **Stage 2: Host the pages.** Copy the four files from `examples/rickey-headstart-funnel/pages/` into the approved repo folder and change only:
 | File | Change |
 |---|---|
-| `1-sales-page.html` | `#gt-root` → `#test-gt-root` (7 places); `https://davidhsai.com/headstart-checkout` → `https://davidhsai.com/test-[name]-checkout` (1 place); `document.title` → `TEST · TikTok Shop Headstart \| Game Tape` |
+| `1-sales-page.html` | `#gt-root` → `#test-gt-root` (8 places); `https://davidhsai.com/headstart-checkout` → `https://davidhsai.com/test-[name]-checkout` (1 place); `document.title` → `TEST · TikTok Shop Headstart \| Game Tape` |
 | `2-checkout-left.html` | `#gtc-root` → `#test-gtc-root` (1 place, in the phone padding trim); `document.title` → `TEST · Checkout \| TikTok Shop Headstart` (top of the script). No wrapper fix: this page has two columns (Stage 2, contract item 1) |
 | `3-upsell.html` | `#gtu-root` → `#test-gtu-root` (8 places); title → `TEST · One-time offer \| My $4M TikTok Shop System` |
-| `4-thank-you.html` | `#gtty-root` → `#test-gtty-root` (7 places); title → `TEST · You're in \| TikTok Shop Headstart`; `GT_LINKS.course` = the client portal URL from Stage 9 (the portal is per sub-account); `whatsapp` and `support` stay empty |
+| `4-thank-you.html` | `#gtty-root` → `#test-gtty-root` (7 places); title → `TEST · You're in \| TikTok Shop Headstart`; `GT_LINKS.course` = the client portal URL from Stage 9 (the portal is per sub-account); set `whatsapp` and `support` to `''` and take the QR out (the file holds Rickey's real channel) |
 
-Keep every image and PDF URL as it is (absolute links to Rickey's public Pages host; you only read them). Check the counts with `grep -c` before and after each replacement. The Stage 2 Rickey-content grep doesn't apply here: the test keeps Rickey's content on purpose.
+Keep every image URL as it is (absolute links to Rickey's public Pages host; you only read them). Check the counts with `grep -o '<old text>' <file> | wc -l` before and after each replacement. The Stage 2 Rickey-content grep doesn't apply here: the test keeps Rickey's content on purpose.
 
 Also add to **each** of the four test fragments, as its first line: `<meta name="robots" content="noindex,nofollow">` (the test pages are public; if the funnel's SEO & AEO tab offers a noindex switch, turn it on too). And in `2-checkout-left.html`, add `<div class="pill">TEST, do not buy</div>` as the first child of both `.gtc-d` and `.gtc-m`. Then push, poll with a marker, and run the CORS check.
 
@@ -100,17 +101,17 @@ Also add to **each** of the four test fragments, as its first line: `<meta name=
 
 **Stage 4: Funnel and steps.** Funnel `TEST · [Name] · Headstart`; four steps in order; domain `davidhsai.com`; path `/test-[name]`; **Optimize JavaScript off**; the four test step paths; step products with the buyer-facing names (Main, **Bump**, upsell).
 
-**Stages 5 to 8: the pages.** Exactly as the stage files say, with the test root ids and fragment URLs. The checkout must match Rickey's final settings (One-step, Full Name + Email only, quantity/multi/coupons off, bump preset Hairline with Headline "Yes! Add The Starter Product List", OTO "Only $17 today. One-time payment.", the one-sentence 37-products description, CTA "GET INSTANT ACCESS →" / "One-Time Payment • Instant Access" / "Secure checkout powered by Stripe", Accent `#D30805`, **After purchase = Go to the next funnel step**). The upsell: YES text "YES! Add My $4M TikTok Shop System to My Order For Only $97", element name "YES button (one-click upsell)", NO link to `https://davidhsai.com/test-[name]-thank-you`. The YES action (link to = One click up/down sell product, Products = "My $4M TikTok Shop System" of the **test** upsell step): try once, then ★ hand it to the person (Stage 7). Save after every element.
+**Stages 5 to 8: the pages.** Exactly as the stage files say, with the test root ids and fragment URLs. The checkout must match Rickey's final settings (One-step, Full Name + Email only, quantity/multi/coupons off, bump preset Hairline with Headline "Yes! Add The Starter Product List", OTO "Only $17 today. One-time payment.", the one-sentence 37-products description, CTA "GET INSTANT ACCESS →" / "One-Time Payment • Instant Access" / "Secure checkout powered by Stripe", Accent `#D30805`, **After purchase = Go to the next funnel step**). The upsell: YES text "YES! Add My $4M TikTok Shop System to My Order For Only $97", element name "YES button (one-click upsell)", NO link to `https://davidhsai.com/test-[name]-thank-you`. The YES action (link to = One click up/down sell product, Products = "My $4M TikTok Shop System" of the **test** upsell step): follow Stage 7 D; the checker's `YES sells (…)` line is the proof; hand it over only if step 14 fails. Save after every element.
 
 **Stage 9: Course.** As chosen at the start gate. A test course must be **One Time** (never Free). Creating it adds an auto-created Payments product with the course name: record it for clean-up.
 
 **Stage 10: Workflows.** Three workflows, each `Order submitted` + `Global product Is <TEST product>`, each with its Add Tag action (tags above):
-- Headstart delivery: Grant course access (test course, or the existing course if chosen) → Add tag → Send email `[TEST] You're in. Here's Day 1` (Rickey's body from Stage 10, with the portal link, **without** paragraph 3, the WhatsApp paragraph: its link is a placeholder).
-- Starter Product List delivery: Add tag → Send email `[TEST] Your Starter Product List` (Rickey's bump email body).
-- System delivery (the upsell, never built for Rickey): Add tag → Send email `[TEST] Your $4M TikTok Shop System`, two short paragraphs: thanks for adding it, and the access will be in the course portal (portal link). Grant course access only if a course for it exists.
-Default sender (leave From name and From email empty; you read it in Stage 0). Show the person the three emails.
+- Headstart delivery: Grant course access (test course, or the existing course if chosen) → Add tag → Send email `[TEST] You're in. Here's Day 1` (body A in `examples/rickey-headstart-funnel/emails/published-emails.md`, **without** paragraph 3: it is Rickey's real channel).
+- Starter Product List delivery: Grant course access (its own small test course, Stage 9 step 17; never the main course) → Add tag → Send email `[TEST] Your Starter Product List` (texts: `examples/rickey-headstart-funnel/emails/published-emails.md`). Badges and credentials to Draft on every test course. Don't change the account's email settings in the test (Stage 10 D2 is already done on this account): write in the log what you would check.
+- System delivery: Grant course access (the test System course) → Add tag → Send email `[TEST] Your $4M TikTok Shop System is ready` (body C in `published-emails.md`).
+Set the sender the person chose at the start gate. Show the person the three emails.
 - **Before Publish, zoom each trigger card:** it must read `Global product is in 'TEST · [Name] · …'` with that workflow's test product. If it doesn't, **don't publish**: fix the filter first. Publishing a test workflow without its filter is a hard fail (H8): it would email "[TEST]" messages to Rickey's and AI Avatars' real buyers.
-- After publishing, each shows **0 enrolled** until your test purchase. If a count goes up before that, set the workflow to Draft at once and tell the person.
+- After publishing, each shows **0 enrolled** until your own test contacts (Stage 12 B2). If a count goes up before that, set the workflow to Draft at once and tell the person.
 
 **Stage 11: Team access.** **Don't create or invite anyone.** In `log.md`, write the exact steps you would take for a new teammate (menu path, fields, what you leave empty, the role question with its three options, the invite and the note to the teammate) and what you would do about "Error while bootstrapping the session". You may open Settings → Users read-only and take a screenshot; don't open the Add user form.
 
@@ -118,10 +119,10 @@ Default sender (leave From name and From email empty; you read it in Stage 0). S
 1. `node tools/check_funnel.mjs my-funnel/funnel.json --out my-funnel/shots > my-funnel/check-result.txt`. It must end with **"All steps pass"**. Fix and re-run until it does.
 2. Confirm the non-checker settings by eye (Stage 12 section B) and take the evidence screenshots.
 3. Run the bump totals snippet on your checkout: `$27.00 → $44.00 → $27.00`, main product still selected, 1 image, 1 arrow. Paste the result in `log.md`.
-4. ★ The test purchase, the way the person chose. If made: record the transactions, the three emails (arrival time, links working), the course login and the enrolment counts. Whether the bump and the one-click upsell fire "Order submitted" was never proven on Rickey's funnel: write down exactly what happened. If the person declines, write "declined by <person>, <date>" and keep the plan in `log.md`.
-5. Regression proof: `node tools/check_funnel.mjs examples/rickey-headstart-funnel/funnel.json > my-funnel/rickey-after.txt`, and redo the audit as `inventory-after.md`. Apart from your `TEST · [Name] ·` items, your tags, the auto-created course product and, if the person chose the existing course, **+1 member** on "TikTok Shop Headstart" from the test buyer, the two inventories must match.
+4. Delivery on test contacts (Stage 12 B2), then ★ the two test orders, the way the person chose. If made: record the transactions, the three emails (arrival time, links working), the course login and the enrolment counts. Whether the bump and the one-click upsell fire "Order submitted" was never proven on Rickey's funnel: write down exactly what happened. If the person declines, write "declined by <person>, <date>" and keep the plan in `log.md`.
+5. Regression proof: `node tools/check_funnel.mjs examples/rickey-headstart-funnel/funnel.json > my-funnel/rickey-after.txt`, and redo the audit as `inventory-after.md`. Apart from your `TEST · [Name] ·` items, your tags, the three courses and their auto-created products, your test contacts and, if the person chose the existing course, **+1 member** on "TikTok Shop Headstart" from the test buyer, the two inventories must match.
 6. Write `handoff.md`: the 4 test URLs, the checker result, the YES status, the test purchase result, open items, where the record is.
-7. ★ **Clean-up question:** send the person the full list from `cleanup.md` and ask: keep everything, set the workflows to Draft only, or remove items (which ones). Do only what they approve, in this order: workflows to Draft first (nothing can fire), then the funnel, then the products, then the course and its auto-created product (or, if the existing course was used, removing the test buyer's access), then the tags, then the repo folder. Record each removal in `cleanup.md`. Refunds are theirs to make.
+7. ★ **Clean-up question:** send the person the full list from `cleanup.md` and ask: keep everything, set the workflows to Draft only, or remove items (which ones). Do only what they approve, in this order: workflows to Draft first (nothing can fire), then the funnel, then the products, then the three courses and their auto-created products (or, if the existing course was used, removing the test buyer's access), then the test contacts, then the tags, then the repo folder. Record each removal in `cleanup.md`. Refunds are theirs to make.
 
 ## Evidence screenshots (`my-funnel/evidence/`)
 Name them with a number and a word:

@@ -36,12 +36,18 @@ Rules that follow from this table:
 | S3 | Session expiry | Endless spinner; `find` finds nothing (e.g. "Create from blank" missing); console shows `401`, `403`, `[whatsapp] init catch ... 403` | Stop retrying. Tell the person honestly (including if you caused it), list done vs. left, ask them to sign in again. |
 | S4 | Builder iframe URL opened on its own | 404 or blank, then 401s and a lost session | Never do it. |
 | S5 | Clipboard doesn't reach the pane | `pbcopy` + `cmd+v` pastes nothing | Type instead. For big HTML, type a ~500-character loader (see `loader.md`). |
-| S6 | The pane can't upload files | No file picker | List uploads for the person: course thumbnail, lesson videos, bump custom image, product media. Inject images from the hosted fragment where possible. |
+| S6 | No file picker in the pane | A normal upload can't be driven | **App pages (courses): a script can fill the file input** with a `File` made from a public, CORS-readable URL (`DataTransfer`, `stages/9-course-memberships.md` F). Use it for images. **Paid files: the person drags them in** (never make them public to upload them). Tested and blocked: reading `http://localhost` from a GHL page. Builder frames (bump custom image): no, inject from the fragment. |
 | S7 | A page tries to open a new tab | The pane blocks it (e.g. the step's open-in-new-tab icon) | `tabs_create`, then `navigate` that tab to the URL. |
 | S8 | Emulated size cleared | Batch fails with "this tab's page, zoom or size has changed; take a new screenshot" | Happens when the pane width changes, when the turn ends, when the person resizes, or when Remote Control is turned on. Take a new screenshot, re-locate everything, set the size again if you need it. After phone checks, reset with `resize_window preset:"desktop"`. |
 | S9 | The person clicked in the pane | Tool reports "the user clicked or pressed keys..." | Re-screenshot and re-find refs before acting. |
 | S10 | Long waits in Bash | A chained `sleep 60` is blocked by the harness | Use a polling loop with short sleeps (section 9). |
 | S11 | Remote Control on | The pane resized (screenshots went from 800×523 to 800×668); `AskUserQuestion` came back "Denied by user"; the next-step box may not show | Re-screenshot before clicks. Ask questions in plain text with the choices spelled out. Details in section 10. |
+| S12 | Which pane size where | Menus don't open, or controls hide | **1440×1000** for the page builder, workflow builder and course studio. **Native size** (`preset: desktop`) for the workflow list, Create workflow, contacts and Add automation. 1600×1100 to read conversations. 393×852 for phone checks. Reset to desktop after. |
+| S13 | Half-loaded pages take the wrong click | A click on a loading contacts list opened another person's contact | Wait (builder 16 s, workflow 16 to 28 s, course studio 10 to 20 s, contacts 20 s), screenshot, then click. Never chain clicks after a navigation. |
+| S14 | Cloudflare "Verify you are human" on the checkout | Fails in the pane even when a person ticks it | Don't retry, don't work around it. The person buys in their own Chrome. |
+| S15 | Survey and notice popups | Cover Save or Next | Close them first. Don't click "See what's new" (migrations). |
+| S16 | `find` misses many GHL buttons ("Next", "Create workflow", "Add Contact") | No refs | Screenshot + coordinates, or a JS click by exact text on app pages. |
+| S17 | A page wrote to the person's clipboard during scripted clicks | The app warned them | Mention it if it happens. |
 
 ### Navigation and URLs
 
@@ -91,7 +97,7 @@ Rules that follow from this table:
 
 | # | Kind | Seen in | What works |
 |---|---|---|---|
-| D1 | **Native `<select>` inside the builder iframe** | Button → General → **Button Actions → "link to"**, and the button's **Products** picker | **Nothing, from the pane.** The open list is never drawn in screenshots. Click, click on the chevron, typing "One" + Return, Down + Return, Space, double-click: the value stays "Open popup". Arrow keys scroll the settings panel. Escape deselects the element. `find`/`read_page` can't see it. **Hand it to the person** (exact clicks in `upsell-recipe.md`), or, with their OK, try Claude in Chrome (unverified). |
+| D1 | **Native `<select>` inside the builder iframe** | Button → General → **Button Actions → "link to"** and **Products** | Clicking, typing words, arrows: nothing. **Works:** Ask AI (Build) for "link to"; for Products click once to focus, then **one `key` press** of the option's first letter; zoom (`stages/7-upsell-step.md` D). |
 | D2 | **Custom (GHL-drawn) dropdowns** | Step Products and Price pickers, course lesson module, workflow trigger filters, order form **After purchase** | Open → type to filter (if it has a search) → **`hover` the option → `Return`**. Most reliable. Plain clicks on options often don't register. Separate key presses (`Down`, `Down`, `Return`) also work; one combined `"Down Down Enter"` string did **not** work in the order form modal. Keys can land one option off: `zoom` to read the chosen label every time. |
 | D3 | App-shell select | Funnel Settings → **Domain** | Option clicks didn't select; one `key` string of `Down`s + `Enter` did. On a shared account the list holds other brands' domains, so **never use a fixed count**: open the list, screenshot, count the position N of the domain confirmed in Stage 1, send N `Down`s + `Enter` in one `key` action, then `zoom` and compare letter by letter. Wrong → **Remove** and retry with N one higher or lower. (Rickey only: `Down Down Enter` picked `davidhsai.com`.) |
 | D4 | Wrong item picked by coordinates | Step Products dropdown picked "AI Avatars System Upsell" | Escape, reopen, pick again, screenshot before saving. |
@@ -111,6 +117,9 @@ Rules that follow from this table:
 | P8 | Save buttons in the app shell | Click **Save by ref** (`find "Save"`; `find "Save button"` found nothing). A coordinate click on the product form's Save hit the **Media Storage** picker after the layout shifted. |
 | P9 | **Funnel Settings Save jumps back to the Steps view** | Your next coordinate click lands on a step (it hit the open-in-new-tab icon). Navigate to `/funnels/{funnel}/settings` again before the next change. |
 | P10 | Workflow builder | Top-right **Save**, then the **Draft → Publish** toggle. A prompt about the save mode appears on a new workflow: keep **manual save** so no account setting changes. |
+| P11 | **A workflow action's change silently lost** (saved, yet the old sender was back after a reload) | Order: wait 3 s → Save action → wait 5 s → **see the panel closed and a blue Save with a red dot** → top Save → zoom "Saved" → reload and reopen the action. |
+| P12 | Duplicate workflow: the row menu never opened | Build from scratch. |
+| P13 | Course row status pill (Published ▾ → Draft): a first click can miss while the menu loads or after a scroll | One at a time, 3 s, screenshot. |
 
 ### Funnel settings
 
@@ -119,7 +128,7 @@ Rules that follow from this table:
 | F1 | **Optimize JavaScript is on by default** ("Custom javascript and html codes added will be lazy loaded") | Turn it **off** for any funnel built with Custom Code. Toggle by JS (section 6), Save by ref, re-navigate. |
 | F2 | Step paths default to `/sales-page`, `/checkout`, `/upsell`, `/thank-you`; funnel path to `/<client>--<offer>` | On a shared domain these collide. Set `/<offer>-page`, `/<offer>-checkout`, ... via the native value setter (section 6). |
 | F3 | No free GHL default domain in the account | The Domain list showed only the connected domain. Choose with the person (Stage 1, step 3; `pitfalls.md` 8); to use the client's own domain, follow `connect-a-domain.md` first. |
-| F4 | Funnel-scoped test/live payment mode | **Not located yet** (the Nov 20 notes mention a funnel "payment mode" toggle but not where it is). Look only on the checkout step's **Products** tab and in the funnel's **Settings**; never change modes in Payments → Integrations (account-wide). When you find it, write its exact place here, with the date. |
+| F4 | Funnel-scoped test/live payment mode | **Funnel → Settings → Payments & checkout → Payment mode** (on = Live, off = Test). Affects this funnel only. Save by ref, reload, read it back; the live checkout shows TEST MODE. Script in `stages/12-test-and-go-live.md` C. Switch back to Live after the test. |
 
 ### Batching
 
@@ -204,7 +213,7 @@ If it clicked, `find "Save"` → click the ref → check `location.href` (Save l
 
 - **Custom dropdown with search** (step Products): click it → `type` a distinctive part of the name (`4M`, `Headstart`, `Starter`) → `hover` the result → `key Return` → `zoom` to read the value. Then the **Price** dropdown: click → `hover` "<product> @ <amount>" → `Return`.
 - **Custom dropdown without search** (After purchase): click it → `key Down` / `key Up` as separate actions → `key Return` → `zoom`. If it lands one off, reopen and move from the current value.
-- **Native select in the builder** (button link to, button Products): don't spend more than one try. Write the person the exact clicks (see `upsell-recipe.md`, "Human handoff").
+- **Native select in the builder** (button link to, Products): Stage 7, section D (Ask AI + one key press). Fallback: Stage 7 step 17.
 
 ## 8. Details: verifying on the live page
 

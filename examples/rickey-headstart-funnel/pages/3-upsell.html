@@ -1,6 +1,6 @@
 <!-- Upsell (Offer 2: My $4M TikTok Shop System, $97). Loaded into a GHL Custom Code element (#gtu-root).
-     Below this block: a native GHL YES button (one-click upsell action) and a small Custom Code element with the NO link to the thank-you page.
-     This file styles both by their text, "YES!" and "No thanks" (see "GHL buttons"); a native NO button would be styled the same. -->
+     The YES / NO buttons below this block are native GHL buttons (one-click upsell + link to the thank-you page);
+     this file also styles them (see "GHL buttons"). -->
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800;900&family=Lato:wght@400;700;900&family=Caveat:wght@700&display=swap" rel="stylesheet">
 <style>
@@ -108,12 +108,13 @@ section:has(#gtu-root),[class*="section-"]:has(#gtu-root),.c-row:has(#gtu-root),
 }
 @media(prefers-reduced-motion:reduce){#gtu .bar i,#gtu .down,.gtu-yes{animation:none!important}}
 
-/* ---------- GHL buttons (the native YES button and the NO link under this block) ---------- */
+/* ---------- GHL buttons (the two native buttons under this block) ---------- */
 .c-button:has(.gtu-yes){padding:4px 18px 0!important;max-width:756px;margin:0 auto!important}
 .c-custom-code:has(.gtu-no){padding:0 18px 44px!important}
 [class*="section-"]:has(.gtu-yes){padding-bottom:0!important}
 .gtu-yes,.gtu-yes *{font-family:Poppins,sans-serif!important}
 .gtu-yes{display:block!important;width:100%!important;max-width:720px;margin:0 auto!important;background:var(--gtu-red,#D30805)!important;color:#fff!important;border:2px solid #101017!important;border-radius:14px!important;padding:20px 18px!important;font-weight:900!important;font-size:21px!important;line-height:1.25!important;text-transform:none!important;box-shadow:5px 5px 0 #101017!important;cursor:pointer;animation:gtupulse 1.8s ease-in-out infinite;white-space:normal!important}
+button.gtu-yes .main-heading-group .main-heading-button{font-size:inherit!important;font-weight:900!important;line-height:1.25!important}
 .gtu-yes:hover{filter:brightness(1.06)}
 @keyframes gtupulse{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
 .gtu-no,.gtu-no *{font-family:Lato,sans-serif!important}
@@ -214,6 +215,6 @@ document.title='One-time offer | My $4M TikTok Shop System';
       else if(t.indexOf('no thanks')===0) b.classList.add('gtu-no');
     });
   }
-  tag(); var n=0,iv=setInterval(function(){tag();if(++n>30)clearInterval(iv);},300);
+  tag(); var n=0,iv=setInterval(function(){tag();if(++n>80)clearInterval(iv);},300);
 })();
 </script>

@@ -14,7 +14,7 @@
 | Step 1 Sales page | | step id / path / page id / builder URL | loader root id, fragment URL | published? |
 | Step 2 Checkout | | step id / path / page id / builder URL | root id, fragment URL; order form products, bump, Terms checkbox, after purchase = next step; legal links | |
 | Step 3 Upsell | | step id / path / page id / builder URL | root id, fragment URL; YES text; NO link → | |
-| YES action | | | link to = One click up/down sell product; Products = | set by whom, date, zoom-checked? |
+| YES action | | | link to = One click up/down sell product; Products = | set by whom, date; checker line `YES sells (…)` |
 | Step 4 Thank you | | step id / path / page id / builder URL | root id, fragment URL, `GT_LINKS` values, Purchase event | |
 | Product: main (catalog) | | product id | price, one-time, online store off, statement descriptor, tax | |
 | Product: bump (catalog) | | product id | | |
@@ -22,9 +22,13 @@
 | Step product: main | | internal product id | buyer-facing name, Main | |
 | Step product: bump | | internal product id | buyer-facing name, Bump | |
 | Step product: upsell | | internal product id | buyer-facing name | |
-| Course | | product_id | modules, lessons, One Time price, paid files attached | |
+| Course: main | | product_id | lessons, One Time price, its files, badge + credential = Draft | |
+| Course: bump | | product_id | one lesson, One Time price, its file, badge + credential = Draft | |
+| Course: upsell | | product_id | lessons, One Time price, its files, badge + credential = Draft | |
+| GHL course emails (account-wide) | | | each row before / after; who else in the account uses Courses | |
+| Test contacts | | | which workflow each was added to; delete when the person says | |
 | Auto-created membership product | (course name) | product id if shown | created by the course; not used by the funnel or workflows | keep or not: owner |
-| Workflow: main delivery | [Client] · … delivery | workflow id | trigger + filter (zoom-checked), course, tag, email, sender | published? enrolled 0 before test? |
+| Workflow: main delivery | [Client] · … delivery | workflow id | trigger + filter (zoom-checked), course, tag, email, sender | published? enrolled 0 before B2? after B2: main 2, bump 1, upsell 1 |
 | Workflow: bump delivery | | | | |
 | Workflow: upsell delivery | | | | |
 | Buyer tags | | | tag per product | |
@@ -33,3 +37,12 @@
 
 ## Open items
 -
+
+## Payment mode
+| Date | Mode (Live / Test) | Why | Checked on the live checkout |
+|---|---|---|---|
+
+## Proven / built but unproven / not done
+- Proven (how, when):
+- Built but unproven:
+- Not done:

@@ -138,6 +138,39 @@ David's messages from Nov 20 2026 (session messages #36 to #55), in order. For e
 
 ---
 
+## 20. Finishing and testing (Nov 23 and 24 2026)
+
+**"do it again" / "everything else has to be finished, fully functional, and tested. And you can test yourself. You can turn on the testing mode"**
+- **Rule:** finish means tested. Test what you can without the person, then ask them only for what you can't do (card, password, human check).
+- **Implemented:** delivery on test contacts; funnel test mode; a two-order script for the person.
+
+**"I don't want to put them in a GitHub or anything like that… put them inside their login"**
+- **Rule:** paid files live behind the login. **Implemented:** lesson attachments; emails and thank-you page say where they are.
+
+**"they should be able to find both courses in their account"**
+- **Rule:** one login, everything bought side by side. **Implemented**; on a test contact the three courses are listed together (nobody has logged in as a buyer yet).
+
+**About the "🎉 Welcome to The Starter Product List!" badge email: "just doesnt make any sense to send users… not in Rickey voice… they just need the access to their course or courses and the pdfs"**
+- **Rule:** only on-brand emails with access. **Implemented:** badges and credentials to Draft, account course emails off; second test contact got exactly three emails.
+
+**"the order bump… is optional, have you taken that into account?" / "ok as long as they dont get the products list if they didnt get the order bump"**
+- **Rule:** nobody gets what they didn't buy; a conditional mention on the shared thank-you page is fine.
+- **Implemented:** separate course, workflow and email; the box starts unticked (the checker tests it).
+
+**"you can look at the AI avatars one, because that one was tested a long time ago and it was working"**
+- **Rule:** a working funnel is a read-only reference: its live pages and lists, never its builder.
+
+**"do another test where you buy offer 1 and then offer 2… when you buy offer 1 and you decline offer 2"**
+- **Rule:** test accept and decline.
+
+**"use Moses… for the support email… for now"**
+- **Rule:** temporary values are written down as temporary and raised before launch.
+
+**"So everything is ready except…?" / "be concise and clear"**
+- **Rule:** answer with what's proven, what's built but unproven and what's missing, in a few lines. **"Later" means write it down and raise it once, at launch.**
+
+---
+
 ## The meta-rules (what all of this adds up to)
 
 1. Copy **structure** from references, never branding.
@@ -148,3 +181,5 @@ David's messages from Nov 20 2026 (session messages #36 to #55), in order. For e
 6. **HTML for design, native GHL only where money moves** (order form, YES button).
 7. **Show, don't claim:** live URL + edit path + what's verified vs. open.
 8. **Ask before** anything that grants access, sends a message, spends money, or touches what existed before.
+9. **Nobody gets what they didn't buy,** and nobody gets an email that isn't in the client's voice.
+10. **Look finished ≠ proven.** Read the real setting, use a test buyer, then a test order.
