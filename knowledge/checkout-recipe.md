@@ -5,7 +5,7 @@ This is exactly how Rickey's checkout (`https://davidhsai.com/headstart-checkout
 ## 0. What "done" looks like
 
 - **Desktop:** two columns. Left = our HTML offer summary (logo, red pill, headline, mockup, dark "What you get today" box with crossed values and today's price, guarantee). Right = GHL's native **Order Form**: "1 Contact information" (Full Name, Email only), the order bump, "Total due today", "2 Payment details" (Stripe card field), the "GET INSTANT ACCESS →" button, "Secure checkout powered by Stripe".
-- **Phone (393×852):** the left column shrinks to one dark card plus one trust line (about 140 px), so the **first form field sits in the top half of the first screen**. Desktop is unchanged.
+- **Phone (393×852):** the left column shrinks to one dark card plus one trust line (about 180 px with its closed "See everything included" toggle; the toggle came on Nov 24), so the **first form field sits in the top half of the first screen**. Desktop is unchanged.
 - The form inputs are boxed, 50 px tall, clearly labelled. **No "Select Product" table.** No subtotal row. No "Upgrade Your Order & Save!" line.
 - The **order bump pops**: red banner, cream background, dashed red border with a glow, a moving arrow, a big red checkbox, an underlined headline, a red price line, a short description wrapped around the product image. Ticking it turns it solid. The total goes $27 → $44 and back.
 - After purchase → **the next funnel step** (the upsell).
@@ -71,6 +71,17 @@ Markup: one desktop block `.gtc-d` and one phone block `.gtc-m` inside `#gtc`.
         <p class="inc">7-Day Course + 30-Day Challenge + Rickey Army channel</p>
         <div class="pr"><s>$201</s><b>$27 today</b></div>
       </div>
+      <div class="more">
+        <button type="button" class="tg" aria-expanded="false" aria-controls="gtc-more"><span class="lb">See everything included</span><span class="chev" aria-hidden="true">▼</span></button>
+        <div class="pn" id="gtc-more">
+          <div class="it"><span class="l"><span class="ok">✓</span><span class="nm">The 7-Day Headstart Course</span></span><s>$57</s></div>
+          <div class="it"><span class="l"><span class="ok">✓</span><span class="nm">The 30-Day First Sale Challenge</span></span><s>$47</s></div>
+          <div class="it"><span class="l"><span class="ok">✓</span><span class="nm">The Rickey Army Private Channel</span></span><s>$97</s></div>
+          <div class="tl"><span>Total value</span><span class="rt"><span class="sv">You save $174</span><s>$201</s></span></div>
+          <div class="td"><span>Today</span><b>$27 <small>one-time</small></b></div>
+          <div class="gr"><span class="ok">✓</span><p><b>Your money’s protected.</b> Do the 30-day challenge, post every day, and if you haven’t made a sale in 90 days, you get a full refund.</p></div>
+        </div>
+      </div>
     </div>
     <div class="tr"><span>One-time payment</span><span>Instant access</span><span>90-day refund</span></div>
   </div>
@@ -79,7 +90,8 @@ Markup: one desktop block `.gtc-d` and one phone block `.gtc-m` inside `#gtc`.
 
 Rules for the content:
 - The guarantee uses the **approved copy word for word**. A paraphrase was caught and replaced with the exact wording from the copy file.
-- Phone card = image + product name + one "includes" line + crossed total + today's price. Trust line = three short items. Nothing else.
+- Phone card = image + product name + one "includes" line + crossed total + today's price + the **"See everything included"** toggle. Trust line = three short items. Nothing else.
+- The toggle is **closed on load** and shows only its label (no line under it: that would repeat the includes line). Open = "Hide the details" + every item with its value, total value, "You save $X", today's price and the guarantee. Keep its values the same as the desktop box. Desktop has no toggle. The panel's `max-height:600px` fits about 8 short items; raise it for more (pages built with the Sales Page Playbook have no cap).
 - Each `li` wraps its text in one `<span>` (a bare `<b>` inside a flex `li` becomes its own column).
 
 Left column CSS (desktop and phone):
@@ -121,12 +133,49 @@ Left column CSS (desktop and phone):
  .gtc-m .pr{display:flex;align-items:center;gap:8px;font:800 14px/1 Poppins,sans-serif}
  .gtc-m .pr s{color:rgba(255,255,255,.55);font-weight:600}
  .gtc-m .pr b{background:#D30805;border-radius:6px;padding:4px 8px;font-size:15px}
+ /* "See everything included" toggle + the full value stack */
+ #gtc .gtc-m .more{grid-column:1/-1;margin-top:-12px}
+ #gtc .gtc-m .tg{position:relative;display:flex;align-items:center;justify-content:space-between;width:100%;margin:0;padding:12px 0 4px;background:none;border:0;border-radius:0;box-shadow:none;color:#fff;font:600 14px/1.5 Poppins,sans-serif;letter-spacing:0;text-transform:none;text-align:left;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-tap-highlight-color:transparent}
+ #gtc .gtc-m .tg:after{content:"";position:absolute;left:-12px;right:-12px;top:2px;bottom:-10px}
+ #gtc .gtc-m .tg:focus{outline:none}
+ #gtc .gtc-m .tg:focus-visible{outline:2px solid #fff;outline-offset:2px;border-radius:6px}
+ #gtc .gtc-m .chev{font-size:13px;line-height:1;color:#cfcfd6;transition:transform .35s ease}
+ #gtc .gtc-m .tg[aria-expanded="true"] .chev{transform:rotate(180deg)}
+ #gtc .gtc-m .pn{max-height:0;overflow:hidden;opacity:0;visibility:hidden;margin-top:0;transition:max-height .4s ease,opacity .3s ease,margin .3s ease,visibility 0s linear .4s}
+ #gtc .gtc-m .pn.open{max-height:600px;opacity:1;visibility:visible;margin-top:8px;transition:max-height .4s ease,opacity .3s ease,margin .3s ease,visibility 0s}
+ #gtc .gtc-m .it{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #2a2a33}
+ #gtc .gtc-m .it .l{display:flex;align-items:center;gap:9px}
+ #gtc .gtc-m .ok{flex:0 0 19px;width:19px;height:19px;border-radius:50%;background:#D30805;color:#fff;font:900 11px/19px Lato,sans-serif;text-align:center}
+ #gtc .gtc-m .it .nm{font:500 13px/1.35 Poppins,sans-serif}
+ #gtc .gtc-m .it s,#gtc .gtc-m .tl s{color:#8a8a94;font:600 13px/1.2 Poppins,sans-serif}
+ #gtc .gtc-m .tl{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0 2px;color:#c7c7cf;font:400 13px/1.3 Poppins,sans-serif}
+ #gtc .gtc-m .tl .rt{display:flex;align-items:center;gap:8px}
+ #gtc .gtc-m .tl s{font-weight:700;font-size:16px}
+ #gtc .gtc-m .sv{background:rgba(211,8,5,.16);color:#ff6a67;font:700 11px/1.5 Poppins,sans-serif;padding:3px 9px;border-radius:999px;white-space:nowrap}
+ #gtc .gtc-m .td{display:flex;align-items:baseline;justify-content:space-between;margin-top:6px;font:600 16px/1.3 Poppins,sans-serif}
+ #gtc .gtc-m .td b{font:800 24px/1.2 Poppins,sans-serif}
+ #gtc .gtc-m .td small{font:600 13px/1 Poppins,sans-serif;color:#aeaeb8}
+ #gtc .gtc-m .gr{display:flex;gap:9px;margin:12px 0 2px;padding:11px 12px;background:#1b1b22;border:1px dashed #3a3a44;border-radius:12px}
+ #gtc .gtc-m .gr p{margin:0;color:#d7d7dd;font:400 11.5px/1.45 Poppins,sans-serif}
+ #gtc .gtc-m .gr p b{color:#fff;font-weight:700}
  .gtc-m .tr{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:8px 0 0;font:700 11.5px/1.2 Lato,sans-serif;color:#4a4a55}
  .gtc-m .tr span:before{content:"✓ ";color:#D30805;font-weight:900}
  /* less empty space around the GHL rows on phones */
  [class*="section-"]:has(.c-order-form){padding-top:6px!important;padding-bottom:6px!important}
  .c-column:has(#gtc-root)>.inner,.c-column:has(.c-order-form)>.inner{padding-top:4px!important;padding-bottom:4px!important}
 }
+@media(prefers-reduced-motion:reduce){#gtc .gtc-m .pn,#gtc .gtc-m .chev{transition:none!important}}
+```
+
+The toggle's script (inside the fragment's own script, before `enhance();`). One listener on the page, so it keeps working if GHL redraws the column:
+```js
+  // phone summary: open / close "See everything included"
+  if(!window.__gtcToggle){window.__gtcToggle=1;document.addEventListener('click',function(ev){
+    var tg=ev.target.closest&&ev.target.closest('#gtc .tg'); if(!tg) return;
+    var open=tg.getAttribute('aria-expanded')!=='true',pn=tg.parentNode.querySelector('.pn');
+    tg.setAttribute('aria-expanded',open?'true':'false'); pn.classList.toggle('open',open);
+    tg.querySelector('.lb').textContent=open?'Hide the details':'See everything included';
+  });}
 ```
 
 ## 4. Order form settings, section by section
@@ -371,7 +420,7 @@ const f=[...document.querySelectorAll('.c-order-form input')].find(i=>i.offsetPa
 ({firstFieldTop:Math.round(f.getBoundingClientRect().top+scrollY), fold:innerHeight, sideways:document.documentElement.scrollWidth-innerWidth,
   selectProductVisible:!!document.querySelector('.order-form__offer')?.offsetParent})
 ```
-Pass: `firstFieldTop` well under 852 (aim for the top half), `sideways` 0, `selectProductVisible` false. Then scroll the bump into view and screenshot it:
+Pass: `firstFieldTop` well under 852 (aim for the top half), `sideways` 0, `selectProductVisible` false. Tap "See everything included" and look at it open (the checker also tests it). Then scroll the bump into view and screenshot it:
 ```js
 const b=document.querySelector('.order-form__bump'); window.scrollTo(0,b.getBoundingClientRect().top+scrollY-120);
 document.querySelector('.order-form__bump-desc').innerText
@@ -380,6 +429,6 @@ Then run `node PLAYBOOK/tools/check_funnel.mjs my-funnel/funnel.partial.json` (t
 
 ## 13. Adapting to a new client
 
-Change: brand colors (`#D30805` red, `#101017` ink, `#FFF8E7` cream, `#FFEDEC` checked tint, `#E7E3DC` line) and fonts; all image URLs and `alt`s (logo, mockup); `IMG` and its `alt` in the enhancer; the banner text; the email helper line ("Your course login is sent here." fits a course); the pill and H1; the desktop box items, values, total and price; the phone card text; the trust line (refund period); the guarantee (verbatim from the approved copy); `document.title`; the HTML comment at the top. Add: the legal links footer (Stage 6, section C). Keep: every selector, the order of CSS rules, the idempotent enhancer pattern, the phone padding trims.
+Change: brand colors (`#D30805` red, `#101017` ink, `#FFF8E7` cream, `#FFEDEC` checked tint, `#E7E3DC` line) and fonts; all image URLs and `alt`s (logo, mockup); `IMG` and its `alt` in the enhancer; the banner text; the email helper line ("Your course login is sent here." fits a course); the pill and H1; the desktop box items, values, total and price; the phone card text and everything inside its "See everything included" panel (items, values, total, saving, price, guarantee); the trust line (refund period); the guarantee (verbatim from the approved copy); `document.title`; the HTML comment at the top. Add: the legal links footer (Stage 6, section C). Keep: every selector, the order of CSS rules, the idempotent enhancer pattern, the phone padding trims.
 
 Then run the Rickey-content grep from Stage 2 (Verify) on the file: it must print nothing, or only lines the person approved.

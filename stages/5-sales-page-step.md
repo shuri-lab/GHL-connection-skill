@@ -49,9 +49,10 @@ Open a **separate tab** (`tabs_create`, then `navigate`) on `https://<domain>/<s
      rootLen:(document.querySelector('[id$="-root"]')||{innerHTML:''}).innerHTML.length,
      W:innerWidth, scrollW:document.documentElement.scrollWidth,
      brokenImgs:[...document.images].filter(i=>i.complete&&i.naturalWidth===0).length,
-     toCheckout:[...document.querySelectorAll('a[href]')].filter(a=>a.href.includes('-checkout')).map(a=>a.href).slice(0,3)})
+     toCheckout:[...document.querySelectorAll('a[href]')].filter(a=>a.href.includes('-checkout')).map(a=>a.href).length,
+     jumps:document.querySelectorAll('[id$="-root"] a.btn[href^="#"]').length})
    ```
-   Expect: the title you set, a long `rootLen` (Rickey: 117,173), `scrollW` = `W`, 0 broken images, the checkout URL.
+   Expect: the title you set, a long `rootLen` (Rickey: 117,173), `scrollW` = `W`, 0 broken images, `toCheckout` = every button on the page (Rickey: 14), `jumps` = 0 (since Nov 24 every button, the sticky bar included, goes straight to checkout).
 2. **If there is padding or a width cap**, walk up from the root and print each layer:
    ```js
    let a=[],e=document.getElementById('<ROOTID>');   // e.g. 'gt-root'
@@ -69,13 +70,13 @@ Open a **separate tab** (`tabs_create`, then `navigate`) on `https://<domain>/<s
 5. `curl -s -o /dev/null -w "%{http_code}"` on `https://<domain>/<slug>` → 200 (the funnel root serves step 1).
 6. **Checker:** make `my-funnel/funnel.partial.json`: copy `my-funnel/funnel.json` and delete every step you haven't built yet (here, keep only the sales step). Then run
    `node PLAYBOOK/tools/check_funnel.mjs my-funnel/funnel.partial.json --out my-funnel/shots`.
-   Expect `PASS sales mobile` and `PASS sales desktop` ("1 button(s) to checkout" or more) and exit code 0. Use `funnel.partial.json` until Stage 8: the full `funnel.json` FAILs (exit code 1) on the steps you haven't built yet.
+   Expect `PASS sales mobile` and `PASS sales desktop` ("N button(s) to checkout", N = every button; a NOTE says if any still jumps down the page) and exit code 0. Use `funnel.partial.json` until Stage 8: the full `funnel.json` FAILs (exit code 1) on the steps you haven't built yet.
 7. Reset the viewport: `resize_window` preset `desktop`.
 
 ## Rickey example values
 - Builder page `ADjS2vRSoBdGH6bc314y`: `https://app.gohighlevel.com/location/54EJrjBw49eCsIsOZH44/page-builder/ADjS2vRSoBdGH6bc314y`.
 - Root `gt-root`; fragment `https://shuri-lab.github.io/rickey-tiktokshop-project/offer-1-sales-page/ghl-sales-page.html`.
-- Live: `https://davidhsai.com/headstart-page` (also `https://davidhsai.com/headstart`). Title "TikTok Shop Headstart | Game Tape". Buy button `#buy .btn` → `https://davidhsai.com/headstart-checkout`.
+- Live: `https://davidhsai.com/headstart-page` (also `https://davidhsai.com/headstart`). Title "TikTok Shop Headstart | Game Tape". All 14 buttons → `https://davidhsai.com/headstart-checkout`.
 - The first Rickey loader had no `r.ok` check and didn't copy `src`; use the guarded one above.
 - The fragment also ends with a `fit()` script from the Sales Page Playbook: on screens up to 820 px it sizes `#page` to the window and cancels any leftover builder offset.
 - Quality bar: `examples/rickey-headstart-funnel/screenshots/1-sales-mobile.png` and `1-sales-desktop.png`.

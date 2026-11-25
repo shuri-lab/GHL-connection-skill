@@ -16,8 +16,9 @@
 //
 // What it checks (PASS/FAIL per step; screenshots in --out):
 //   every step   loads, our HTML is injected (not blank, not a GitHub 404), no sideways scroll on a phone
-//   sales        at least one button/link goes to the checkout step ("next")
+//   sales        at least one button/link goes to the checkout step ("next"); NOTE when a button with the same label jumps down the page instead
 //   checkout     the order form is there; on a phone the first form field is on the first screen (≤ 852px);
+//                the phone card's "See everything included" toggle, if there is one, opens and closes (NOTE if there is none);
 //                "Select product" is hidden; the order bump is there (if "bump": true) and starts unticked; the price shows inside
 //                the order form; no visible address or shipping field; NOTE when the funnel is in test mode
 //   upsell       a YES button and a NO link to the next step ("no"), and the YES button's REAL ACTION, read from the page data:
@@ -111,6 +112,9 @@ const probe = (step) => `(() => {
   if (type === 'sales') {
     const next = ${JSON.stringify(step.next || '')};
     r.to_checkout = links.filter(l => next && l.h.includes(next)).length;
+    const label = a => (a.innerText || a.textContent || '').trim().replace(/\\s+/g, ' ').toLowerCase(), as = [...document.querySelectorAll('a[href]')];
+    const cta = new Set(as.filter(a => next && a.getAttribute('href').includes(next)).map(label).filter(Boolean));
+    r.jumps = as.filter(a => a.getAttribute('href').startsWith('#') && cta.has(label(a))).length;
     r.buttons = [...new Set(links.filter(l => /instant access|buy|get /i.test(l.t)).map(l => l.t))].slice(0, 3);
   }
   r.legal_links = links.filter(l => /privacy|terms|refund/i.test(l.t + ' ' + l.h)).length;
@@ -125,6 +129,9 @@ const probe = (step) => `(() => {
     r.order_form = !!form;
     r.first_field_top = field ? Math.round(field.getBoundingClientRect().top + scrollY) : null;
     r.form_on_first_screen = field ? (field.getBoundingClientRect().top + scrollY) < H : false;
+    const tg = document.querySelector('.gtc-m .tg[aria-controls]');
+    if (tg && vis(tg)) { const pn = document.getElementById(tg.getAttribute('aria-controls')), st = () => tg.getAttribute('aria-expanded') === 'true' && !!pn && pn.classList.contains('open');
+      const a = st(); tg.click(); const b = st() && pn.innerText.trim().length > 40; tg.click(); r.toggle = { closed_on_load: !a, opens: b, closes: !st() }; } else r.toggle = null;
     const offer = document.querySelector('.order-form__offer');
     r.select_product_hidden = !offer || !vis(offer);
     r.bump = !!document.querySelector('.order-form__bump');
@@ -152,6 +159,7 @@ const verdict = (step, view, r) => {
   if (step.type === 'checkout') {
     if (!r.order_form) fails.push('no order form');
     if (view === 'mobile' && !r.form_on_first_screen) fails.push(`first form field below the phone fold (top ${r.first_field_top} of 852)`);
+    if (view === 'mobile' && r.toggle && !(r.toggle.closed_on_load && r.toggle.opens && r.toggle.closes)) fails.push(`the "See everything included" toggle is broken (closed on load ${r.toggle.closed_on_load}, opens ${r.toggle.opens}, closes ${r.toggle.closes})`);
     if (!r.select_product_hidden) fails.push('"Select product" block is visible');
     if (step.bump && !r.bump) fails.push('order bump missing');
     if (liveOnly && r.test_mode) fails.push('the funnel is in TEST MODE: real buyers cannot pay (--live)');
@@ -172,8 +180,10 @@ const verdict = (step, view, r) => {
   if (step.type === 'thankyou' && r.file_links && r.file_links.length) fails.push(`public page links a file: ${r.file_links.join(', ')}`);
   return fails;
 };
-const notesOf = (step, r) => {
+const notesOf = (step, r, view) => {
   const n = [];
+  if (step.type === 'sales' && r.jumps) n.push(`${r.jumps} button(s) jump down the page instead of going to the checkout`);
+  if (step.type === 'checkout' && view === 'mobile' && !r.toggle) n.push('no "See everything included" toggle on the phone card');
   if (step.type === 'checkout' && r.test_mode) n.push('the funnel is in TEST MODE: real buyers cannot pay');
   if (step.type === 'checkout' && !r.legal_links) n.push('no privacy / terms / refund link on this page');
   if (step.type === 'sales' && !r.legal_links) n.push('no privacy / terms / refund link on this page');
@@ -229,7 +239,7 @@ try {
         await sleep(2000);
       }
       failCount += fails.length;
-      report.push({ step: step.type, view, url: step.url, pass: !fails.length, fails, notes: notesOf(step, r), details: r });
+      report.push({ step: step.type, view, url: step.url, pass: !fails.length, fails, notes: notesOf(step, r, view), details: r });
       if (outDir) {
         const s = await cdp.send('Page.captureScreenshot', { format: 'png' });
         writeFileSync(join(outDir, `${n + 1}-${step.type}-${view}.png`), Buffer.from(s.data, 'base64'));
@@ -254,7 +264,7 @@ process.exitCode = (runError || failCount || !report.length) ? 1 : 0;
 function summary(r) {
   const d = r.details;
   if (r.step === 'sales') return `${d.to_checkout} button(s) to checkout`;
-  if (r.step === 'checkout') return `form field at ${d.first_field_top}px, bump ${d.bump ? 'yes, unticked' : 'no'}`;
+  if (r.step === 'checkout') return `form field at ${d.first_field_top}px, bump ${d.bump ? 'yes, unticked' : 'no'}${d.toggle ? ', toggle works' : ''}`;
   if (r.step === 'upsell') return `YES sells (${d.yes_action.sale || 'no sale action'}): "${((d.yes_button || [])[0] || '').slice(0, 34)}…", NO link ok`;
   return `"${d.title}"`;
 }

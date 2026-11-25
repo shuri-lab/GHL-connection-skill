@@ -80,7 +80,7 @@ App URL prefix used below: `https://app.gohighlevel.com/v2/location/54EJrjBw49eC
 | Checkout options | All toggles off; **After purchase = Go to the next funnel step** (was "Go to a website URL" = the thank-you URL until the upsell existed) |
 | Content | Step headline `Contact information`; Payment block title `Payment details`; Order button `GET INSTANT ACCESS →`; subtext `One-Time Payment • Instant Access`; footer `Secure checkout powered by Stripe` |
 | Theme & style | Accent `#D30805` (custom color "Game Tape Red"); rest default. All other styling from the left-column fragment's CSS. |
-| Verified (live, no purchase) | Total $27.00 → $44.00 (bump ticked) → $27.00; main product radio still checked; 1 bump image, 1 arrow; first field above the fold at 393×852 |
+| Verified (live, no purchase) | Total $27.00 → $44.00 (bump ticked) → $27.00; main product radio still checked; 1 bump image, 1 arrow; first field above the fold at 393×852. Nov 24 (v1.1): phone card has the "See everything included" toggle; first field at 350px (was 313); every sales page button goes straight to this step |
 
 Bump copy history: v1 "Want a shortcut on picking products? Get the product lanes that sell all year + the one move to find today's winner in any lane. Pick your first products tonight instead of guessing." (OTO `[ONE-TIME ADD-ON] Only $17!`) → v2 "Stop guessing what to sell. Get 37 hand-picked products ... 29 picks across 8 lanes ... 8 viral scroll-stoppers, plus a seasonal calendar ..." → **v3 (live)** above.
 
@@ -155,7 +155,7 @@ Red `#D30805`, ink `#101017`, cream `#FFF8E7`, line `#E7E3DC`; fonts Poppins (he
 
 1. **Two test orders** by the owner (Stage 12 C), then check them.
 2. **Payment mode is TEST.** Switch to Live after the orders, and check.
-3. **Final domain** (then: sales → checkout link, NO link, step domain, dedicated sending domain, one re-test).
+3. **Final domain** (then: the checkout link on all 14 sales page buttons, NO link, step domain, dedicated sending domain, one re-test).
 4. **Rickey's videos** and the lesson texts that say they're coming.
 5. **Stripe account and statement name** shared with AI Avatars: confirm.
 6. **Upsell stack values** ($428) and whether the guarantee covers the upsell: client to approve.

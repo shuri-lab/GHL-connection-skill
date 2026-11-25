@@ -72,7 +72,7 @@ Also: the After purchase setting was first a hard-coded thank-you URL, which **s
 
 ### C. What the left-column fragment does (adapt, don't rebuild)
 The file `examples/rickey-headstart-funnel/pages/2-checkout-left.html` holds three things. Its `<style>` is global on purpose, which is what lets it restyle the order form in the other column.
-- **Left column:** desktop block `.gtc-d` (logo 34 px, red pill "You're one step away", H1 26 px, mockup, dark "What you get today" box with crossed values, total, "Today $27" chip, dashed guarantee box with the **approved guarantee copy word for word**); phone block `.gtc-m` shown below 767 px (logo 22 px, **one** dark card: 96 px image, title, one "includes" line, `$201` crossed + "$27 today"; one trust row "✓ One-time payment ✓ Instant access ✓ 90-day refund"). Rule: on phones the summary is at most one card plus one trust line (~140 px), so the first input sits in the top half of 393×852.
+- **Left column:** desktop block `.gtc-d` (logo 34 px, red pill "You're one step away", H1 26 px, mockup, dark "What you get today" box with crossed values, total, "Today $27" chip, dashed guarantee box with the **approved guarantee copy word for word**); phone block `.gtc-m` shown below 767 px (logo 22 px, **one** dark card: 96 px image, title, one "includes" line, `$201` crossed + "$27 today", and a closed **"See everything included"** toggle that opens the value stack + the guarantee; one trust row "✓ One-time payment ✓ Instant access ✓ 90-day refund"). Rule: on phones the summary is at most one card plus one trust line (~180 px with the closed toggle), so the first input sits in the top half of 393×852.
 - **Phone-only padding trims** (instead of the wrapper fix):
   ```css
   [class*="section-"]:has(.c-order-form){padding-top:6px!important;padding-bottom:6px!important}
@@ -118,7 +118,7 @@ On a separate tab on `https://<domain>/<slug>-checkout` (Pages polled first if y
 4. **Only two fields:** `[...document.querySelectorAll('.order-form__label')].map(l=>l.innerText)` → Full Name, Email only.
 4b. **Legal links:** `[...document.querySelectorAll('#gtc .legal a, #gtc .gtc-legal a')].map(a=>a.href)` → the plan's URLs, each returning 200 with `curl -s -o /dev/null -w "%{http_code}"`.
 5. **Desktop** (1280×800): two columns, the Stripe card field, the bump checkbox, the button faded until the form is valid.
-6. **Phone** (393×852): the compact card, then "1 Contact information" high on the first screen; screenshot the form top and the bump; `scrollWidth` = 393.
+6. **Phone** (393×852): the compact card, then tap **"See everything included"**: it opens the items, values, total, saving, today's price and guarantee, all the same as the desktop box, and closes again. The form must not move off the first screen while it's closed. Then "1 Contact information" high on the first screen; screenshot the form top and the bump; `scrollWidth` = 393.
 7. Compare with `examples/rickey-headstart-funnel/screenshots/2-checkout-mobile.png` and `2-checkout-desktop.png`.
 8. Reset with `resize_window` preset `desktop`.
 

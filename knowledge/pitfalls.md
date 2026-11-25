@@ -65,7 +65,7 @@ Every problem hit while building Rickey's funnel (Nov 20 2026), with the fix tha
 
 ## Checkout and order form
 
-44. **Phone: checkout form below the fold.** The stacked left column took the whole first screen. Fix: a separate compact phone card (`.gtc-m`, about 140 px) instead of shrinking the desktop column, plus phone padding trims. Desktop unchanged.
+44. **Phone: checkout form below the fold.** The stacked left column took the whole first screen. Fix: a separate compact phone card (`.gtc-m`, about 140 px, 180 px with its closed toggle) instead of shrinking the desktop column, plus phone padding trims. Desktop unchanged.
 45. **"Select Product" table with one product** (nothing for the buyer to do). Fix: hide `.order-form__offer` and the non-total summary rows; the product radio stays checked.
 46. **Default bump headline is the internal prefixed name.** Fix: replace it ("Yes! Add [Product]").
 47. **Bump description squeezed into a narrow column, text centered or right-aligned.** Fix: `.order-form__bump-body{display:contents}`, description `grid-column:1/-1`, image floated inside the description, `text-align:left!important`.

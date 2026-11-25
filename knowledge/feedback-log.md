@@ -169,6 +169,10 @@ David's messages from Nov 20 2026 (session messages #36 to #55), in order. For e
 **"So everything is ready except…?" / "be concise and clear"**
 - **Rule:** answer with what's proven, what's built but unproven and what's missing, in a few lines. **"Later" means write it down and raise it once, at launch.**
 
+**Sales page v1.1 build ticket (Nov 24): "Point every landing CTA straight to checkout" and a "See everything included" toggle on the phone checkout ("one addition only"; "Desktop checkout: no changes")**
+- **Rule:** every sales page button goes straight to the checkout step; the offer stack stays on the page. On phones the checkout stays compact and one tap opens the full value stack and the guarantee.
+- **Implemented:** in the hosted fragments only (push, wait for Pages, re-check; no builder edit). Tested **before publishing** inside the real GHL pages: headless Chrome with the fragment's URL answered from the local file. `check_funnel.mjs` now opens and closes the toggle and notes buttons that jump. Effect on sales not measured.
+
 ---
 
 ## The meta-rules (what all of this adds up to)
